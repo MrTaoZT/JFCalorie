@@ -4,7 +4,7 @@
 <dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>我们需要您一直打开定位</string>
-	<key>CLLocationManagerDelegate</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>请打开定位</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>

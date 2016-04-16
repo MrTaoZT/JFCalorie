@@ -13,13 +13,18 @@
 
 #import <MapKit/MapKit.h>
 
+#import <UIImageView+WebCache.h>
+
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
+    BOOL hotClubOver;
     CGFloat jing;
     CGFloat wei;
 }
 
 @property(nonatomic, strong)NSMutableArray *sportTypeArray;
+@property(nonatomic, strong)NSMutableArray *hotClubInfoArray;
+
 @property(nonatomic, strong)CLLocationManager *locationManager;
 
 @end
@@ -38,11 +43,11 @@
     //初始化CLLocation
     [self initailCLLocation];
     
-    //网络请求拿去运动类型
+    //网络请求运动类型
     [self getSportType];
     
     //获取附近热门会所
-    [self getHotClub];
+    //[self getHotClub];
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -63,7 +68,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    return _hotClubInfoArray.count + 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -83,7 +88,25 @@
         return cell;
     }else{
         HotClubTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clubCell" forIndexPath:indexPath];
-        
+        if (hotClubOver) {
+            //接下当前行对应的字典
+            NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
+            //接受字典中的数组
+            //NSArray *experienceArray = tempDict[@"experience"];
+            
+            cell.nameLabel.text = tempDict[@"name"];
+            cell.addressLabel.text = tempDict[@"address"];
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",tempDict[@"distance"]];
+            [cell.clubImageView sd_setImageWithURL:tempDict[@"image"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                if(!error){
+                    NSLog(@"imageURL-->%@",imageURL);
+                }else{
+                    NSLog(@"imageError-->%@",error.userInfo);
+                }
+            }];
+            
+            //hotClubOver = NO;
+        }
         return cell;
     }
 }
@@ -99,7 +122,9 @@
 
 - (void)initailAllControl{
     sportOver = NO;
+    hotClubOver = NO;
     _sportTypeArray = [NSMutableArray new];
+    _hotClubInfoArray = [NSMutableArray new];
     
     jing = 0;
     wei = 0;
@@ -122,10 +147,28 @@
     }
     //开始持续获取设备坐标，更新位置
     [_locationManager startUpdatingLocation];
-    dispatch_time_t time =  dispatch_time(DISPATCH_TIME_NOW, 5 * NSEC_PER_SEC);
-    dispatch_after(time, dispatch_get_main_queue(), ^{
-        [_locationManager stopUpdatingLocation];
-    });
+}
+
+//定位请求错误提示
+-(void)checkError:(NSError *)error{
+    switch (error.code) {
+        case kCLErrorNetwork:{
+            [Utilities popUpAlertViewWithMsg:@"没网" andTitle:@"" onView:self];
+        }
+            break;
+        case kCLErrorDenied:{
+            [Utilities popUpAlertViewWithMsg:@"没开定位" andTitle:@"" onView:self];
+        }
+            break;
+        case kCLErrorLocationUnknown:{
+            [Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
+        }
+            break;
+        default:{
+            [Utilities popUpAlertViewWithMsg:@"UnKnow Error" andTitle:@"" onView:self];
+        }
+            break;
+    }
 }
 
 #pragma mark - privateNet
@@ -161,6 +204,9 @@
 }
 
 - (void)getHotClub{
+    
+    __weak HomeTableViewController *weakSelf = self;
+    
     NSString *nerUrl = @"/homepage/choice";
     
     //参数配置
@@ -177,9 +223,15 @@
                                  @"page":@(page),
                                  @"perPage":@(perPage)
                                  };
+    //网络请求
     [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSLog(@"%@",responseObject);
+            //NSLog(@"%@",responseObject);
+            NSDictionary *result = responseObject[@"result"];
+            //得到数据给全局数组
+            weakSelf.hotClubInfoArray = result[@"models"];
+            hotClubOver = YES;
+            [weakSelf.tableView reloadData];
         }
     } failure:^(NSError *error) {
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
@@ -195,13 +247,14 @@
     if (newLocation.coordinate.latitude == oldLocation.coordinate.latitude && newLocation.coordinate.longitude == oldLocation.coordinate.longitude) {
         jing = newLocation.coordinate.longitude;
         wei = newLocation.coordinate.latitude;
+        [self getHotClub];
         [manager stopUpdatingLocation];
     }
 }
 
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error{
-    [Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
+    [self checkError:error];
 }
 
 /** 定位服务状态改变时调用*/
