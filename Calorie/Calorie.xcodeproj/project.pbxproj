@@ -26,6 +26,9 @@
 		187725FC1CC20F5B003F8BD8 /* CalorieUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
 		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
+		B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D91CC2710900641C06 /* HomeTableViewController.m */; };
+		B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */; };
+		B8D900E11CC2718A00641C06 /* HotClubTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +86,12 @@
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		B8D900D61CC2554C00641C06 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
+		B8D900D81CC2710900641C06 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
+		B8D900D91CC2710900641C06 /* HomeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTableViewController.m; sourceTree = "<group>"; };
+		B8D900DC1CC2716900641C06 /* TitleTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleTableViewCell.h; sourceTree = "<group>"; };
+		B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleTableViewCell.m; sourceTree = "<group>"; };
+		B8D900DF1CC2718A00641C06 /* HotClubTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotClubTableViewCell.h; sourceTree = "<group>"; };
+		B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotClubTableViewCell.m; sourceTree = "<group>"; };
 		C9967E4C9082FD02452937B4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -128,6 +137,10 @@
 				187725E21CC20F5B003F8BD8 /* Assets.xcassets */,
 				187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */,
 				186685EC1CC2318C00B22A25 /* Home.storyboard */,
+				B8D900DC1CC2716900641C06 /* TitleTableViewCell.h */,
+				B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */,
+				B8D900DF1CC2718A00641C06 /* HotClubTableViewCell.h */,
+				B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -135,6 +148,7 @@
 		184477731CC21987003B2354 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B8D900DB1CC2711400641C06 /* Home */,
 				B8D900D41CC2551D00641C06 /* Login */,
 			);
 			name = Controller;
@@ -275,6 +289,15 @@
 				B8D900D61CC2554C00641C06 /* SignInViewController.m */,
 			);
 			name = Login;
+			sourceTree = "<group>";
+		};
+		B8D900DB1CC2711400641C06 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B8D900D81CC2710900641C06 /* HomeTableViewController.h */,
+				B8D900D91CC2710900641C06 /* HomeTableViewController.m */,
+			);
+			name = Home;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -463,9 +486,12 @@
 				184477831CC21B4E003B2354 /* BasicEncodingRules.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
+				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
+				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
 				187725D51CC20F5B003F8BD8 /* main.m in Sources */,
+				B8D900E11CC2718A00641C06 /* HotClubTableViewCell.m in Sources */,
 				1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */,
 				187725E11CC20F5B003F8BD8 /* Calorie.xcdatamodeld in Sources */,
 				1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */,
