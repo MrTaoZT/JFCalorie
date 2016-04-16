@@ -15,6 +15,7 @@
 		1844778D1CC21B62003B2354 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 184477871CC21B62003B2354 /* NSData+Base64.m */; };
 		1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 184477891CC21B62003B2354 /* NSString+Crypt.m */; };
 		1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 1844778B1CC21B62003B2354 /* RequestAPI.m */; };
+		186685ED1CC2318C00B22A25 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 186685EC1CC2318C00B22A25 /* Home.storyboard */; };
 		187725D51CC20F5B003F8BD8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725D41CC20F5B003F8BD8 /* main.m */; };
 		187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725D71CC20F5B003F8BD8 /* AppDelegate.m */; };
 		187725DB1CC20F5B003F8BD8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725DA1CC20F5B003F8BD8 /* ViewController.m */; };
@@ -62,6 +63,7 @@
 		1844778A1CC21B62003B2354 /* RequestAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RequestAPI.h; path = Utilities/RequestAPI.h; sourceTree = SOURCE_ROOT; };
 		1844778B1CC21B62003B2354 /* RequestAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RequestAPI.m; path = Utilities/RequestAPI.m; sourceTree = SOURCE_ROOT; };
 		184477901CC21BF6003B2354 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		186685EC1CC2318C00B22A25 /* Home.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		187725D01CC20F5B003F8BD8 /* Calorie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Calorie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		187725D41CC20F5B003F8BD8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		187725D61CC20F5B003F8BD8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 				187725DC1CC20F5B003F8BD8 /* Main.storyboard */,
 				187725E21CC20F5B003F8BD8 /* Assets.xcassets */,
 				187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */,
+				186685EC1CC2318C00B22A25 /* Home.storyboard */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				187725E61CC20F5B003F8BD8 /* LaunchScreen.storyboard in Resources */,
 				187725E31CC20F5B003F8BD8 /* Assets.xcassets in Resources */,
 				187725DE1CC20F5B003F8BD8 /* Main.storyboard in Resources */,
+				186685ED1CC2318C00B22A25 /* Home.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
