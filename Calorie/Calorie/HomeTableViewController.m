@@ -7,8 +7,14 @@
 //
 
 #import "HomeTableViewController.h"
+#import "TitleTableViewCell.h"
+#import "HotClubTableViewCell.h"
 
-@interface HomeTableViewController ()
+@interface HomeTableViewController (){
+    BOOL sportOver;
+}
+
+@property(nonatomic, strong)NSMutableArray *sportTypeArray;
 
 @end
 
@@ -16,6 +22,16 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //取消tableview下划线
+//    self.tableView.tableFooterView = [[UIView alloc]init];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    [self initailAllControl];
+    
+    //网络请求拿去运动类型
+    [self getSportType];
+    
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -32,24 +48,77 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return 2;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
-    
-    // Configure the cell...
-    
-    return cell;
+    if (indexPath.row == 0) {
+        TitleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell" forIndexPath:indexPath];
+        if (sportOver) {
+            [cell.sportTypeBtn1 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn2 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn3 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn4 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn5 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn6 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn7 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn8 setTitle:_sportTypeArray[indexPath.row][@"name"] forState:UIControlStateNormal];
+            sportOver = NO;
+        }
+        return cell;
+    }else{
+        HotClubTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clubCell" forIndexPath:indexPath];
+        return cell;
+    }
 }
-*/
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == 0) {
+        return 203;
+    }
+    return 150;
+}
+
+#pragma mark - private
+
+- (void)initailAllControl{
+    sportOver = NO;
+    _sportTypeArray = [NSMutableArray new];
+}
+
+#pragma mark - privateNet
+
+- (void)getSportType{
+    
+    __weak HomeTableViewController *weakSelf = self;
+    
+    NSString *netUrl = @"/homepage/category";
+    NSInteger page = 1;
+    NSInteger perPage = 10;
+    
+    NSDictionary *parameters = @{
+                                 @"page":@(page),
+                                 @"perPage":@(perPage)
+                                 };
+    
+    [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *result = responseObject[@"result"];
+            _sportTypeArray = result[@"models"];
+            NSLog(@"%@",_sportTypeArray);
+            sportOver = YES;
+            [weakSelf.tableView reloadData];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通,稍后试试吧" andTitle:@"" onView:self];
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+    }];
+}
 
 /*
 // Override to support conditional editing of the table view.
