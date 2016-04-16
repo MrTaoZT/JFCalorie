@@ -18,7 +18,6 @@
 		186685ED1CC2318C00B22A25 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 186685EC1CC2318C00B22A25 /* Home.storyboard */; };
 		187725D51CC20F5B003F8BD8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725D41CC20F5B003F8BD8 /* main.m */; };
 		187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725D71CC20F5B003F8BD8 /* AppDelegate.m */; };
-		187725DB1CC20F5B003F8BD8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725DA1CC20F5B003F8BD8 /* ViewController.m */; };
 		187725DE1CC20F5B003F8BD8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 187725DC1CC20F5B003F8BD8 /* Main.storyboard */; };
 		187725E11CC20F5B003F8BD8 /* Calorie.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 187725DF1CC20F5B003F8BD8 /* Calorie.xcdatamodeld */; };
 		187725E31CC20F5B003F8BD8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 187725E21CC20F5B003F8BD8 /* Assets.xcassets */; };
@@ -26,6 +25,7 @@
 		187725F11CC20F5B003F8BD8 /* CalorieTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725F01CC20F5B003F8BD8 /* CalorieTests.m */; };
 		187725FC1CC20F5B003F8BD8 /* CalorieUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
+		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,8 +68,6 @@
 		187725D41CC20F5B003F8BD8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		187725D61CC20F5B003F8BD8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		187725D71CC20F5B003F8BD8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		187725D91CC20F5B003F8BD8 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		187725DA1CC20F5B003F8BD8 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		187725DD1CC20F5B003F8BD8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		187725E01CC20F5B003F8BD8 /* Calorie.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Calorie.xcdatamodel; sourceTree = "<group>"; };
 		187725E21CC20F5B003F8BD8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -83,6 +81,8 @@
 		187725FD1CC20F5B003F8BD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
+		B8D900D61CC2554C00641C06 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		C9967E4C9082FD02452937B4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -135,8 +135,7 @@
 		184477731CC21987003B2354 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				187725D91CC20F5B003F8BD8 /* ViewController.h */,
-				187725DA1CC20F5B003F8BD8 /* ViewController.m */,
+				B8D900D41CC2551D00641C06 /* Login */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -267,6 +266,15 @@
 				C9967E4C9082FD02452937B4 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B8D900D41CC2551D00641C06 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				B8D900D51CC2554C00641C06 /* SignInViewController.h */,
+				B8D900D61CC2554C00641C06 /* SignInViewController.m */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -453,9 +461,9 @@
 			files = (
 				1844777B1CC21A47003B2354 /* Utilities.m in Sources */,
 				184477831CC21B4E003B2354 /* BasicEncodingRules.m in Sources */,
-				187725DB1CC20F5B003F8BD8 /* ViewController.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
+				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
 				187725D51CC20F5B003F8BD8 /* main.m in Sources */,
 				1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */,
