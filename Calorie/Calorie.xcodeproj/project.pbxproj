@@ -24,6 +24,8 @@
 		187725E61CC20F5B003F8BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */; };
 		187725F11CC20F5B003F8BD8 /* CalorieTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725F01CC20F5B003F8BD8 /* CalorieTests.m */; };
 		187725FC1CC20F5B003F8BD8 /* CalorieUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */; };
+		385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D01CC2BC4E00F20B26 /* SignUpViewController.m */; };
+		385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D31CC2BC6800F20B26 /* forgetPwViewController.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
 		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
 /* End PBXBuildFile section */
@@ -79,6 +81,10 @@
 		187725F71CC20F5B003F8BD8 /* CalorieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalorieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalorieUITests.m; sourceTree = "<group>"; };
 		187725FD1CC20F5B003F8BD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		385300CF1CC2BC4E00F20B26 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
+		385300D01CC2BC4E00F20B26 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
+		385300D21CC2BC6800F20B26 /* forgetPwViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forgetPwViewController.h; sourceTree = "<group>"; };
+		385300D31CC2BC6800F20B26 /* forgetPwViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forgetPwViewController.m; sourceTree = "<group>"; };
 		4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
@@ -273,6 +279,10 @@
 			children = (
 				B8D900D51CC2554C00641C06 /* SignInViewController.h */,
 				B8D900D61CC2554C00641C06 /* SignInViewController.m */,
+				385300CF1CC2BC4E00F20B26 /* SignUpViewController.h */,
+				385300D01CC2BC4E00F20B26 /* SignUpViewController.m */,
+				385300D21CC2BC6800F20B26 /* forgetPwViewController.h */,
+				385300D31CC2BC6800F20B26 /* forgetPwViewController.m */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -461,6 +471,7 @@
 			files = (
 				1844777B1CC21A47003B2354 /* Utilities.m in Sources */,
 				184477831CC21B4E003B2354 /* BasicEncodingRules.m in Sources */,
+				385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
@@ -470,6 +481,7 @@
 				187725E11CC20F5B003F8BD8 /* Calorie.xcdatamodeld in Sources */,
 				1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */,
 				1844778D1CC21B62003B2354 /* NSData+Base64.m in Sources */,
+				385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

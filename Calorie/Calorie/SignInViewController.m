@@ -7,8 +7,9 @@
 //
 
 #import "SignInViewController.h"
-
-@interface SignInViewController ()
+#import "SignUpViewController.h"
+#import "forgetPwViewController.h"
+@interface SignInViewController ()<UITextFieldDelegate>
 
 @end
 
@@ -16,30 +17,104 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    //协议
+    _usernameTF.delegate = self;
+    _passwordTF.delegate = self;
+    
+    //默认获取 textfield 焦点
+    [_usernameTF becomeFirstResponder];
+    
+    _headImg.image = [UIImage imageNamed:@"headImgBG"];
+    
+    //获取模数指数
+    NSDictionary *dic = @{@"deviceType":@7001,
+                          @"deviceId":[Utilities uniqueVendor]
+                          };
+    
+    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
+        NSLog(@"responseObject : %@",responseObject);
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *resultDict = responseObject[@"result"];
+            NSLog(@"resultDict = %@",resultDict);
+            NSString *exponent = resultDict[@"exponent"];
+            NSString *modulus = resultDict[@"modulus"];
+            //从单例化全局变量中删除数据
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
+            
+            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
+            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
+        }else{
+            NSLog(@"resultFailed");
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
+    NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
+    //MD5将原始密码进行MD5加密
+    NSString *MD5Pwd = [_passwordTF.text getMD5_32BitString];
+    //将MD5加密过后的密码进行RSA非对称加密
+    NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
+    
+    NSDictionary *dic = @{@"userName":_usernameTF.text,
+                        @"password":RSAPwd,
+                        @"deviceType":@7001,
+                        @"deviceId":[Utilities uniqueVendor]};
+    
+    if(_usernameTF.text.length == 0){
+        [Utilities popUpAlertViewWithMsg:@"请填写用户名" andTitle:nil onView:self];
+        return;
+    }
+    if(_passwordTF.text.length == 0){
+        [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
+        return;
+    }
+    [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            //这里跳转到首页
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"您的用户名或密码错误" andTitle:nil onView:self];
+    }];
+
 }
 
 - (IBAction)forgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    forgetPwViewController *forgetVc = [storyboard instantiateViewControllerWithIdentifier:@"forgetVc"];
+//    [self.navigationController pushViewController:forgetVc animated:YES];
 }
 
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event {
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    forgetPwViewController *signUpVc = [storyboard instantiateViewControllerWithIdentifier:@"signUpVc"];
+//    [self.navigationController pushViewController:signUpVc animated:YES];
 }
+
+#pragma mark - TextField
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+}
+
+//当文本输入框中输入的内容变化是调用该方法，返回值为NO不允许调用
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    return YES;
+}
+
 @end
