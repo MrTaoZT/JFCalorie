@@ -30,6 +30,7 @@
 		385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D01CC2BC4E00F20B26 /* SignUpViewController.m */; };
 		385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D31CC2BC6800F20B26 /* forgetPwViewController.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
+		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
 		B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D91CC2710900641C06 /* HomeTableViewController.m */; };
 		B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */; };
@@ -99,6 +100,8 @@
 		385300D31CC2BC6800F20B26 /* forgetPwViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forgetPwViewController.m; sourceTree = "<group>"; };
 		4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B808BA0D1CC3242C00864F24 /* SportTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportTypeTableViewCell.h; sourceTree = "<group>"; };
+		B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewCell.m; sourceTree = "<group>"; };
 		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		B8D900D61CC2554C00641C06 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		B8D900D81CC2710900641C06 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
@@ -148,14 +151,11 @@
 		184477721CC21982003B2354 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B808BA101CC3246500864F24 /* HomeCell */,
 				187725DC1CC20F5B003F8BD8 /* Main.storyboard */,
 				187725E21CC20F5B003F8BD8 /* Assets.xcassets */,
 				187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */,
 				186685EC1CC2318C00B22A25 /* Home.storyboard */,
-				B8D900DC1CC2716900641C06 /* TitleTableViewCell.h */,
-				B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */,
-				B8D900DF1CC2718A00641C06 /* HotClubTableViewCell.h */,
-				B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -295,6 +295,19 @@
 				C9967E4C9082FD02452937B4 /* libPods.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B808BA101CC3246500864F24 /* HomeCell */ = {
+			isa = PBXGroup;
+			children = (
+				B8D900DC1CC2716900641C06 /* TitleTableViewCell.h */,
+				B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */,
+				B8D900DF1CC2718A00641C06 /* HotClubTableViewCell.h */,
+				B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */,
+				B808BA0D1CC3242C00864F24 /* SportTypeTableViewCell.h */,
+				B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */,
+			);
+			name = HomeCell;
 			sourceTree = "<group>";
 		};
 		B8D900D41CC2551D00641C06 /* Login */ = {
@@ -519,6 +532,7 @@
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
 				1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */,
+				B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */,
 				187725D51CC20F5B003F8BD8 /* main.m in Sources */,
 				B8D900E11CC2718A00641C06 /* HotClubTableViewCell.m in Sources */,
 				1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */,
