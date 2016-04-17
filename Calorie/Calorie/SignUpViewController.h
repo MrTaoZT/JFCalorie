@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *titleImgIV;
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
 @property (weak, nonatomic) IBOutlet UITextField *codeTF;
+@property (weak, nonatomic) IBOutlet UIButton *codeBtn;
 
 - (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UITextField *firstPwTF;
