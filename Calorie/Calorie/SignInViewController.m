@@ -9,7 +9,7 @@
 #import "SignInViewController.h"
 #import "SignUpViewController.h"
 #import "CodeViewController.h"
-#import "HomeTableViewController.h"
+#import "TabBarViewController.h"
 @interface SignInViewController ()<UITextFieldDelegate>
 
 @end
@@ -82,8 +82,8 @@
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
     //调试
-    HomeTableViewController *homeTabVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"HomeView"];
-//    []
+    TabBarViewController *tabVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"TabView"];
+    [self presentViewController:tabVc animated:YES completion:nil];
 //    NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
 //    NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
 //    //MD5将原始密码进行MD5加密
@@ -122,14 +122,12 @@
 - (IBAction)forgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     CodeViewController *codeVc = [storyboard instantiateViewControllerWithIdentifier:@"CodeVc"];
-    //[self.navigationController pushViewController:codeVc animated:YES];
-    [self presentViewController:codeVc animated:NO completion:nil];
+    [self.navigationController pushViewController:codeVc animated:YES];
 }
 
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event {
      SignUpViewController *signUpVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"SignUpVc"];
-    //[self.navigationController pushViewController:signUpVc animated:YES];
-    [self presentViewController:signUpVc animated:NO completion:nil];
+    [self.navigationController pushViewController:signUpVc animated:YES];
 }
 
 #pragma mark - TextField
