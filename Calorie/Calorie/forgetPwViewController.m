@@ -8,7 +8,7 @@
 
 #import "forgetPwViewController.h"
 #import "SignInViewController.h"
-@interface forgetPwViewController ()
+@interface forgetPwViewController ()<UITextFieldDelegate>
 
 @end
 
@@ -16,6 +16,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.hidden = NO;
+    
+    _firstPwTF.delegate = self;
+    _secondPwTF.delegate = self;
+    //默认获取 textfield 焦点
+    [_firstPwTF becomeFirstResponder];
     
     //获取模数指数
     NSDictionary *dic = @{@"deviceType":@7001,
@@ -73,9 +79,16 @@
         [Utilities popUpAlertViewWithMsg:@"请设置6-16位的密码" andTitle:nil onView:self];
         return;
     }
-//    SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@""]
-    SignInViewController *signIn = [[SignInViewController alloc]init];
-    [self presentViewController:signIn animated:YES completion:nil];
+    
+    [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:userTel];
+    [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
+    //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
+    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+    //在初始化一个同名 键 为yes  表示注册成功
+    [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+    
+    SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
+    [self.navigationController pushViewController:signIn animated:YES];
     
 //    NSDictionary *dic = @{@"userTel":userTel,
 //                        @"userPsw":RSAPwd,
@@ -92,4 +105,22 @@
 //        NSLog(@"error = %@",[error userInfo]);
 //    }];
 }
+
+#pragma mark - TextField
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+}
+
+//当文本输入框中输入的内容变化是调用该方法，返回值为NO不允许调用
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    return YES;
+}
+
+
 @end

@@ -8,7 +8,7 @@
         <!--Sign In View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="SignInViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="signInVc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="SignInViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -203,13 +203,13 @@
                                     <action selector="codeAction:forEvent:" destination="HhG-9V-gXu" eventType="touchUpInside" id="roU-Pc-dAO"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIX-38-G3c">
-                                <rect key="frame" x="30" y="472" width="165" height="30"/>
-                                <state key="normal" title="密码不一致！备注放图片"/>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AoP-2e-S8b">
                                 <rect key="frame" x="30" y="402" width="229" height="30"/>
                                 <state key="normal" title="密码格式为6至15位！ 备注 放图片"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIX-38-G3c">
+                                <rect key="frame" x="30" y="472" width="165" height="30"/>
+                                <state key="normal" title="密码不一致！备注放图片"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -246,8 +246,10 @@
                     <connections>
                         <outlet property="codeBtn" destination="qYZ-qD-Ks1" id="78h-f0-bhC"/>
                         <outlet property="codeTF" destination="jsh-Tc-WAy" id="0DL-Iw-0z2"/>
+                        <outlet property="firstPwMessage" destination="AoP-2e-S8b" id="0z4-Qd-mHd"/>
                         <outlet property="firstPwTF" destination="qdW-jO-kXx" id="pdT-tQ-Z4U"/>
                         <outlet property="phoneTF" destination="R94-Ji-2oh" id="Ee2-vL-etp"/>
+                        <outlet property="secondPwMessage" destination="UIX-38-G3c" id="N5G-qV-KL7"/>
                         <outlet property="secondPwTF" destination="hTG-B1-5Iv" id="8R9-oa-RT2"/>
                         <outlet property="titleImgIV" destination="85U-oZ-Iv7" id="WYe-kd-xQr"/>
                     </connections>

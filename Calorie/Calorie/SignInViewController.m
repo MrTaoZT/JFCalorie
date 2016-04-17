@@ -10,7 +10,11 @@
 #import "SignUpViewController.h"
 #import "CodeViewController.h"
 #import "TabBarViewController.h"
+#import <ECSlidingViewController/ECSlidingViewController.h>
+#import "LeftViewController.h"
+
 @interface SignInViewController ()<UITextFieldDelegate>
+@property (strong,nonatomic) ECSlidingViewController *slidingVc;
 
 @end
 
@@ -37,6 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.hidden = YES;
     //协议
     _usernameTF.delegate = self;
     _passwordTF.delegate = self;
@@ -82,8 +87,28 @@
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
     //调试
-    TabBarViewController *tabVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"TabView"];
-    [self presentViewController:tabVc animated:YES completion:nil];
+    LeftViewController * leftVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"LeftVc"];
+    TabBarViewController * tabView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"TabView"];
+    //----------------------侧滑开始 center----------------------
+    //初始化侧滑框架,并且设置中间显示的页面
+    _slidingVc = [ECSlidingViewController slidingWithTopViewController:tabView];
+    //设置侧滑 的  耗时
+    _slidingVc.defaultTransitionDuration = 0.25f;
+    //设置 控制侧滑的手势   (这里同时对触摸 和 拖拽相应)
+    _slidingVc.topViewAnchoredGesture = ECSlidingViewControllerAnchoredGesturePanning | ECSlidingViewControllerAnchoredGestureTapping;
+    //设置上述手势的识别范围
+    [tabView.view addGestureRecognizer:_slidingVc.panGesture];
+    //----------------------侧滑开始 left----------------------
+    _slidingVc.underLeftViewController = leftVc;
+    //设置侧滑的开闭程度   (peek都是设置中间的页面出现的宽度 )
+    _slidingVc.anchorRightPeekAmount = UI_SCREEN_W / 4;
+    
+    //删除防止重名
+    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
+    //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
+    [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
+    
+    [self presentViewController:_slidingVc animated:YES completion:nil];
 //    NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
 //    NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
 //    //MD5将原始密码进行MD5加密

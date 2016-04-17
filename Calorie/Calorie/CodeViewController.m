@@ -8,7 +8,7 @@
 
 #import "CodeViewController.h"
 #import "forgetPwViewController.h"
-@interface CodeViewController (){
+@interface CodeViewController ()<UITextFieldDelegate>{
     //用于Code的计数
     NSInteger count;
 }
@@ -19,6 +19,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.hidden = NO;
+    
+    _phoneTF.delegate = self;
+    _codeTF.delegate = self;
+    //默认获取 textfield 焦点
+    [_phoneTF becomeFirstResponder];
     
     count = 60;
 }
@@ -69,7 +75,7 @@
     [[StorageMgr singletonStorageMgr] addKey:@"phone" andValue:_phoneTF.text];
     [[StorageMgr singletonStorageMgr] addKey:@"code" andValue:_codeTF.text];
 
-    forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetVc"];
+    forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetPwVc"];
     [self.navigationController pushViewController:forgetVc animated:YES];
     
 //    [RequestAPI getURL:@"/register/checkVerificationCode" withParameters:dic success:^(id responseObject) {
@@ -101,6 +107,22 @@
         _codeBtn.userInteractionEnabled = YES;
         count = 60;
     }
+}
+
+#pragma mark - TextField
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+}
+
+//当文本输入框中输入的内容变化是调用该方法，返回值为NO不允许调用
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    return YES;
 }
 
 @end
