@@ -12,7 +12,7 @@
 
 @property(nonatomic, strong)NSString *sportType;
 
-@property(nonatomic)NSInteger setJing;
-@property(nonatomic)NSInteger setWei;
+@property(nonatomic)CGFloat setJing;
+@property(nonatomic)CGFloat setWei;
 
 @end

@@ -7,8 +7,16 @@
 //
 
 #import "SportTypeTableViewController.h"
+#import "SportTypeTableViewCell.h"
+#import "ClubDetailViewController.h"
 
-@interface SportTypeTableViewController ()
+#import <UIImageView+WebCache.h>
+
+@interface SportTypeTableViewController (){
+    BOOL requestOver;
+}
+
+@property(nonatomic, strong)NSMutableArray *clubArray;
 
 @end
 
@@ -17,29 +25,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSLog(@"id%@",_sportType);
-    //
-    NSString *netUrl = @"/clubController/nearSearchClub";
-    NSString *city = @"0511";
-    NSInteger page = 1;
-    NSInteger perPage = 10;
-    NSInteger type = 1;
-    NSString *featureId = _sportType;
+    requestOver = NO;
     
-    NSDictionary *parameters = @{
-                                 @"city":city,
-                                 @"jing":@(_setJing),
-                                 @"wei":@(_setWei),
-                                 @"page":@(page),
-                                 @"perPage":@(perPage),
-                                 @"type":@(type),
-                                 @"featureId":featureId
-                                 };
-    [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
-        NSLog(@"-->%@",responseObject);
-    } failure:^(NSError *error) {
-        
-    }];
+    _clubArray = [NSMutableArray new];
+    
+    NSLog(@"id%@",_sportType);
+    
+    //获得当前类型id的会所
+    [self getSportClub];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -53,15 +46,69 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 0;
+    return _clubArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
+    SportTypeTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    
+    if (requestOver) {
+        NSDictionary *dict = _clubArray[indexPath.row];
+        NSLog(@"dict%@",dict[@"clubAddressB"]);
+        cell.nameLabel.text = dict[@"clubName"];
+        cell.addressLabel.text = dict[@"clubAddressB"];
+        cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",dict[@"distance"]];
+
+        [cell.clubImageView sd_setImageWithURL:dict[@"clubLogo"]];
+    }
     
     return cell;
+}
+
+#pragma mark - privateFun
+
+-(void)getSportClub{
+    
+    __weak SportTypeTableViewController *weakSelf = self;
+    
+    //根据条件，获取会所列表
+    NSString *netUrl = @"/clubController/nearSearchClub";
+    //默认
+    NSString *city = @"0510";
+    NSInteger page = 1;
+    NSInteger perPage = 10;
+    NSInteger type = 0;
+    NSString *featureId = _sportType;
+    
+    NSDictionary *parameters = @{
+                                 @"city":city,
+                                 @"jing":@(_setJing),
+                                 @"wei":@(_setWei),
+                                 @"page":@(page),
+                                 @"perPage":@(perPage),
+                                 @"type":@(type),
+                                 @"featureId":featureId
+                                 };
+    [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            //NSLog(@"-->%@",responseObject);
+            NSDictionary *dict = responseObject[@"result"];
+            weakSelf.clubArray = dict[@"models"];
+            requestOver = YES;
+            [weakSelf.tableView reloadData];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通，稍后试试" andTitle:@"" onView:self];
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+    }];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
+    
+    [self.navigationController pushViewController:clubDetailView animated:YES];
 }
 
 /*
@@ -81,30 +128,6 @@
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 */
 

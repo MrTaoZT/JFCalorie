@@ -22,13 +22,21 @@
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
+    
     CGFloat jing;
     CGFloat wei;
+    
+    //翻页用的页数
+    NSInteger hotClubPage;
+    NSInteger totalPage;
 }
 
+//运动类型
 @property(nonatomic, strong)NSMutableArray *sportTypeArray;
+//热门俱乐部数据
 @property(nonatomic, strong)NSMutableArray *hotClubInfoArray;
 
+//位置管理
 @property(nonatomic, strong)CLLocationManager *locationManager;
 
 @end
@@ -52,6 +60,9 @@
     
     //获取附近热门会所
     //[self getHotClub];
+    
+    //user
+    
     
 }
 
@@ -131,13 +142,15 @@
             cell.addressLabel.text = tempDict[@"address"];
             cell.distanceLabel.text = [NSString stringWithFormat:@"距离%@米",tempDict[@"distance"]];
             cell.clubImageView.userInteractionEnabled = YES;
-            [cell.clubImageView sd_setImageWithURL:tempDict[@"image"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+            [cell.clubImageView sd_setImageWithURL:tempDict[@"image"]
+//                                  placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
 //                if(!error){
 //                    NSLog(@"imageURL-->%@",imageURL);
 //                }else{
 //                    NSLog(@"imageError-->%@",error.userInfo);
 //                }
-            }];
+//            }
+             ];
             
             //hotClubOver = NO;
         }
@@ -177,6 +190,12 @@
     //初始化经纬度
     jing = 0;
     wei = 0;
+    
+    //初始化开始页面
+    hotClubPage = 1;
+    
+    //初始化刷新器
+    [self initRefresh];
 
     //广告
     UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
@@ -204,6 +223,34 @@
     }
     //开始持续获取设备坐标，更新位置
     [_locationManager startUpdatingLocation];
+}
+
+- (void)initRefresh{
+    self.refreshControl = [[UIRefreshControl alloc]init];
+    
+    NSString *title = [NSString stringWithFormat:@"刷新ing..."];
+    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+    [style setAlignment:NSTextAlignmentCenter];
+    [style setLineBreakMode:NSLineBreakByTruncatingTail];
+    NSDictionary *attrsDictionary = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
+                                      NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+                                      NSParagraphStyleAttributeName:style,
+                                      NSForegroundColorAttributeName:[UIColor magentaColor]};
+    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
+    self.refreshControl.attributedTitle = attributedTitle;
+    
+    self.refreshControl.tintColor = [UIColor orangeColor];
+    self.refreshControl.backgroundColor = [UIColor whiteColor];
+    [self.refreshControl addTarget:self action:@selector(conRefresh) forControlEvents:UIControlEventValueChanged];
+}
+
+//当第一次加载app完后才能刷新
+- (void)conRefresh{
+    if (hotClubOver) {
+        [self initailData];
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"已经在刷新了" andTitle:@"" onView:self];
+    }
 }
 
 //定位请求错误提示
@@ -235,53 +282,51 @@
     
     NSDictionary *tempDict = [NSDictionary new];
     if (hotClubOver) {
-    switch (sender.tag) {
-        case 1001:{
-            tempDict = _hotClubInfoArray[0];
-            NSLog(@"1001");
-            break;
+        switch (sender.tag) {
+            case 1001:{
+                tempDict = _sportTypeArray[0];
+                break;
+            }
+            case 1002:{
+                tempDict = _sportTypeArray[1];
+                break;
+            }
+            case 1003:{
+                tempDict = _sportTypeArray[2];
+                break;
+            }
+            case 1004:{
+                tempDict = _sportTypeArray[3];
+                break;
+            }
+            case 1005:{
+                tempDict = _sportTypeArray[4];
+                break;
+            }
+            case 1006:{
+                tempDict = _sportTypeArray[5];
+                break;
+            }
+            case 1007:{
+                tempDict = _sportTypeArray[6];
+                break;
+            }
+            case 1008:{
+                tempDict = _sportTypeArray[7];
+                break;
+            }
+            default:{
+                
+                break;
+            }
         }
-        case 1002:{
-            tempDict = _hotClubInfoArray[1];
-            break;
-        }
-        case 1003:{
-            tempDict = _hotClubInfoArray[2];
-            break;
-        }
-        case 1004:{
-            tempDict = _hotClubInfoArray[3];
-            break;
-        }
-        case 1005:{
-            tempDict = _hotClubInfoArray[4];
-            break;
-        }
-        case 1006:{
-            tempDict = _hotClubInfoArray[5];
-            break;
-        }
-        case 1007:{
-            tempDict = _hotClubInfoArray[6];
-            break;
-        }
-        case 1008:{
-            tempDict = _hotClubInfoArray[7];
-            break;
-        }
-        default:{
-            
-            break;
-        }
-    }
-    
-    [self.navigationController pushViewController:sportTypeView animated:YES];
-    
+        
+        [self.navigationController pushViewController:sportTypeView animated:YES];
         NSString *fId = tempDict[@"id"];
+        //将运动id和经纬度传过去
         sportTypeView.sportType = fId;
         sportTypeView.setJing = jing;
         sportTypeView.setWei = wei;
-        NSLog(@"%@",fId);
     }
 }
 
@@ -307,7 +352,7 @@
             NSDictionary *result = responseObject[@"result"];
             //数据解析得到name
             _sportTypeArray = result[@"models"];
-            NSLog(@"%@",_sportTypeArray);
+            //NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
             [weakSelf.tableView reloadData];
         }else{
@@ -318,36 +363,71 @@
     }];
 }
 
-- (void)getHotClub{
-    
-    __weak HomeTableViewController *weakSelf = self;
-    
-    //获取热门会所（及其体验券）列表
-    NSString *nerUrl = @"/homepage/choice";
-    
+- (void)initailData{
     //参数配置
     NSString *city = @"0510";
     CGFloat setJing = jing;
     CGFloat setWei  = wei;
-    NSInteger page = 1;
-    NSInteger perPage = 10;
+    if (self.refreshControl.isRefreshing) {
+        hotClubPage = 1;
+    }
+    //hotClubPage = 1;
+    NSInteger perPage = 5;
     
     NSDictionary *parameters = @{
                                  @"city":city,
                                  @"jing":@(setJing),
                                  @"wei":@(setWei),
-                                 @"page":@(page),
+                                 @"page":@(hotClubPage),
                                  @"perPage":@(perPage)
                                  };
+    [self getHotClub:parameters];
+}
+
+//获取热门俱乐部
+- (void)getHotClub:(NSDictionary *)parameters{
+    
+    __weak HomeTableViewController *weakSelf = self;
+    
+    //获取热门会所（及其体验券）列表
+    NSString *nerUrl = @"/homepage/choice";
+
     //网络请求
     [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
+        if (self.refreshControl.isRefreshing) {
+            [self.refreshControl endRefreshing];
+        }
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             //NSLog(@"%@",responseObject);
+            
+            //等于1表示是下拉刷新或者刚进入页面
+            if (hotClubPage == 1) {
+                _hotClubInfoArray = nil;
+                _hotClubInfoArray = [NSMutableArray new];
+            }
+            
             NSDictionary *result = responseObject[@"result"];
-            //得到数据给全局数组
-            weakSelf.hotClubInfoArray = result[@"models"];
+            NSArray *info = result[@"models"];
+            //封装数据
+            for (int i = 0; i < info.count; i++) {
+                NSString *name = info[i][@"name"];
+                NSString *address = info[i][@"address"];
+                NSString *distance = info[i][@"distance"];
+                NSString *image = info[i][@"image"];
+                NSDictionary *dict = @{
+                                       @"name":name,
+                                       @"address":address,
+                                       @"distance":distance,
+                                       @"image":image
+                                       };
+                [weakSelf.hotClubInfoArray addObject:dict];
+            }
+            //网络请求完毕后刷新cell
             hotClubOver = YES;
+            totalPage = [responseObject[@"totalPage"] integerValue];
             [weakSelf.tableView reloadData];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"保持网络畅通，稍后再试" andTitle:@"" onView:self];
         }
     } failure:^(NSError *error) {
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
@@ -363,11 +443,12 @@
     if (newLocation.coordinate.latitude == oldLocation.coordinate.latitude && newLocation.coordinate.longitude == oldLocation.coordinate.longitude) {
         jing = newLocation.coordinate.longitude;
         wei = newLocation.coordinate.latitude;
-        [self getHotClub];
+        [self initailData];
         [manager stopUpdatingLocation];
     }
 }
 
+//定位失败
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error{
     [self checkError:error];
@@ -412,6 +493,23 @@
     }
 }
 
+#pragma mark - UIScrollViewDelegate
+
+//滚动(上拉刷新)
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
+        if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
+            hotClubPage ++;
+            [self initailData];
+        }
+    }else{
+        if (scrollView.contentOffset.y > -64) {
+            hotClubPage ++;
+            [self initailData];
+        }
+    }
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -429,30 +527,6 @@
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
     }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
 */
 
