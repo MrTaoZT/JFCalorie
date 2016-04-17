@@ -17,37 +17,42 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    NSLog(@"id%@",_sportType);
+    //
+    NSString *netUrl = @"/clubController/nearSearchClub";
+    NSString *city = @"0511";
+    NSInteger page = 1;
+    NSInteger perPage = 10;
+    NSInteger type = 1;
+    NSString *featureId = _sportType;
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+//    NSDictionary *parameters = @{
+//                                 @"city":
+//                                 };
+//    /[RequestAPI getURL:<#(NSString *)#> withParameters:<#(NSDictionary *)#> success:<#^(id responseObject)success#> failure:<#^(NSError *error)failure#>]
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 0;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    
     
     return cell;
 }
-*/
 
 /*
 // Override to support conditional editing of the table view.
