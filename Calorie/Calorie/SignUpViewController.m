@@ -73,16 +73,20 @@
     if (_firstPwTF == textField) {
         if(_firstPwTF.text.length == 0){
             [_firstPwMessage setTitle:@"请输入您的密码" forState:UIControlStateNormal];
+            [_firstPwMessage setBackgroundImage:[UIImage imageNamed:@"PwMessage"] forState:UIControlStateNormal];
         }else if (_firstPwTF.text.length < 6 || _firstPwTF.text.length >= 16) {
             [_firstPwMessage setTitle:@"请设置6-16位的密码" forState:UIControlStateNormal];
+            [_firstPwMessage setBackgroundImage:[UIImage imageNamed:@"PwMessage"] forState:UIControlStateNormal];
         }
     }else if (_secondPwTF == textField) {
         if([_secondPwTF.text isEqualToString: _firstPwTF.text]){
 
                 [_secondPwMessage setTitle:@"✅" forState:UIControlStateNormal];
+                [_secondPwMessage setBackgroundImage:[UIImage imageNamed:@"PwMessage"] forState:UIControlStateNormal];
             }else {
                 
                 [_secondPwMessage setTitle:@"🙅密码不一致！" forState:UIControlStateNormal];
+                [_secondPwMessage setBackgroundImage:[UIImage imageNamed:@"PwMessage"] forState:UIControlStateNormal];
             }
         }
     return YES;
@@ -92,12 +96,13 @@
     if (self.firstPwTF == textField) {
         [_firstPwMessage setTitle:@"" forState:UIControlStateNormal];
         [_secondPwMessage setTitle:@"" forState:UIControlStateNormal];
-        [_firstPwMessage setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
-        [_secondPwMessage setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_firstPwMessage setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_secondPwMessage setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
     }
     if (self.secondPwTF == textField) {
         [_secondPwMessage setTitle:@"" forState:UIControlStateNormal];
-        [_secondPwMessage setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_secondPwMessage setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+
     }
 }
 
