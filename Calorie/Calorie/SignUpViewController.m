@@ -155,13 +155,15 @@
     }
     if (_phoneTF.text.length == 11) {
         [RequestAPI getURL:@"/register/verificationCode" withParameters:dic success:^(id responseObject) {
+            NSLog(@"code = %@",responseObject);
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
                 //定时器
                 [self setTime];
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试！" andTitle:nil onView:self];
             }
         } failure:^(NSError *error) {
             NSLog(@"error = %@",[error userInfo]);
-            [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试！" andTitle:nil onView:self];
         }];
     }else{
         [Utilities popUpAlertViewWithMsg:@"手机号码的位数必须为11位" andTitle:nil onView:self];

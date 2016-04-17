@@ -686,6 +686,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Calorie/PrefixHeader.pch;
 				INFOPLIST_FILE = Calorie/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JF.Calorie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -704,6 +705,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Calorie/PrefixHeader.pch;
 				INFOPLIST_FILE = Calorie/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JF.Calorie;
 				PRODUCT_NAME = "$(TARGET_NAME)";

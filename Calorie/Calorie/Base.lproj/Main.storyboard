@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--Sign In View Controller-->
@@ -294,6 +294,9 @@
                                         <integer key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="jumpForgetPwAction:forEvent:" destination="CHE-8H-gNk" eventType="touchUpInside" id="kop-D7-XwJ"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="emv-vv-7Pi">
                                 <rect key="frame" x="30" y="174" width="225" height="30"/>
@@ -343,7 +346,6 @@
                     <connections>
                         <outlet property="codeBtn" destination="5mG-1u-f82" id="45d-Nj-vbZ"/>
                         <outlet property="codeTF" destination="emv-vv-7Pi" id="Oeb-WA-sjB"/>
-                        <outlet property="jumpForgetPwAction" destination="mvk-hu-6Xy" id="Gau-Xt-uYh"/>
                         <outlet property="phoneTF" destination="c6M-Wt-r6p" id="8be-F0-a6h"/>
                     </connections>
                 </viewController>
@@ -402,7 +404,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="firstPwTF" destination="Ub9-UG-fHD" id="2hQ-bR-87o"/>
-                        <outlet property="secondPwAction" destination="J8q-xG-089" id="DVn-qi-qVk"/>
+                        <outlet property="secondPwTF" destination="J8q-xG-089" id="4UW-Nj-cyn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YTn-x5-xbg" userLabel="First Responder" sceneMemberID="firstResponder"/>
