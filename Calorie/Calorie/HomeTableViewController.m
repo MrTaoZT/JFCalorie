@@ -105,13 +105,6 @@
             [cell.sportTypeBtn7 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.sportTypeBtn8 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             
-            UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
-            view.backgroundColor = [UIColor orangeColor];
-            view.frame = CGRectMake(0, 0, 100, 1000);
-            [cell.ADScrollView addSubview:view];
-            cell.ADScrollView.alwaysBounceHorizontal = YES;
-            cell.ADScrollView.pagingEnabled = YES;
-            
             sportOver = NO;
         }
         return cell;
@@ -176,6 +169,13 @@
     //初始化经纬度
     jing = 0;
     wei = 0;
+    
+    UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
+    view.backgroundColor = [UIColor orangeColor];
+    view.frame = CGRectMake(0, 0, 100, 1000);
+    [_ADScrollView addSubview:view];
+    _ADScrollView.alwaysBounceHorizontal = YES;
+    _ADScrollView.pagingEnabled = YES;
     
 }
 
