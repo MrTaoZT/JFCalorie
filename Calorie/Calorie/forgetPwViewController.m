@@ -16,24 +16,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)setPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    if (_firstPwTF.text.length == 0 || _secondPwTF.text.length ==0) {
+        [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
+        return;
+    }
+    if (![_firstPwTF.text isEqualToString:_secondPwTF.text]) {
+        [Utilities popUpAlertViewWithMsg:@"两次输入的密码需要相同" andTitle:nil onView:self];
+        return;
+    }
+    if (_firstPwTF.text.length >= 6 || _firstPwTF.text.length <= 16) {
+        [Utilities popUpAlertViewWithMsg:@"请设置6-16位的密码" andTitle:nil onView:self];
+        return;
+    }
+
 }
 @end

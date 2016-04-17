@@ -10,7 +10,8 @@
 
 @interface forgetPwViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *firstPwTF;
-@property (weak, nonatomic) IBOutlet UITextField *secondPwAction;
+@property (weak, nonatomic) IBOutlet UITextField *secondPwTF;
+
 - (IBAction)setPwAction:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @end
