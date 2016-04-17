@@ -68,9 +68,10 @@
 
     [[StorageMgr singletonStorageMgr] addKey:@"phone" andValue:_phoneTF.text];
     [[StorageMgr singletonStorageMgr] addKey:@"code" andValue:_codeTF.text];
-    forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetPwVc"];
+
+    forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetVc"];
+    [self.navigationController pushViewController:forgetVc animated:YES];
     
-    [self presentViewController:forgetVc animated:YES completion:nil];
 //    [RequestAPI getURL:@"/register/checkVerificationCode" withParameters:dic success:^(id responseObject) {
 //        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
 //            forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetVc"];
