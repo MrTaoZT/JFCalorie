@@ -37,6 +37,8 @@
         _usernameTF.text = username;
         _passwordTF.text = password;
     }
+//    UINavigationController *signInNc = [[UINavigationController alloc]init];
+//    [signInNc addChildViewController:self];
 }
 
 - (void)viewDidLoad {
@@ -108,7 +110,8 @@
     //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
     [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
     
-    [self presentViewController:_slidingVc animated:YES completion:nil];
+    [self.navigationController pushViewController:_slidingVc animated:YES];
+//    [self presentViewController:_slidingVc animated:YES completion:nil];
 //    NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
 //    NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
 //    //MD5将原始密码进行MD5加密

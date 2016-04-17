@@ -8,6 +8,8 @@
 
 #import "LeftViewController.h"
 #import "SignInViewController.h"
+#import "MyMessageViewController.h"
+#import "NavigationViewController.h"
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @end
@@ -59,13 +61,43 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
     //取消选中
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
+    switch (indexPath.row) {
+        case 0:
+        {
+            MyMessageViewController *myMessageVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MyMessageVc"];
+//            [self.navigationController pushViewController:myMessageVc animated:YES];
+//            [self presentViewController:myMessageVc animated:YES completion:nil];
+        }
+            break;
+        case 1:
+
+            break;
+        case 2:
+            
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - signIn
 
 - (void)signIn{
-    SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
+//    SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
     //这里用push 跳转到 signIn
+//    [self.navigationController pushViewController:signIn animated:YES];
+    NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
+    [self presentViewController:navView animated:YES completion:nil];
+//    [self.navigationController ]
+}
+- (IBAction)signOut:(UIButton *)sender forEvent:(UIEvent *)event {
+    //值如果是YES  则是登录了  else  NO则是未登录
+    if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
+        SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
+        [self presentViewController:signIn animated:YES completion:nil];
+
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
+    }
 }
 @end

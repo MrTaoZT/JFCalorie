@@ -12,5 +12,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImg;
 @property (weak, nonatomic) IBOutlet UILabel *nickName;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+- (IBAction)signOut:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @end

@@ -467,10 +467,10 @@
             </objects>
             <point key="canvasLocation" x="3456.5" y="302.5"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation View Controller-->
         <scene sceneID="UAw-hS-e4a">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="uSR-70-i4y" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="nav" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="uSR-70-i4y" customClass="NavigationViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="O4q-Dp-1h8">

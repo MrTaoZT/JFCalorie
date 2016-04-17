@@ -28,6 +28,8 @@
 		187725FC1CC20F5B003F8BD8 /* CalorieUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */; };
 		382815731CC314E00016A1A5 /* CodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382815721CC314E00016A1A5 /* CodeViewController.m */; };
 		382815BA1CC382010016A1A5 /* LeftViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382815B91CC382010016A1A5 /* LeftViewController.m */; };
+		382815BD1CC395E60016A1A5 /* MyMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382815BC1CC395E60016A1A5 /* MyMessageViewController.m */; };
+		382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */; };
 		385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D01CC2BC4E00F20B26 /* SignUpViewController.m */; };
 		385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D31CC2BC6800F20B26 /* forgetPwViewController.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
@@ -98,6 +100,10 @@
 		382815721CC314E00016A1A5 /* CodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeViewController.m; sourceTree = "<group>"; };
 		382815B81CC382010016A1A5 /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
 		382815B91CC382010016A1A5 /* LeftViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LeftViewController.m; sourceTree = "<group>"; };
+		382815BB1CC395E60016A1A5 /* MyMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyMessageViewController.h; sourceTree = "<group>"; };
+		382815BC1CC395E60016A1A5 /* MyMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyMessageViewController.m; sourceTree = "<group>"; };
+		382815C11CC3AAAB0016A1A5 /* NavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigationViewController.h; sourceTree = "<group>"; };
+		382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigationViewController.m; sourceTree = "<group>"; };
 		385300CF1CC2BC4E00F20B26 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		385300D01CC2BC4E00F20B26 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		385300D21CC2BC6800F20B26 /* forgetPwViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forgetPwViewController.h; sourceTree = "<group>"; };
@@ -172,6 +178,8 @@
 				382815B71CC381AE0016A1A5 /* SlidingView */,
 				B8D900DB1CC2711400641C06 /* Home */,
 				B8D900D41CC2551D00641C06 /* Login */,
+				382815C11CC3AAAB0016A1A5 /* NavigationViewController.h */,
+				382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -291,6 +299,8 @@
 			children = (
 				382815B81CC382010016A1A5 /* LeftViewController.h */,
 				382815B91CC382010016A1A5 /* LeftViewController.m */,
+				382815BB1CC395E60016A1A5 /* MyMessageViewController.h */,
+				382815BC1CC395E60016A1A5 /* MyMessageViewController.m */,
 			);
 			name = SlidingView;
 			sourceTree = "<group>";
@@ -556,7 +566,9 @@
 				1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */,
 				B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */,
 				187725E11CC20F5B003F8BD8 /* Calorie.xcdatamodeld in Sources */,
+				382815BD1CC395E60016A1A5 /* MyMessageViewController.m in Sources */,
 				1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */,
+				382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */,
 				382815BA1CC382010016A1A5 /* LeftViewController.m in Sources */,
 				1844778D1CC21B62003B2354 /* NSData+Base64.m in Sources */,
 				385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */,

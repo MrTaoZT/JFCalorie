@@ -10,6 +10,8 @@
 #import <ECSlidingViewController/ECSlidingViewController.h>
 #import "LeftViewController.h"
 #import "TabBarViewController.h"
+#import "NavigationViewController.h"
+
 @interface AppDelegate ()
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
 @end
