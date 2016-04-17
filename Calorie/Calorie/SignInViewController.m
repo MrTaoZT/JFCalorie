@@ -15,6 +15,25 @@
 
 @implementation SignInViewController
 
+//视图已经出现时调用
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    //判断当前登录页面是否是  注册成功  跳转过来的
+    if([[[StorageMgr singletonStorageMgr]objectForKey:@"SignUpSuccessfully"] boolValue]){
+        //需要把 这个键的  值  重新设置成  no   （！！！！！！！！！！！！）
+        [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+        [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@NO];
+        //从单例化全局变量中提取用户名和密码
+        NSString *username = [[StorageMgr singletonStorageMgr] objectForKey:@"Username"];
+        NSString *password = [[StorageMgr singletonStorageMgr] objectForKey:@"Password"];
+        //清除用完的用户名和密码
+        [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Username"];
+        [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Password"];
+        _usernameTF.text = username;
+        _passwordTF.text = password;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     //协议
