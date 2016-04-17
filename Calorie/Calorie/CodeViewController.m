@@ -62,6 +62,12 @@
 - (IBAction)jumpForgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
     NSDictionary *dic = @{@"userTel":_phoneTF.text,
                           @"codeNum":_codeTF.text};
+    //从单例化全局变量中删除数据
+    [[StorageMgr singletonStorageMgr] removeObjectForKey:@"phone"];
+    [[StorageMgr singletonStorageMgr] removeObjectForKey:@"code"];
+
+    [[StorageMgr singletonStorageMgr] addKey:@"phone" andValue:_phoneTF.text];
+    [[StorageMgr singletonStorageMgr] addKey:@"code" andValue:_codeTF.text];
     forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetPwVc"];
     
     [self presentViewController:forgetVc animated:YES completion:nil];

@@ -9,6 +9,7 @@
 #import "SignInViewController.h"
 #import "SignUpViewController.h"
 #import "CodeViewController.h"
+#import "HomeTableViewController.h"
 @interface SignInViewController ()<UITextFieldDelegate>
 
 @end
@@ -80,38 +81,41 @@
 #pragma mark - Action
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
-    NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
-    //MD5将原始密码进行MD5加密
-    NSString *MD5Pwd = [_passwordTF.text getMD5_32BitString];
-    //将MD5加密过后的密码进行RSA非对称加密
-    NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
-    
-    NSDictionary *dic = @{@"userName":_usernameTF.text,
-                        @"password":RSAPwd,
-                        @"deviceType":@7001,
-                        @"deviceId":[Utilities uniqueVendor]};
-    
-    if(_usernameTF.text.length == 0){
-        [Utilities popUpAlertViewWithMsg:@"请填写用户名" andTitle:nil onView:self];
-        return;
-    }
-    if(_passwordTF.text.length == 0){
-        [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
-        return;
-    }
-    [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            //这里跳转到首页
-
-        }else{
-            [Utilities popUpAlertViewWithMsg:@"用户名或密码错误" andTitle:nil onView:self];
-            _passwordTF.text = @"";
-        }
-    } failure:^(NSError *error) {
-        [Utilities popUpAlertViewWithMsg:@"您的用户名或密码错误" andTitle:nil onView:self];
-    }];
+    //调试
+    HomeTableViewController *homeTabVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"HomeView"];
+//    []
+//    NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
+//    NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
+//    //MD5将原始密码进行MD5加密
+//    NSString *MD5Pwd = [_passwordTF.text getMD5_32BitString];
+//    //将MD5加密过后的密码进行RSA非对称加密
+//    NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
+//    
+//    NSDictionary *dic = @{@"userName":_usernameTF.text,
+//                        @"password":RSAPwd,
+//                        @"deviceType":@7001,
+//                        @"deviceId":[Utilities uniqueVendor]};
+//    
+//    if(_usernameTF.text.length == 0){
+//        [Utilities popUpAlertViewWithMsg:@"请填写用户名" andTitle:nil onView:self];
+//        return;
+//    }
+//    if(_passwordTF.text.length == 0){
+//        [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
+//        return;
+//    }
+//    [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
+//        NSLog(@"%@",responseObject);
+//        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+//            //这里跳转到首页
+//
+//        }else{
+//            [Utilities popUpAlertViewWithMsg:@"用户名或密码错误" andTitle:nil onView:self];
+//            _passwordTF.text = @"";
+//        }
+//    } failure:^(NSError *error) {
+//        [Utilities popUpAlertViewWithMsg:@"您的用户名或密码错误" andTitle:nil onView:self];
+//    }];
 
 }
 
