@@ -10,4 +10,6 @@
 
 @interface HomeTableViewController : UITableViewController
 
+@property (weak, nonatomic) IBOutlet UIScrollView *ADScrollView;//广告图片
+
 @end

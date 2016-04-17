@@ -17,6 +17,5 @@
 @property (weak, nonatomic) IBOutlet UIButton *sportTypeBtn6;
 @property (weak, nonatomic) IBOutlet UIButton *sportTypeBtn7;
 @property (weak, nonatomic) IBOutlet UIButton *sportTypeBtn8;
-@property (weak, nonatomic) IBOutlet UIScrollView *ADScrollView;//广告图片
 
 @end

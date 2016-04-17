@@ -16,6 +16,9 @@
 #import <UIImageView+WebCache.h>
 #import <UIButton+WebCache.h>
 
+#import "SportTypeTableViewController.h"
+#import "ClubDetailViewController.h"
+
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
@@ -93,9 +96,14 @@
             //[cell.sportTypeBtn8 setTitle:_sportTypeArray[7][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn8 sd_setBackgroundImageWithURL:_sportTypeArray[7][@"frontImgUrl"] forState:UIControlStateNormal];
             
-            cell.ADScrollView.scrollEnabled = YES;
-            cell.ADScrollView.backgroundColor = [UIColor orangeColor];
-            cell.ADScrollView.showsHorizontalScrollIndicator = YES;
+            [cell.sportTypeBtn1 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn2 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn3 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn4 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn5 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn6 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn7 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn8 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             
             sportOver = NO;
         }
@@ -132,7 +140,7 @@
 //cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
-        return 203;
+        return 189;
     }
     return 180;
 }
@@ -140,6 +148,14 @@
 //按下cell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
+    [self.navigationController pushViewController:sportTypeView animated:YES];
+    
+    //数据传递
+    NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
+    NSString *fId = tempDict[@"id"];
+    sportTypeView.sportType = fId;
 }
 
 #pragma mark - private
@@ -153,6 +169,13 @@
     //初始化经纬度
     jing = 0;
     wei = 0;
+    
+    UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
+    view.backgroundColor = [UIColor orangeColor];
+    view.frame = CGRectMake(0, 0, 100, 1000);
+    [_ADScrollView addSubview:view];
+    _ADScrollView.alwaysBounceHorizontal = YES;
+    _ADScrollView.pagingEnabled = YES;
     
 }
 
@@ -196,6 +219,18 @@
     }
 }
 
+//首页按钮
+- (void)sportAction:(UIButton *)sender{
+//    switch (sender == ) {
+//        case <#constant#>:
+//            <#statements#>
+//            break;
+//            
+//        default:
+//            break;
+//    }
+}
+
 #pragma mark - privateNet
 
 - (void)getSportType{
@@ -217,7 +252,7 @@
             NSDictionary *result = responseObject[@"result"];
             //数据解析得到name
             _sportTypeArray = result[@"models"];
-            //NSLog(@"%@",_sportTypeArray);
+            NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
             [weakSelf.tableView reloadData];
         }else{
