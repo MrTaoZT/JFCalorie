@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
         <!--Sign In View Controller-->
@@ -117,7 +117,7 @@
         <!--用户注册-->
         <scene sceneID="6Qq-R8-OP2">
             <objects>
-                <viewController id="HhG-9V-gXu" customClass="SignUpViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignUpVc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="HhG-9V-gXu" customClass="SignUpViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vxb-Un-RYc"/>
                         <viewControllerLayoutGuide type="bottom" id="gRq-6a-eWx"/>
@@ -175,6 +175,9 @@
                                         <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="signUpAction:forEvent:" destination="HhG-9V-gXu" eventType="touchUpInside" id="2jz-fR-N6R"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="验证码" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jsh-Tc-WAy">
                                 <rect key="frame" x="30" y="367" width="225" height="30"/>
@@ -199,6 +202,9 @@
                                         <integer key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="codeAction:forEvent:" destination="HhG-9V-gXu" eventType="touchUpInside" id="roU-Pc-dAO"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UIX-38-G3c">
                                 <rect key="frame" x="30" y="472" width="165" height="30"/>
@@ -240,15 +246,22 @@
                     </view>
                     <navigationItem key="navigationItem" title="用户注册" id="KiE-z8-C5e"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="codeTF" destination="jsh-Tc-WAy" id="0DL-Iw-0z2"/>
+                        <outlet property="firstPwTF" destination="qdW-jO-kXx" id="pdT-tQ-Z4U"/>
+                        <outlet property="phoneTF" destination="R94-Ji-2oh" id="Ee2-vL-etp"/>
+                        <outlet property="secondPwTF" destination="hTG-B1-5Iv" id="8R9-oa-RT2"/>
+                        <outlet property="titleImgIV" destination="85U-oZ-Iv7" id="WYe-kd-xQr"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zNI-q6-SSC" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1153.5" y="286.5"/>
         </scene>
-        <!--Forget Pw View Controller-->
+        <!--验证-->
         <scene sceneID="aLy-Tg-WXR">
             <objects>
-                <viewController id="CHE-8H-gNk" customClass="forgetPwViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="CodeVc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="CHE-8H-gNk" customClass="CodeViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fiY-V1-5Aq"/>
                         <viewControllerLayoutGuide type="bottom" id="bgF-Yv-7UL"/>
@@ -268,19 +281,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mG-1u-f82">
-                                <rect key="frame" x="260" y="174" width="85" height="30"/>
-                                <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="85" id="PCP-Zm-XAB"/>
-                                </constraints>
-                                <state key="normal" title="获取验证码"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mvk-hu-6Xy">
                                 <rect key="frame" x="30" y="234" width="315" height="40"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -305,6 +305,22 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mG-1u-f82">
+                                <rect key="frame" x="260" y="174" width="85" height="30"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="85" id="PCP-Zm-XAB"/>
+                                </constraints>
+                                <state key="normal" title="获取验证码"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="codeAction:forEvent:" destination="CHE-8H-gNk" eventType="touchUpInside" id="aQd-IC-70e"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -321,17 +337,22 @@
                             <constraint firstItem="5mG-1u-f82" firstAttribute="leading" secondItem="emv-vv-7Pi" secondAttribute="trailing" constant="5" id="wn4-zU-Ibx"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="s9m-M2-7bM"/>
+                    <navigationItem key="navigationItem" title="验证" id="s9m-M2-7bM"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="codeTF" destination="emv-vv-7Pi" id="Oeb-WA-sjB"/>
+                        <outlet property="jumpForgetPwAction" destination="mvk-hu-6Xy" id="Gau-Xt-uYh"/>
+                        <outlet property="phoneTF" destination="c6M-Wt-r6p" id="8be-F0-a6h"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QLi-Pv-RsE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2146.5" y="302.5"/>
         </scene>
-        <!--View Controller-->
+        <!--重置密码-->
         <scene sceneID="8xy-fn-9di">
             <objects>
-                <viewController id="TtM-E0-YgJ" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ForgetPwVc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="TtM-E0-YgJ" customClass="forgetPwViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="J4e-Jy-OWq"/>
                         <viewControllerLayoutGuide type="bottom" id="6U3-dd-tBR"/>
@@ -357,6 +378,9 @@
                                     <constraint firstAttribute="height" constant="40" id="SjP-l1-jqZ"/>
                                 </constraints>
                                 <state key="normal" title="重置"/>
+                                <connections>
+                                    <action selector="setPwAction:forEvent:" destination="TtM-E0-YgJ" eventType="touchUpInside" id="Acx-ph-HdR"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -372,8 +396,12 @@
                             <constraint firstAttribute="trailing" secondItem="Y8X-AH-kK5" secondAttribute="trailing" constant="30" id="xix-ea-QUj"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="bYG-Kl-yov"/>
+                    <navigationItem key="navigationItem" title="重置密码" id="bYG-Kl-yov"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="firstPwTF" destination="Ub9-UG-fHD" id="2hQ-bR-87o"/>
+                        <outlet property="secondPwAction" destination="J8q-xG-089" id="DVn-qi-qVk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YTn-x5-xbg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

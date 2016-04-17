@@ -1,18 +1,18 @@
 //
-//  forgetPwViewController.m
+//  CodeViewController.m
 //  Calorie
 //
 //  Created by xyl on 16/4/17.
 //  Copyright © 2016年 Hurricane. All rights reserved.
 //
 
-#import "forgetPwViewController.h"
+#import "CodeViewController.h"
 
-@interface forgetPwViewController ()
+@interface CodeViewController ()
 
 @end
 
-@implementation forgetPwViewController
+@implementation CodeViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,6 +34,6 @@
 }
 */
 
-- (IBAction)setPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
+- (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event {
 }
 @end

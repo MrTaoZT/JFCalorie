@@ -16,22 +16,42 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    //获取模数指数
+    NSDictionary *dic = @{@"deviceType":@7001,
+                          @"deviceId":[Utilities uniqueVendor]
+                          };
+    
+    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
+        NSLog(@"responseObject : %@",responseObject);
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *resultDict = responseObject[@"result"];
+            NSLog(@"resultDict = %@",resultDict);
+            NSString *exponent = resultDict[@"exponent"];
+            NSString *modulus = resultDict[@"modulus"];
+            //从单例化全局变量中删除数据
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
+            
+            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
+            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
+        }else{
+            NSLog(@"resultFailed");
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-/*
-#pragma mark - Navigation
+- (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event {
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
 }
-*/
-
+- (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    
+}
 @end
