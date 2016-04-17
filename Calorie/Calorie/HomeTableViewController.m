@@ -104,6 +104,14 @@
             [cell.sportTypeBtn6 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.sportTypeBtn7 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.sportTypeBtn8 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            cell.sportTypeBtn1.tag = 1001;
+            cell.sportTypeBtn2.tag = 1002;
+            cell.sportTypeBtn3.tag = 1003;
+            cell.sportTypeBtn4.tag = 1004;
+            cell.sportTypeBtn5.tag = 1005;
+            cell.sportTypeBtn6.tag = 1006;
+            cell.sportTypeBtn7.tag = 1007;
+            cell.sportTypeBtn8.tag = 1008;
             
             sportOver = NO;
         }
@@ -148,14 +156,6 @@
 //按下cell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
-    SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
-    [self.navigationController pushViewController:sportTypeView animated:YES];
-    
-    //数据传递
-    NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
-    NSString *fId = tempDict[@"id"];
-    sportTypeView.sportType = fId;
 }
 
 #pragma mark - private
@@ -169,10 +169,11 @@
     //初始化经纬度
     jing = 0;
     wei = 0;
-    
+
+    //广告
     UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
     view.backgroundColor = [UIColor orangeColor];
-    view.frame = CGRectMake(0, 0, 100, 1000);
+    view.frame = CGRectMake(0, 0, 1000, 100);
     [_ADScrollView addSubview:view];
     _ADScrollView.alwaysBounceHorizontal = YES;
     _ADScrollView.pagingEnabled = YES;
@@ -221,13 +222,55 @@
 
 //首页按钮
 - (void)sportAction:(UIButton *)sender{
-//    switch (sender == ) {
-//        case <#constant#>:
-//            <#statements#>
-//            break;
-//            
-//        default:
-//            break;
+    
+    //SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
+    NSDictionary *tempDict = [NSDictionary new];
+    
+    switch (sender.tag) {
+        case 1001:{
+            tempDict = _hotClubInfoArray[0];
+            NSLog(@"1001");
+            break;
+        }
+        case 1002:{
+            tempDict = _hotClubInfoArray[1];
+            break;
+        }
+        case 1003:{
+            tempDict = _hotClubInfoArray[2];
+            break;
+        }
+        case 1004:{
+            tempDict = _hotClubInfoArray[3];
+            break;
+        }
+        case 1005:{
+            tempDict = _hotClubInfoArray[4];
+            break;
+        }
+        case 1006:{
+            tempDict = _hotClubInfoArray[5];
+            break;
+        }
+        case 1007:{
+            tempDict = _hotClubInfoArray[6];
+            break;
+        }
+        case 1008:{
+            tempDict = _hotClubInfoArray[7];
+            break;
+        }
+        default:{
+            
+            break;
+        }
+    }
+    
+//    [self.navigationController pushViewController:sportTypeView animated:YES];
+//    if (hotClubOver) {
+////        NSString *fId = tempDict[@"id"];
+////        sportTypeView.sportType = fId;
+////        NSLog(@"%@",fId);
 //    }
 }
 
