@@ -156,6 +156,12 @@
 //按下cell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
+    if (sportOver) {
+        
+        
+    }
+    [self.navigationController pushViewController:clubDetailView animated:YES];
 }
 
 #pragma mark - private
@@ -223,9 +229,10 @@
 //首页按钮
 - (void)sportAction:(UIButton *)sender{
     
-    //SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
-    NSDictionary *tempDict = [NSDictionary new];
+    SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
     
+    NSDictionary *tempDict = [NSDictionary new];
+    if (hotClubOver) {
     switch (sender.tag) {
         case 1001:{
             tempDict = _hotClubInfoArray[0];
@@ -266,12 +273,14 @@
         }
     }
     
-//    [self.navigationController pushViewController:sportTypeView animated:YES];
-//    if (hotClubOver) {
-////        NSString *fId = tempDict[@"id"];
-////        sportTypeView.sportType = fId;
-////        NSLog(@"%@",fId);
-//    }
+    [self.navigationController pushViewController:sportTypeView animated:YES];
+    
+        NSString *fId = tempDict[@"id"];
+        sportTypeView.sportType = fId;
+        sportTypeView.setJing = jing;
+        sportTypeView.setWei = wei;
+        NSLog(@"%@",fId);
+    }
 }
 
 #pragma mark - privateNet
@@ -280,6 +289,7 @@
     
     __weak HomeTableViewController *weakSelf = self;
     
+    //获取健身项目分类列表url
     NSString *netUrl = @"/homepage/category";
     NSInteger page = 1;
     NSInteger perPage = 10;
@@ -310,6 +320,7 @@
     
     __weak HomeTableViewController *weakSelf = self;
     
+    //获取热门会所（及其体验券）列表
     NSString *nerUrl = @"/homepage/choice";
     
     //参数配置
