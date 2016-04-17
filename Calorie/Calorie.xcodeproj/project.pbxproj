@@ -24,6 +24,7 @@
 		187725E61CC20F5B003F8BD8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */; };
 		187725F11CC20F5B003F8BD8 /* CalorieTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725F01CC20F5B003F8BD8 /* CalorieTests.m */; };
 		187725FC1CC20F5B003F8BD8 /* CalorieUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */; };
+		382815731CC314E00016A1A5 /* CodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382815721CC314E00016A1A5 /* CodeViewController.m */; };
 		385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D01CC2BC4E00F20B26 /* SignUpViewController.m */; };
 		385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D31CC2BC6800F20B26 /* forgetPwViewController.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
@@ -84,6 +85,8 @@
 		187725F71CC20F5B003F8BD8 /* CalorieUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CalorieUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		187725FB1CC20F5B003F8BD8 /* CalorieUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CalorieUITests.m; sourceTree = "<group>"; };
 		187725FD1CC20F5B003F8BD8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		382815711CC314E00016A1A5 /* CodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeViewController.h; sourceTree = "<group>"; };
+		382815721CC314E00016A1A5 /* CodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeViewController.m; sourceTree = "<group>"; };
 		385300CF1CC2BC4E00F20B26 /* SignUpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignUpViewController.h; sourceTree = "<group>"; };
 		385300D01CC2BC4E00F20B26 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		385300D21CC2BC6800F20B26 /* forgetPwViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forgetPwViewController.h; sourceTree = "<group>"; };
@@ -295,6 +298,8 @@
 				B8D900D61CC2554C00641C06 /* SignInViewController.m */,
 				385300CF1CC2BC4E00F20B26 /* SignUpViewController.h */,
 				385300D01CC2BC4E00F20B26 /* SignUpViewController.m */,
+				382815711CC314E00016A1A5 /* CodeViewController.h */,
+				382815721CC314E00016A1A5 /* CodeViewController.m */,
 				385300D21CC2BC6800F20B26 /* forgetPwViewController.h */,
 				385300D31CC2BC6800F20B26 /* forgetPwViewController.m */,
 			);
@@ -496,6 +501,7 @@
 				184477831CC21B4E003B2354 /* BasicEncodingRules.m in Sources */,
 				385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
+				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
 				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,

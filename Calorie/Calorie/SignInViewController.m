@@ -8,7 +8,7 @@
 
 #import "SignInViewController.h"
 #import "SignUpViewController.h"
-#import "forgetPwViewController.h"
+#import "CodeViewController.h"
 @interface SignInViewController ()<UITextFieldDelegate>
 
 @end
@@ -58,6 +58,8 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Action
+
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
     NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
     NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
@@ -90,15 +92,15 @@
 }
 
 - (IBAction)forgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    forgetPwViewController *forgetVc = [storyboard instantiateViewControllerWithIdentifier:@"forgetVc"];
-//    [self.navigationController pushViewController:forgetVc animated:YES];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    CodeViewController *codeVc = [storyboard instantiateViewControllerWithIdentifier:@"CodeVc"];
+    [self.navigationController pushViewController:codeVc animated:YES];
 }
 
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    forgetPwViewController *signUpVc = [storyboard instantiateViewControllerWithIdentifier:@"signUpVc"];
-//    [self.navigationController pushViewController:signUpVc animated:YES];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    SignUpViewController *signUpVc = [storyboard instantiateViewControllerWithIdentifier:@"SignUpVc"];
+    [self.navigationController pushViewController:signUpVc animated:YES];
 }
 
 #pragma mark - TextField
