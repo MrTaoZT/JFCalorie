@@ -10,4 +10,6 @@
 
 @interface SportTypeTableViewController : UITableViewController
 
+@property(nonatomic, strong)NSString *sportType;
+
 @end
