@@ -16,6 +16,9 @@
 #import <UIImageView+WebCache.h>
 #import <UIButton+WebCache.h>
 
+#import "SportTypeTableViewController.h"
+#import "ClubDetailViewController.h"
+
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
@@ -140,6 +143,14 @@
 //按下cell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
+    [self.navigationController pushViewController:sportTypeView animated:YES];
+    
+    //数据传递
+    NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
+    NSString *fId = tempDict[@"id"];
+    sportTypeView.sportType = fId;
 }
 
 #pragma mark - private
@@ -217,7 +228,7 @@
             NSDictionary *result = responseObject[@"result"];
             //数据解析得到name
             _sportTypeArray = result[@"models"];
-            //NSLog(@"%@",_sportTypeArray);
+            NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
             [weakSelf.tableView reloadData];
         }else{
