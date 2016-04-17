@@ -14,6 +14,7 @@
 - (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIButton *codeBtn;
 
-@property (weak, nonatomic) IBOutlet UIButton *jumpForgetPwAction;
+
+- (IBAction)jumpForgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @end
