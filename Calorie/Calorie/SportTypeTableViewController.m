@@ -26,10 +26,20 @@
     NSInteger type = 1;
     NSString *featureId = _sportType;
     
-//    NSDictionary *parameters = @{
-//                                 @"city":
-//                                 };
-//    /[RequestAPI getURL:<#(NSString *)#> withParameters:<#(NSDictionary *)#> success:<#^(id responseObject)success#> failure:<#^(NSError *error)failure#>]
+    NSDictionary *parameters = @{
+                                 @"city":city,
+                                 @"jing":@(_setJing),
+                                 @"wei":@(_setWei),
+                                 @"page":@(page),
+                                 @"perPage":@(perPage),
+                                 @"type":@(type),
+                                 @"featureId":featureId
+                                 };
+    [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        NSLog(@"-->%@",responseObject);
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {

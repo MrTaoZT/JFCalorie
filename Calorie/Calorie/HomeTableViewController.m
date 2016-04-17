@@ -78,6 +78,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) {
         TitleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell" forIndexPath:indexPath];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (sportOver) {
             //[cell.sportTypeBtn1 setTitle:_sportTypeArray[0][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn1 sd_setBackgroundImageWithURL:_sportTypeArray[0][@"frontImgUrl"] forState:UIControlStateNormal];
@@ -118,25 +119,24 @@
         return cell;
     }else{
         HotClubTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clubCell" forIndexPath:indexPath];
+        //设置cell按下无效果
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (hotClubOver) {
             //接下当前行对应的字典
             NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
             //接受字典中的数组
             //NSArray *experienceArray = tempDict[@"experience"];
             
-            //设置cell按下无效果
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            
             cell.nameLabel.text = tempDict[@"name"];
             cell.addressLabel.text = tempDict[@"address"];
             cell.distanceLabel.text = [NSString stringWithFormat:@"距离%@米",tempDict[@"distance"]];
             cell.clubImageView.userInteractionEnabled = YES;
             [cell.clubImageView sd_setImageWithURL:tempDict[@"image"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                if(!error){
-                    NSLog(@"imageURL-->%@",imageURL);
-                }else{
-                    NSLog(@"imageError-->%@",error.userInfo);
-                }
+//                if(!error){
+//                    NSLog(@"imageURL-->%@",imageURL);
+//                }else{
+//                    NSLog(@"imageError-->%@",error.userInfo);
+//                }
             }];
             
             //hotClubOver = NO;
@@ -156,12 +156,14 @@
 //按下cell
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
-    if (sportOver) {
-        
-        
+    if (indexPath.row != 0) {
+        ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
+        if (sportOver) {
+            
+            
+        }
+        [self.navigationController pushViewController:clubDetailView animated:YES];
     }
-    [self.navigationController pushViewController:clubDetailView animated:YES];
 }
 
 #pragma mark - private
