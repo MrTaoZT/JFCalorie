@@ -21,10 +21,14 @@
     //
     NSString *netUrl = @"/clubController/nearSearchClub";
     NSString *city = @"0511";
+    NSInteger page = 1;
+    NSInteger perPage = 10;
+    NSInteger type = 1;
+    NSString *featureId = _sportType;
     
-    NSDictionary *parameters = @{
-                                 
-                                 };
+//    NSDictionary *parameters = @{
+//                                 @"city":
+//                                 };
 //    /[RequestAPI getURL:<#(NSString *)#> withParameters:<#(NSDictionary *)#> success:<#^(id responseObject)success#> failure:<#^(NSError *error)failure#>]
 }
 
