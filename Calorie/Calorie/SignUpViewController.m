@@ -20,8 +20,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-//    self.navigationController.navigationBar.hidden = NO;
+    self.navigationController.navigationBar.hidden = NO;
+
+    //密码提示信息
+    [_firstPwMessage setTitle:@"" forState:UIControlStateNormal];
+    [_secondPwMessage setTitle:@"" forState:UIControlStateNormal];
     
     count = 60;
     
@@ -69,21 +72,17 @@
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField{
     if (_firstPwTF == textField) {
         if(_firstPwTF.text.length == 0){
-//            _firstPasswordMessage.text = @"请您输入密码！";
+            [_firstPwMessage setTitle:@"请输入您的密码" forState:UIControlStateNormal];
         }else if (_firstPwTF.text.length < 6 || _firstPwTF.text.length >= 16) {
-//            _firstPasswordMessage.text = @"密码格式为6至15位！";
+            [_firstPwMessage setTitle:@"请设置6-16位的密码" forState:UIControlStateNormal];
         }
-    }
-    if (_secondPwTF == textField) {
-        if(_secondPwTF.text.length == 0){
-            //            _firstPasswordMessage.text = @"请您输入密码！";
-        }else if([_secondPwTF.text isEqualToString: _firstPwTF.text]){
-            
-//                _secondPasswordMessage.text = @"✅";
+    }else if (_secondPwTF == textField) {
+        if([_secondPwTF.text isEqualToString: _firstPwTF.text]){
 
+                [_secondPwMessage setTitle:@"✅" forState:UIControlStateNormal];
             }else {
                 
-//              _secondPasswordMessage.text = @"🙅密码不一致！";
+                [_secondPwMessage setTitle:@"🙅密码不一致！" forState:UIControlStateNormal];
             }
         }
     return YES;
@@ -91,10 +90,14 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
     if (self.firstPwTF == textField) {
-//        _firstPasswordMessage.text = @"";
+        [_firstPwMessage setTitle:@"" forState:UIControlStateNormal];
+        [_secondPwMessage setTitle:@"" forState:UIControlStateNormal];
+        [_firstPwMessage setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [_secondPwMessage setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
     }
     if (self.secondPwTF == textField) {
-//        _secondPasswordMessage.text = @"";
+        [_secondPwMessage setTitle:@"" forState:UIControlStateNormal];
+        [_secondPwMessage setImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
     }
 }
 
@@ -126,25 +129,34 @@
         [Utilities popUpAlertViewWithMsg:@"两次输入的密码需要相同" andTitle:nil onView:self];
         return;
     }
-    if (_firstPwTF.text.length >= 6 || _firstPwTF.text.length <= 16) {
+    if (_firstPwTF.text.length < 6 || _firstPwTF.text.length > 16) {
         [Utilities popUpAlertViewWithMsg:@"请设置6-16位的密码" andTitle:nil onView:self];
         return;
     }
-    [RequestAPI postURL:@"/register" withParameters:dic success:^(id responseObject) {
-        if ([responseObject[@"resultFlag"] integerValue] == 0) {
-            
-            [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_phoneTF.text];
-            [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
-            //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
-            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
-            //在初始化一个同名 键 为yes  表示注册成功
-            [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
-            
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"error = %@",[error userInfo]);
-    }];
+    
+    [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_phoneTF.text];
+    [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
+    //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
+    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+    //在初始化一个同名 键 为yes  表示注册成功
+    [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+    
+    [self.navigationController popToRootViewControllerAnimated:YES];
+//    [RequestAPI postURL:@"/register" withParameters:dic success:^(id responseObject) {
+//        if ([responseObject[@"resultFlag"] integerValue] == 0) {
+//            
+//            [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_phoneTF.text];
+//            [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
+//            //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
+//            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+//            //在初始化一个同名 键 为yes  表示注册成功
+//            [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+//            
+//            [self.navigationController popToRootViewControllerAnimated:YES];
+//        }
+//    } failure:^(NSError *error) {
+//        NSLog(@"error = %@",[error userInfo]);
+//    }];
 }
 - (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event {
     

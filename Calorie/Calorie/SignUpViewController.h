@@ -18,6 +18,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *firstPwTF;
 @property (weak, nonatomic) IBOutlet UITextField *secondPwTF;
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event;
+@property (weak, nonatomic) IBOutlet UIButton *firstPwMessage;
 
+@property (weak, nonatomic) IBOutlet UIButton *secondPwMessage;
 
 @end

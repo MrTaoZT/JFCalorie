@@ -37,6 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationController.navigationBar.hidden = YES;
     //协议
     _usernameTF.delegate = self;
     _passwordTF.delegate = self;
