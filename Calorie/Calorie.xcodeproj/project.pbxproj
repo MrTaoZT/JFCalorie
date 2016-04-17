@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1820D3251CC3231F0010A405 /* SportTypeTableViewController.m */; };
+		1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1820D3281CC3233D0010A405 /* ClubDetailViewController.m */; };
 		1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 184477771CC21A47003B2354 /* StorageMgr.m */; };
 		1844777B1CC21A47003B2354 /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 184477791CC21A47003B2354 /* Utilities.m */; };
 		1844777E1CC21ABA003B2354 /* Openssl.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1844777D1CC21ABA003B2354 /* Openssl.framework */; };
@@ -52,6 +54,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1820D3241CC3231F0010A405 /* SportTypeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportTypeTableViewController.h; sourceTree = "<group>"; };
+		1820D3251CC3231F0010A405 /* SportTypeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewController.m; sourceTree = "<group>"; };
+		1820D3271CC3233D0010A405 /* ClubDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClubDetailViewController.h; sourceTree = "<group>"; };
+		1820D3281CC3233D0010A405 /* ClubDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ClubDetailViewController.m; sourceTree = "<group>"; };
 		184477761CC21A47003B2354 /* StorageMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StorageMgr.h; path = Utilities/StorageMgr.h; sourceTree = SOURCE_ROOT; };
 		184477771CC21A47003B2354 /* StorageMgr.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StorageMgr.m; path = Utilities/StorageMgr.m; sourceTree = SOURCE_ROOT; };
 		184477781CC21A47003B2354 /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Utilities/Utilities.h; sourceTree = SOURCE_ROOT; };
@@ -311,6 +317,10 @@
 			children = (
 				B8D900D81CC2710900641C06 /* HomeTableViewController.h */,
 				B8D900D91CC2710900641C06 /* HomeTableViewController.m */,
+				1820D3241CC3231F0010A405 /* SportTypeTableViewController.h */,
+				1820D3251CC3231F0010A405 /* SportTypeTableViewController.m */,
+				1820D3271CC3233D0010A405 /* ClubDetailViewController.h */,
+				1820D3281CC3233D0010A405 /* ClubDetailViewController.m */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -501,12 +511,14 @@
 				184477831CC21B4E003B2354 /* BasicEncodingRules.m in Sources */,
 				385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
+				1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
 				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
+				1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */,
 				187725D51CC20F5B003F8BD8 /* main.m in Sources */,
 				B8D900E11CC2718A00641C06 /* HotClubTableViewCell.m in Sources */,
 				1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */,
