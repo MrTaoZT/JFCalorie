@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *phoneTF;
 @property (weak, nonatomic) IBOutlet UITextField *codeTF;
 - (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event;
+@property (weak, nonatomic) IBOutlet UIButton *codeBtn;
 
 @property (weak, nonatomic) IBOutlet UIButton *jumpForgetPwAction;
 

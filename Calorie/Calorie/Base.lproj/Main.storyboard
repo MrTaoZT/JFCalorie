@@ -247,6 +247,7 @@
                     <navigationItem key="navigationItem" title="用户注册" id="KiE-z8-C5e"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="codeBtn" destination="qYZ-qD-Ks1" id="78h-f0-bhC"/>
                         <outlet property="codeTF" destination="jsh-Tc-WAy" id="0DL-Iw-0z2"/>
                         <outlet property="firstPwTF" destination="qdW-jO-kXx" id="pdT-tQ-Z4U"/>
                         <outlet property="phoneTF" destination="R94-Ji-2oh" id="Ee2-vL-etp"/>
@@ -340,6 +341,7 @@
                     <navigationItem key="navigationItem" title="验证" id="s9m-M2-7bM"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="codeBtn" destination="5mG-1u-f82" id="45d-Nj-vbZ"/>
                         <outlet property="codeTF" destination="emv-vv-7Pi" id="Oeb-WA-sjB"/>
                         <outlet property="jumpForgetPwAction" destination="mvk-hu-6Xy" id="Gau-Xt-uYh"/>
                         <outlet property="phoneTF" destination="c6M-Wt-r6p" id="8be-F0-a6h"/>
