@@ -96,9 +96,21 @@
             //[cell.sportTypeBtn8 setTitle:_sportTypeArray[7][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn8 sd_setBackgroundImageWithURL:_sportTypeArray[7][@"frontImgUrl"] forState:UIControlStateNormal];
             
-            cell.ADScrollView.scrollEnabled = YES;
-            cell.ADScrollView.backgroundColor = [UIColor orangeColor];
-            cell.ADScrollView.showsHorizontalScrollIndicator = YES;
+            [cell.sportTypeBtn1 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn2 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn3 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn4 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn5 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn6 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn7 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.sportTypeBtn8 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
+            view.backgroundColor = [UIColor orangeColor];
+            view.frame = CGRectMake(0, 0, 100, 1000);
+            [cell.ADScrollView addSubview:view];
+            cell.ADScrollView.alwaysBounceHorizontal = YES;
+            cell.ADScrollView.pagingEnabled = YES;
             
             sportOver = NO;
         }
@@ -135,7 +147,7 @@
 //cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
-        return 203;
+        return 189;
     }
     return 180;
 }
@@ -205,6 +217,18 @@
         }
             break;
     }
+}
+
+//首页按钮
+- (void)sportAction:(UIButton *)sender{
+//    switch (sender == ) {
+//        case <#constant#>:
+//            <#statements#>
+//            break;
+//            
+//        default:
+//            break;
+//    }
 }
 
 #pragma mark - privateNet
