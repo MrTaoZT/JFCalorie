@@ -22,14 +22,15 @@
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
-    
-    CGFloat jing;
-    CGFloat wei;
-    
-    //翻页用的页数
-    NSInteger hotClubPage;
-    NSInteger totalPage;
 }
+
+@property(nonatomic)CGFloat jing;
+@property(nonatomic)CGFloat wei;
+
+@property(nonatomic)NSInteger hotClubPage;
+@property(nonatomic)NSInteger totalPage;
+
+@property(nonatomic, strong)NSString *city;
 
 //运动类型
 @property(nonatomic, strong)NSMutableArray *sportTypeArray;
@@ -175,11 +176,11 @@
     _hotClubInfoArray = [NSMutableArray new];
     
     //初始化经纬度
-    jing = 0;
-    wei = 0;
+    _jing = 0;
+    _wei = 0;
     
     //初始化开始页面
-    hotClubPage = 1;
+    _hotClubPage = 1;
     
     //初始化刷新器
     [self initRefresh];
@@ -206,17 +207,6 @@
     _ADScrollView.contentSize = CGSizeMake(UI_SCREEN_W * 3, 80);
     _ADScrollView.alwaysBounceHorizontal = YES;
     _ADScrollView.pagingEnabled = YES;
-    NSLog(@"%f",UI_SCREEN_W * 3);
-    NSLog(@"%f,%f",_ADScrollView.contentSize.width, _ADScrollView.contentOffset.x);
-    
-//    CGFloat pageWidth = 10 * [_ADScrollView subviews].count;
-//    CGFloat pageHeight = 30;
-//    _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake((UI_SCREEN_W - pageWidth) / 2, _ADScrollView.frame.size.height - pageHeight, pageWidth, pageHeight)];
-//    //当前页码
-//    _pageControl.currentPage = 1;
-//    //共有几页
-//    _pageControl.numberOfPages = [_ADScrollView subviews].count - 1;
-//    [self.tableView addSubview:_pageControl];
 }
 
 - (void)initailCLLocation{
@@ -262,33 +252,21 @@
 
 //当第一次加载app完后才能刷新
 - (void)conRefresh{
-    if (hotClubOver) {
-        [self getHotClub];
-        //重新定位
-        [_locationManager startUpdatingLocation];
-    }else{
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
-            [_locationManager startUpdatingLocation];
-        }
-        [Utilities popUpAlertViewWithMsg:@"正在获取数据" andTitle:@"" onView:self];
-        if (_refresh.isRefreshing) {
-            [_refresh endRefreshing];
-        }
-    }
     if (!sportOver) {
         [self getSportType];
     }
+    [self getHotClub];
 }
 
 //定位请求错误提示
 -(void)checkError:(NSError *)error{
     switch (error.code) {
         case kCLErrorNetwork:{
-            [Utilities popUpAlertViewWithMsg:@"没网" andTitle:@"" onView:self];
+            [Utilities popUpAlertViewWithMsg:@"没有网络连接" andTitle:@"" onView:self];
         }
             break;
         case kCLErrorDenied:{
-            [Utilities popUpAlertViewWithMsg:@"没开定位" andTitle:@"" onView:self];
+            [Utilities popUpAlertViewWithMsg:@"您没有开定位" andTitle:@"" onView:self];
         }
             break;
         case kCLErrorLocationUnknown:{
@@ -350,10 +328,13 @@
         
         [self.navigationController pushViewController:sportTypeView animated:YES];
         NSString *fId = tempDict[@"id"];
+        NSString *typeName = tempDict[@"name"];
         //将运动id和经纬度传过去
+        sportTypeView.city = _city;
         sportTypeView.sportType = fId;
-        sportTypeView.setJing = jing;
-        sportTypeView.setWei = wei;
+        sportTypeView.sportName = typeName;
+        sportTypeView.setJing = _jing;
+        sportTypeView.setWei = _wei;
     }
 }
 
@@ -368,7 +349,7 @@
         if (!error) {
             //获取成功得到逆地理编码的结果
             NSDictionary *info = [placemarks[0] addressDictionary];
-            NSLog(@"逆地理编码：%@",info);
+            //NSLog(@"逆地理编码：%@",info);
             /*
              在此处触发annotationCompletionHandler这个block发生，并把info作为参数传递给方法执行方（乙方），此block会在逆地理编码成功后触发
              */
@@ -406,7 +387,7 @@
             sportOver = YES;
             [weakSelf.tableView reloadData];
         }else{
-            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通,稍后试试吧" andTitle:@"" onView:self];
+            [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请保持网络畅通,稍后试试吧%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
         }
     } failure:^(NSError *error) {
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
@@ -416,81 +397,85 @@
 //获取热门俱乐部
 - (void)getHotClub{
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [Utilities popUpAlertViewWithMsg:@"您没有给与位置权限" andTitle:@"" onView:self];
         return;
     }
-    //参数配置
-//    if () {
-//        <#statements#>
-//    }
-    NSString *city = @"无锡";
-    CGFloat setJing = jing;
-    CGFloat setWei  = wei;
-    if (_refresh.isRefreshing) {
-        hotClubPage = 1;
-    }
-    //hotClubPage = 1;
-    NSInteger perPage = 5;
     
-    NSDictionary *parameters = @{
-                                 @"city":city,
-                                 @"jing":@(setJing),
-                                 @"wei":@(setWei),
-                                 @"page":@(hotClubPage),
-                                 @"perPage":@(perPage)
-                                 };
-    
+    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
     __weak HomeTableViewController *weakSelf = self;
-    
-    //获取热门会所（及其体验券）列表
-    NSString *nerUrl = @"/homepage/choice";
-
-    //网络请求
-    [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
-        if (_refresh.isRefreshing) {
-            [_refresh endRefreshing];
+    //
+    [self setAnnotatinAithDescriptionOnCoordinate:coordinate completionHandler:^(NSDictionary *info) {
+        NSString *city = info[@"City"];
+        NSString *cityNot = [city substringToIndex:city.length - 1];
+        weakSelf.title = city;
+        weakSelf.city= cityNot;
+        if (weakSelf.refresh.isRefreshing) {
+            _hotClubPage = 1;
         }
-        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            //NSLog(@"%@",responseObject);
-            
-            //等于1表示是下拉刷新或者刚进入页面
-            if (hotClubPage == 1) {
-                _hotClubInfoArray = nil;
-                _hotClubInfoArray = [NSMutableArray new];
+        NSInteger perPage = 5;
+        
+        NSDictionary *parameters = @{
+                                     @"city":cityNot,
+                                     @"jing":@(weakSelf.jing),
+                                     @"wei":@(weakSelf.wei),
+                                     @"page":@(weakSelf.hotClubPage),
+                                     @"perPage":@(perPage)
+                                     };
+        //获取热门会所（及其体验券）列表
+        NSString *nerUrl = @"/homepage/choice";
+        
+        //网络请求
+        [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
+            if (weakSelf.refresh.isRefreshing) {
+                [weakSelf.refresh endRefreshing];
             }
-            
-            NSDictionary *result = responseObject[@"result"];
-            NSArray *info = result[@"models"];
-            //封装数据
-            for (int i = 0; i < info.count; i++) {
-                NSString *name = info[i][@"name"];
-                NSString *address = info[i][@"address"];
-                NSString *distance = info[i][@"distance"];
-                NSString *image = info[i][@"image"];
-                NSString *clubKeyId = info[i][@"id"];
+            if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                //NSLog(@"%@",responseObject);
                 
-                NSDictionary *dict = @{
-                                       @"name":name,
-                                       @"address":address,
-                                       @"distance":distance,
-                                       @"image":image,
-                                       @"clubKeyId":clubKeyId
-                                       };
-                [weakSelf.hotClubInfoArray addObject:dict];
+                //等于1表示是下拉刷新或者刚进入页面
+                if (weakSelf.hotClubPage == 1) {
+                    _hotClubInfoArray = nil;
+                    _hotClubInfoArray = [NSMutableArray new];
+                }
+                
+                NSDictionary *result = responseObject[@"result"];
+                NSArray *info = result[@"models"];
+                //封装数据
+                for (int i = 0; i < info.count; i++) {
+                    NSString *name = info[i][@"name"];
+                    NSString *address = info[i][@"address"];
+                    NSString *distance = info[i][@"distance"];
+                    NSString *image = info[i][@"image"];
+                    NSString *clubKeyId = info[i][@"id"];
+                    
+                    NSDictionary *dict = @{
+                                           @"name":name,
+                                           @"address":address,
+                                           @"distance":distance,
+                                           @"image":image,
+                                           @"clubKeyId":clubKeyId
+                                           };
+                    [weakSelf.hotClubInfoArray addObject:dict];
+                }
+                //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
+                hotClubOver = YES;
+                weakSelf.totalPage = [responseObject[@"totalPage"] integerValue];
+                [weakSelf.tableView reloadData];
+            }else{
+                if ([responseObject[@"resultFlag"] integerValue] == 8020) {
+                    [Utilities popUpAlertViewWithMsg:@"暂无数据" andTitle:@"" onView:weakSelf];
+                    hotClubOver = YES;
+                    return ;
+                }
+                [Utilities popUpAlertViewWithMsg: [NSString stringWithFormat:@"保持网络畅通，稍后再试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:weakSelf];
             }
-            //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
-            hotClubOver = YES;
-            totalPage = [responseObject[@"totalPage"] integerValue];
-            [weakSelf.tableView reloadData];
-        }else{
-            [Utilities popUpAlertViewWithMsg:@"保持网络畅通，稍后再试" andTitle:@"" onView:self];
-        }
-    } failure:^(NSError *error) {
-        if (_refresh.isRefreshing) {
-            [_refresh endRefreshing];
-        }
-        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+        } failure:^(NSError *error) {
+            if (weakSelf.refresh.isRefreshing) {
+                [weakSelf.refresh endRefreshing];
+            }
+            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:weakSelf];
+        }];
     }];
-    
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -500,8 +485,9 @@
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation{
     if (newLocation.coordinate.latitude == oldLocation.coordinate.latitude && newLocation.coordinate.longitude == oldLocation.coordinate.longitude) {
-        jing = newLocation.coordinate.longitude;
-        wei = newLocation.coordinate.latitude;
+        NSLog(@"获得完毕经纬度");
+        _jing = newLocation.coordinate.longitude;
+        _wei = newLocation.coordinate.latitude;
         [self getHotClub];
         [manager stopUpdatingLocation];
     }
@@ -560,13 +546,12 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
         if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-            hotClubPage ++;
-            
+            _hotClubPage ++;
             [self getHotClub];
         }
     }else{
         if (scrollView.contentOffset.y > -64) {
-            hotClubPage ++;
+            _hotClubPage ++;
             [self getHotClub];
         }
     }
