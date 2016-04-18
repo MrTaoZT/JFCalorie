@@ -557,16 +557,16 @@
             </objects>
             <point key="canvasLocation" x="3149.5" y="457.5"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Club Detail View Controller-->
         <scene sceneID="nzQ-8k-DSN">
             <objects>
-                <tableViewController id="W36-fN-wWk" sceneMemberID="viewController">
+                <tableViewController id="W36-fN-wWk" customClass="ClubDetailViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="54" sectionHeaderHeight="28" sectionFooterHeight="28" id="6xp-up-byh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="256" id="c8u-LH-ATo">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell1" rowHeight="256" id="c8u-LH-ATo" customClass="FirstTableViewCell">
                                 <rect key="frame" x="0.0" y="28" width="375" height="256"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="c8u-LH-ATo" id="zvU-5w-Tkg">
@@ -643,8 +643,15 @@
                                         <constraint firstItem="NMe-Le-hGs" firstAttribute="leading" secondItem="bJw-pK-e1E" secondAttribute="trailing" id="wOl-Sp-kaw"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="address" destination="WU7-lB-eKM" id="qQI-vE-YDu"/>
+                                    <outlet property="call" destination="miR-kb-hFg" id="8ra-pZ-kpz"/>
+                                    <outlet property="clubImage" destination="R1w-f0-y4T" id="Yif-ti-wTn"/>
+                                    <outlet property="collection" destination="NMe-Le-hGs" id="Gh2-F3-5Fh"/>
+                                    <outlet property="name" destination="bJw-pK-e1E" id="rSi-xQ-67y"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="165" id="aj8-uS-3dK">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell2" rowHeight="165" id="aj8-uS-3dK" customClass="SecontTableViewCell">
                                 <rect key="frame" x="0.0" y="284" width="375" height="165"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aj8-uS-3dK" id="42L-xz-L6h">
@@ -693,8 +700,12 @@
                                         <constraint firstItem="H8j-Oy-vLL" firstAttribute="leading" secondItem="42L-xz-L6h" secondAttribute="leading" id="xrg-1O-bTD"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="openTime" destination="YOX-ZM-M6A" id="ce9-1A-oAq"/>
+                                    <outlet property="scrollView" destination="H8j-Oy-vLL" id="RKc-Pc-n9V"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="210" id="YuC-EM-chz">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell3" rowHeight="210" id="YuC-EM-chz" customClass="ThiredTableViewCell">
                                 <rect key="frame" x="0.0" y="449" width="375" height="210"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YuC-EM-chz" id="h96-88-Mno">
@@ -760,6 +771,12 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <connections>
+                                    <outlet property="clubIntroduce" destination="bM7-eH-Ui0" id="NTN-YX-1QP"/>
+                                    <outlet property="clubPerson" destination="IJz-vn-DLO" id="0tr-yq-ztz"/>
+                                    <outlet property="clubTime" destination="QzG-yO-56Z" id="dLZ-FN-hoL"/>
+                                    <outlet property="storeNums" destination="Tp3-IT-PpG" id="1su-hN-OEW"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
