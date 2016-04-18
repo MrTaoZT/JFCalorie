@@ -21,8 +21,8 @@
 @implementation SignInViewController
 
 //视图已经出现时调用
-- (void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
     //判断当前登录页面是否是  注册成功  跳转过来的
     if([[[StorageMgr singletonStorageMgr]objectForKey:@"SignUpSuccessfully"] boolValue]){
         //需要把 这个键的  值  重新设置成  no   （！！！！！！！！！！！！）
@@ -37,8 +37,6 @@
         _usernameTF.text = username;
         _passwordTF.text = password;
     }
-    _usernameTF.text = [[StorageMgr singletonStorageMgr]objectForKey:@"LeftUsername"];
-    [[StorageMgr singletonStorageMgr] removeObjectForKey:@"LeftUsername"];
     
 }
 
@@ -66,18 +64,13 @@
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
     //调试
-    [self setMD5RSA];
+//    [self setMD5RSA];
     NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
     NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
     //MD5将原始密码进行MD5加密
     NSString *MD5Pwd = [_passwordTF.text getMD5_32BitString];
     //将MD5加密过后的密码进行RSA非对称加密
     NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
-    
-    NSDictionary *dic = @{@"userName":_usernameTF.text,
-                        @"password":RSAPwd,
-                        @"deviceType":@7001,
-                        @"deviceId":[Utilities uniqueVendor]};
     
     NSLog(@"user = %@",_usernameTF.text);
     NSLog(@"pw = %@",RSAPwd);
@@ -90,6 +83,10 @@
         [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
         return;
     }
+    NSDictionary *dic = @{@"userName":_usernameTF.text,
+                          @"password":RSAPwd,
+                          @"deviceType":@7001,
+                          @"deviceId":[Utilities uniqueVendor]};
     UIActivityIndicatorView *aiv = [Utilities getCoverOnView:self.view];
     [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
         NSLog(@"%@",responseObject);
@@ -116,10 +113,21 @@
             //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
             [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
             
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"LeftUsername"];
             [[StorageMgr singletonStorageMgr]addKey:@"LeftUsername" andValue:_usernameTF.text];
             
+            [Utilities removeUserDefaults:@"OrLogin"];
+            [Utilities removeUserDefaults:@"AddUserAndPw"];
             //缓存  键名  能判断用户上一次是否登录
             [Utilities setUserDefaults:@"OrLogin" content:@YES];
+            [Utilities setUserDefaults:@"AddUserAndPw" content:@NO];
+            //删除之前缓存到的用户和密码
+            [Utilities removeUserDefaults:@"Username"];
+            [Utilities removeUserDefaults:@"Password"];
+            //缓存到用户登录的账号密码
+            [Utilities setUserDefaults:@"Username" content:_usernameTF.text];
+            [Utilities setUserDefaults:@"Password" content:_passwordTF.text];
+            
             [aiv stopAnimating];
             [self.navigationController pushViewController:_slidingVc animated:YES];
             
@@ -128,11 +136,13 @@
             //这还要修改
             [Utilities popUpAlertViewWithMsg:@"用户名或密码错误" andTitle:nil onView:self];
             _passwordTF.text = @"";
+            [self setMD5RSA];
         }
     } failure:^(NSError *error) {
         [aiv stopAnimating];
         [Utilities popUpAlertViewWithMsg:@"您的用户名或密码错误" andTitle:nil onView:self];
         _passwordTF.text = @"";
+        [self setMD5RSA];
     }];
 
 }
@@ -164,6 +174,8 @@
     return YES;
 }
 
+#pragma mark - setMD5RSA
+
 - (void)setMD5RSA{
     //获取模数指数
     NSDictionary *dic = @{@"deviceType":@7001,
@@ -174,7 +186,6 @@
         NSLog(@"responseObject : %@",responseObject);
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             NSDictionary *resultDict = responseObject[@"result"];
-            NSLog(@"resultDict = %@",resultDict);
             NSString *exponent = resultDict[@"exponent"];
             NSString *modulus = resultDict[@"modulus"];
             //从单例化全局变量中删除数据
