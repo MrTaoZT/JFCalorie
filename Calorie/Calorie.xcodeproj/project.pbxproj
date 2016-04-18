@@ -175,11 +175,10 @@
 		184477731CC21987003B2354 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				3863BC371CC4674800E0D8AC /* Nav */,
 				382815B71CC381AE0016A1A5 /* SlidingView */,
 				B8D900DB1CC2711400641C06 /* Home */,
 				B8D900D41CC2551D00641C06 /* Login */,
-				382815C11CC3AAAB0016A1A5 /* NavigationViewController.h */,
-				382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -303,6 +302,15 @@
 				382815BC1CC395E60016A1A5 /* MyMessageViewController.m */,
 			);
 			name = SlidingView;
+			sourceTree = "<group>";
+		};
+		3863BC371CC4674800E0D8AC /* Nav */ = {
+			isa = PBXGroup;
+			children = (
+				382815C11CC3AAAB0016A1A5 /* NavigationViewController.h */,
+				382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */,
+			);
+			name = Nav;
 			sourceTree = "<group>";
 		};
 		48A84C8420DB912E00D3B9EB /* Pods */ = {
