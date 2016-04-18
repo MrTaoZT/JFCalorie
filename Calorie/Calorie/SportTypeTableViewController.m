@@ -119,12 +119,14 @@
                 NSString *address = info[i][@"clubAddressB"];
                 NSString *distance = info[i][@"distance"];
                 NSString *image = info[i][@"clubLogo"];
+                NSString *clubId = info[i][@"clubId"];
                 
                 NSDictionary *dict = @{
                                        @"clubName":name,
                                        @"clubAddressB":address,
                                        @"distance":distance,
                                        @"clubLogo":image,
+                                       @"clubId":clubId
                                        };
                 [weakSelf.clubArray addObject:dict];
             }
@@ -143,7 +145,7 @@
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
     if (requestOver) {
         NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
-        //NSLog(@"%@",clubKeyId);
+        //NSLog(@"clubKeyId%@",clubKeyId);
         clubDetailView.clubKeyId = clubKeyId;
         [self.navigationController pushViewController:clubDetailView animated:YES];
     }
