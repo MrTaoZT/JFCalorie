@@ -145,7 +145,7 @@
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
     if (requestOver) {
         NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
-        //NSLog(@"clubKeyId%@",clubKeyId);
+        NSLog(@"clubKeyId%@",clubKeyId);
         clubDetailView.clubKeyId = clubKeyId;
         [self.navigationController pushViewController:clubDetailView animated:YES];
     }

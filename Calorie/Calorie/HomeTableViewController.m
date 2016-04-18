@@ -22,6 +22,7 @@
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
+    BOOL locationError;
 }
 
 @property(nonatomic)CGFloat jing;
@@ -42,9 +43,6 @@
 
 //刷新器
 @property(nonatomic, strong)UIRefreshControl *refresh;
-
-//页码控制
-@property(nonatomic, strong)UIPageControl *pageControl;
 
 @end
 
@@ -221,7 +219,8 @@
     if (indexPath.row != 0) {
         ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
         if (sportOver) {
-            NSString *clubKeyId = _hotClubInfoArray[indexPath.row][@"clubKeyId"];
+            NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 1][@"id"];
+            NSLog(@"id%@",clubKeyId);
             clubDetailView.clubKeyId = clubKeyId;
             [self.navigationController pushViewController:clubDetailView animated:YES];
         }
@@ -233,6 +232,7 @@
 - (void)initailAllControl{
     sportOver = NO;
     hotClubOver = NO;
+    locationError = NO;
     _sportTypeArray = [NSMutableArray new];
     _hotClubInfoArray = [NSMutableArray new];
     
@@ -321,6 +321,7 @@
 
 //定位请求错误提示
 -(void)checkError:(NSError *)error{
+    locationError = YES;
     switch (error.code) {
         case kCLErrorNetwork:{
             [Utilities popUpAlertViewWithMsg:@"没有网络连接" andTitle:@"" onView:self];
@@ -462,6 +463,13 @@
         return;
     }
     
+    //没有位置不能获得经纬度
+    if (locationError) {
+        [_refresh endRefreshing];
+        locationError = NO;
+        return;
+    }
+    
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
     __weak HomeTableViewController *weakSelf = self;
     //
@@ -491,7 +499,7 @@
                 [weakSelf.refresh endRefreshing];
             }
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-                //NSLog(@"%@",responseObject);
+                NSLog(@"%@",responseObject);
                 
                 //等于1表示是下拉刷新或者刚进入页面
                 if (weakSelf.hotClubPage == 1) {
@@ -514,7 +522,7 @@
                                            @"address":address,
                                            @"distance":distance,
                                            @"image":image,
-                                           @"clubKeyId":clubKeyId
+                                           @"id":clubKeyId
                                            };
                     [weakSelf.hotClubInfoArray addObject:dict];
                 }
