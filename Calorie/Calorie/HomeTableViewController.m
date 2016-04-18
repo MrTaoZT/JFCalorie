@@ -22,6 +22,7 @@
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
+    BOOL locationError;
 }
 
 @property(nonatomic)CGFloat jing;
@@ -43,12 +44,13 @@
 //刷新器
 @property(nonatomic, strong)UIRefreshControl *refresh;
 
-//页码控制
-@property(nonatomic, strong)UIPageControl *pageControl;
-
 @end
 
 @implementation HomeTableViewController
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -70,6 +72,9 @@
     
     //user
     
+    [self setMD5RSA];
+    //判断用户上一次是否登录,且有没有退出登录
+//    [self lastOrLogin];
     
 }
 
@@ -77,6 +82,60 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (void)lastOrLogin{
+    //首先判断用户是否登录过
+    if([[Utilities getUserDefaults:@"OrLogin"] boolValue]){
+        //拿到缓存的密码
+        NSString *username = [Utilities getUserDefaults:@"Username"];
+        NSString *password = [Utilities getUserDefaults:@"Password"];
+        if (username.length == 0 || password.length == 0) {
+            return;
+        }
+        //如果登录了那么这里在判断  上一次是否按了退出按钮   yse  表示按了
+        if ( [[Utilities getUserDefaults:@"AddUserAndPw"] boolValue]) {
+           
+            //表示用户 登录后  按了退出  这边依旧设置未登录  因为这里是默认从appdelage 进入  所以  全局变量inOrup  这边默认是NO （也就是未登录）
+            //然后让  SignUpSuccessfully这个键为YES   那么在进入登录界面时  会运行  viewWillA 里面的放法
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+            [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+            //最后把  之前退出时  缓存了一个Username 的值给  全局变量 的Username    这样退出之后就会有用户名显示
+            [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:[Utilities getUserDefaults:@"Username"]];
+            return;
+        }
+        //这里是当判断到用户有登陆过  并且没有退出过   开启APP时   默认请求登录
+            NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
+            NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
+            //MD5将原始密码进行MD5加密
+            NSString *MD5Pwd = [password getMD5_32BitString];
+            //将MD5加密过后的密码进行RSA非对称加密
+            NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
+            
+            NSDictionary *dic = @{@"userName":username,
+                                  @"password":RSAPwd,
+                                  @"deviceType":@7001,
+                                  @"deviceId":[Utilities uniqueVendor]};
+            
+            [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
+                NSLog(@"obj =======  %@",responseObject);
+                if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                    NSLog(@"自动登录成功");
+                    NSDictionary *result = responseObject[@"result"];
+                    //这里将 全局变量键inOrUp  设置成yes  就可以运行leftVC  里的viewWillA  里的方法
+                    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
+                    [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
+                    //紧接着这边给缓存  键Username  给值（result[@"contactTel"]）
+                    [Utilities removeUserDefaults:@"Username"];
+                    [Utilities setUserDefaults:@"Username" content:result[@"contactTel"]];
+                }else{
+                    [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
+                }
+            } failure:^(NSError *error) {
+                [Utilities popUpAlertViewWithMsg:@"系统繁忙,请重新登录" andTitle:nil onView:self];
+            }];
+    }
+}
+
 
 #pragma mark - UITableViewDataSource
 
@@ -160,7 +219,8 @@
     if (indexPath.row != 0) {
         ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
         if (sportOver) {
-            NSString *clubKeyId = _hotClubInfoArray[indexPath.row][@"clubKeyId"];
+            NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 1][@"id"];
+            NSLog(@"id%@",clubKeyId);
             clubDetailView.clubKeyId = clubKeyId;
             [self.navigationController pushViewController:clubDetailView animated:YES];
         }
@@ -172,6 +232,7 @@
 - (void)initailAllControl{
     sportOver = NO;
     hotClubOver = NO;
+    locationError = NO;
     _sportTypeArray = [NSMutableArray new];
     _hotClubInfoArray = [NSMutableArray new];
     
@@ -260,6 +321,7 @@
 
 //定位请求错误提示
 -(void)checkError:(NSError *)error{
+    locationError = YES;
     switch (error.code) {
         case kCLErrorNetwork:{
             [Utilities popUpAlertViewWithMsg:@"没有网络连接" andTitle:@"" onView:self];
@@ -401,6 +463,13 @@
         return;
     }
     
+    //没有位置不能获得经纬度
+    if (locationError) {
+        [_refresh endRefreshing];
+        locationError = NO;
+        return;
+    }
+    
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
     __weak HomeTableViewController *weakSelf = self;
     //
@@ -430,7 +499,7 @@
                 [weakSelf.refresh endRefreshing];
             }
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-                //NSLog(@"%@",responseObject);
+                NSLog(@"%@",responseObject);
                 
                 //等于1表示是下拉刷新或者刚进入页面
                 if (weakSelf.hotClubPage == 1) {
@@ -453,7 +522,7 @@
                                            @"address":address,
                                            @"distance":distance,
                                            @"image":image,
-                                           @"clubKeyId":clubKeyId
+                                           @"id":clubKeyId
                                            };
                     [weakSelf.hotClubInfoArray addObject:dict];
                 }
@@ -576,5 +645,35 @@
     }   
 }
 */
+#pragma mark - setMD5RSA
 
+- (void)setMD5RSA{
+    //获取模数指数
+    NSDictionary *dic = @{@"deviceType":@7001,
+                          @"deviceId":[Utilities uniqueVendor]
+                          };
+    
+    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
+        NSLog(@"responseObject : %@",responseObject);
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *resultDict = responseObject[@"result"];
+            NSString *exponent = resultDict[@"exponent"];
+            NSString *modulus = resultDict[@"modulus"];
+            //从单例化全局变量中删除数据
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
+            
+            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
+            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
+            
+            [self lastOrLogin];
+        }else{
+            NSLog(@"resultFailed");
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+    
+}
 @end

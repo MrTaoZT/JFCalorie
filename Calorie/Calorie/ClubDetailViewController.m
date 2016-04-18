@@ -13,7 +13,9 @@
 
 #import <UIImageView+WebCache.h>
 
-@interface ClubDetailViewController ()
+@interface ClubDetailViewController (){
+    BOOL loadOver;
+}
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
 @property(nonatomic, strong)NSDictionary *clubDict;
@@ -24,6 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    loadOver = NO;
     _clubDict = [NSDictionary new];
     self.title = @"clubDetail";
     [self getClubDetail];
@@ -43,6 +46,8 @@
 //        NSDictionary *infoDict = @{
 //                                   @"clubLogo":dict[@"clubLogo"]
 //                                   };
+        loadOver = YES;
+        [self.tableView reloadData];
         
     } failure:^(NSError *error) {
         
@@ -58,12 +63,30 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
+//property (weak, nonatomic) IBOutlet UIImageView *clubImage;
+//@property (weak, nonatomic) IBOutlet UILabel *name;
+//@property (weak, nonatomic) IBOutlet UIButton *collection;
+//@property (weak, nonatomic) IBOutlet UILabel *address;
+//@property (weak, nonatomic) IBOutlet UIButton *call;
+
+//@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+//
+//@property (weak, nonatomic) IBOutlet UILabel *openTime;
+
+//@property (weak, nonatomic) IBOutlet UILabel *clubTime;
+//@property (weak, nonatomic) IBOutlet UILabel *storeNums;
+//@property (weak, nonatomic) IBOutlet UILabel *clubPerson;
+//@property (weak, nonatomic) IBOutlet UITextView *clubIntroduce;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:{
             FirstTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1" forIndexPath:indexPath];
-            [cell.clubImage sd_setImageWithURL:_clubDict[@"clubLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
+            if (loadOver) {
+                [cell.clubImage sd_setImageWithURL:_clubDict[@"clubLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
+                cell.name = _clubDict[@"clubName"];
+            }
+            
             return cell;
            break;
         }
@@ -77,6 +100,19 @@
             return cell;
             break;
         }
+    }
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.row) {
+        case 0:
+            return 256;
+            break;
+        case 1:
+            return 165;
+        default:
+            return 210;
+            break;
     }
 }
 
