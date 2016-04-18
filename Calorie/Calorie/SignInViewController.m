@@ -142,11 +142,13 @@
             [self.navigationController pushViewController:_slidingVc animated:YES];
             
         }else{
+            [aiv stopAnimating];
             //这还要修改
             [Utilities popUpAlertViewWithMsg:@"用户名或密码错误" andTitle:nil onView:self];
             _passwordTF.text = @"";
         }
     } failure:^(NSError *error) {
+        [aiv stopAnimating];
         [Utilities popUpAlertViewWithMsg:@"您的用户名或密码错误" andTitle:nil onView:self];
         _passwordTF.text = @"";
     }];
