@@ -112,7 +112,7 @@
             NSArray *info = dict[@"models"];
             NSDictionary *pageinfo = dict[@"pagingInfo"];
             weakSelf.totalPage =  [pageinfo[@"totalPage"] integerValue];
-            NSLog(@"total%ld",_totalPage);
+            //NSLog(@"total%ld",_totalPage);
             //封装数据
             for (int i = 0; i < info.count; i++) {
                 NSString *name = info[i][@"clubName"];

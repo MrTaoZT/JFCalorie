@@ -17,7 +17,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"clubDetail";
+    
     // Do any additional setup after loading the view.
+}
+
+- (void)getClubDetail{
+    NSString *netUrl = @"/clubController/getClubDetails";
+    
+    NSDictionary *paramenters = @{
+                                  @"clubKeyId":_clubKeyId
+                                  };
+    
+    [RequestAPI getURL:netUrl withParameters:paramenters success:^(id responseObject) {
+        NSLog(@"%@",responseObject);
+    } failure:^(NSError *error) {
+        
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
