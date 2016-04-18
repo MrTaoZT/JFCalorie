@@ -80,30 +80,30 @@
         return;
     }
     
-    [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:userTel];
-    [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
-    //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
-    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
-    //在初始化一个同名 键 为yes  表示注册成功
-    [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
-    
-    SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
-    [self.navigationController pushViewController:signIn animated:YES];
-    
-//    NSDictionary *dic = @{@"userTel":userTel,
-//                        @"userPsw":RSAPwd,
-//                        @"codeNum":codeNum,
-//                        @"deviceId":[Utilities uniqueVendor]
-//                        };
-//    [RequestAPI postURL:@"/register/forgetPassword" withParameters:dic success:^(id responseObject) {
-//        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-//            //这里进行跳转
-//        }else{
-//            [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试" andTitle:nil onView:self];
-//        }
-//    } failure:^(NSError *error) {
-//        NSLog(@"error = %@",[error userInfo]);
-//    }];
+    NSDictionary *dic = @{@"userTel":userTel,
+                        @"userPsw":RSAPwd,
+                        @"codeNum":codeNum,
+                        @"deviceId":[Utilities uniqueVendor]
+                        };
+    [RequestAPI postURL:@"/register/forgetPassword" withParameters:dic success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            //这里进行跳转
+            [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:userTel];
+            [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
+            //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+            //在初始化一个同名 键 为yes  表示注册成功
+            [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+            
+            SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
+            [self.navigationController pushViewController:signIn animated:YES];
+        }else{
+            //这还要修改
+            [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试" andTitle:nil onView:self];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",[error userInfo]);
+    }];
 }
 
 #pragma mark - TextField

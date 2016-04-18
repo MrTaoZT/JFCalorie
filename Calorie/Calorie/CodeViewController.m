@@ -47,11 +47,12 @@
     if (_phoneTF.text.length == 11) {
         [RequestAPI getURL:@"/register/verificationCode" withParameters:dic success:^(id responseObject) {
             NSLog(@"%@",responseObject);
-//             [self setTime];
+
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
                 //定时器
-               
+                [self setTime];
             }else{
+                //这还要修改
                 [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试！" andTitle:nil onView:self];
  
             }
@@ -68,47 +69,45 @@
 - (IBAction)jumpForgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event {
     NSDictionary *dic = @{@"userTel":_phoneTF.text,
                           @"codeNum":_codeTF.text};
-    //从单例化全局变量中删除数据
-    [[StorageMgr singletonStorageMgr] removeObjectForKey:@"phone"];
-    [[StorageMgr singletonStorageMgr] removeObjectForKey:@"code"];
-
-    [[StorageMgr singletonStorageMgr] addKey:@"phone" andValue:_phoneTF.text];
-    [[StorageMgr singletonStorageMgr] addKey:@"code" andValue:_codeTF.text];
-
-    forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetPwVc"];
-    [self.navigationController pushViewController:forgetVc animated:YES];
     
-//    [RequestAPI getURL:@"/register/checkVerificationCode" withParameters:dic success:^(id responseObject) {
-//        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-//            forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetVc"];
-//            [self.navigationController pushViewController:forgetVc animated:YES];
-//        }else{
-//            [Utilities popUpAlertViewWithMsg:@"验证码错误" andTitle:nil onView:self];
-//        }
-//    } failure:^(NSError *error) {
-//        NSLog(@"error = %@",[error userInfo]);
-//    }];
+    [RequestAPI getURL:@"/register/checkVerificationCode" withParameters:dic success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            //从单例化全局变量中删除数据
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"phone"];
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"code"];
+            
+            [[StorageMgr singletonStorageMgr] addKey:@"phone" andValue:_phoneTF.text];
+            [[StorageMgr singletonStorageMgr] addKey:@"code" andValue:_codeTF.text];
+            
+            forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetPwVc"];
+            [self.navigationController pushViewController:forgetVc animated:YES];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"验证码错误" andTitle:nil onView:self];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",[error userInfo]);
+    }];
 }
 
 #pragma mark - Timer
 
-//- (void)setTime{
-//    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(changeTime) userInfo:nil repeats:YES];
-//}
-//
-//- (void)changeTime{
-//    NSString *str = @"秒";
-//    if (count > 0) {
-//        [_codeBtn setTitle:[NSString stringWithFormat:@"%ld%@",count,str] forState:UIControlStateNormal];
-//        _codeBtn.userInteractionEnabled = NO;
-//        count --;
-//    }else{
-//        [_codeBtn setTitle:@"重新发送" forState:UIControlStateNormal];
-//        _codeBtn.userInteractionEnabled = YES;
-//        count = 60;
-//    }
-//}
-//
+- (void)setTime{
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(changeTime) userInfo:nil repeats:YES];
+}
+
+- (void)changeTime{
+    NSString *str = @"秒";
+    if (count > 0) {
+        [_codeBtn setTitle:[NSString stringWithFormat:@"%ld%@",count,str] forState:UIControlStateNormal];
+        _codeBtn.userInteractionEnabled = NO;
+        count --;
+    }else{
+        [_codeBtn setTitle:@"重新发送" forState:UIControlStateNormal];
+        _codeBtn.userInteractionEnabled = YES;
+        count = 60;
+    }
+}
+
 #pragma mark - TextField
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField{

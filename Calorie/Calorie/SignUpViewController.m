@@ -119,13 +119,6 @@
     //将MD5加密过后的密码进行RSA非对称加密
     NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
     
-    NSDictionary *dic = @{@"userTel":_phoneTF.text,
-                        @"userPsw":RSAPwd,
-                        @"nickName":_phoneTF.text,
-                        @"city":@0511,
-                        @"nums":_codeTF.text,
-                        @"deviceId":[Utilities uniqueVendor]};
-    
     if (_firstPwTF.text.length == 0 || _secondPwTF.text.length ==0) {
         [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
         return;
@@ -139,29 +132,28 @@
         return;
     }
     
-    [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_phoneTF.text];
-    [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
-    //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
-    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
-    //在初始化一个同名 键 为yes  表示注册成功
-    [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+    NSDictionary *dic = @{@"userTel":_phoneTF.text,
+                          @"userPsw":RSAPwd,
+                          @"nickName":_phoneTF.text,
+                          @"city":@0511,
+                          @"nums":_codeTF.text,
+                          @"deviceId":[Utilities uniqueVendor]};
     
-    [self.navigationController popToRootViewControllerAnimated:YES];
-//    [RequestAPI postURL:@"/register" withParameters:dic success:^(id responseObject) {
-//        if ([responseObject[@"resultFlag"] integerValue] == 0) {
-//            
-//            [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_phoneTF.text];
-//            [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
-//            //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
-//            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
-//            //在初始化一个同名 键 为yes  表示注册成功
-//            [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
-//            
-//            [self.navigationController popToRootViewControllerAnimated:YES];
-//        }
-//    } failure:^(NSError *error) {
-//        NSLog(@"error = %@",[error userInfo]);
-//    }];
+    [RequestAPI postURL:@"/register" withParameters:dic success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 0) {
+            
+            [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_phoneTF.text];
+            [[StorageMgr singletonStorageMgr]addKey:@"Password" andValue:_firstPwTF.text];
+            //现将同名 键 在单例化全局变量中删除   以保证该键的唯一性
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
+            //在初始化一个同名 键 为yes  表示注册成功
+            [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+            
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+    } failure:^(NSError *error) {
+        NSLog(@"error = %@",[error userInfo]);
+    }];
 }
 - (IBAction)codeAction:(UIButton *)sender forEvent:(UIEvent *)event {
     //判断用户是否输入手机号  再判断用户手机号是否为11位
@@ -178,6 +170,7 @@
                 //定时器
                 [self setTime];
             }else{
+                //这还要修改
                 [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试！" andTitle:nil onView:self];
             }
         } failure:^(NSError *error) {
