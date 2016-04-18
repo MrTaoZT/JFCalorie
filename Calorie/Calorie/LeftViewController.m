@@ -15,6 +15,9 @@
 #import "MessageNavViewController.h"
 #import "WorkNavViewController.h"
 #import "CollectNavViewController.h"
+#import "MessageTableViewCell.h"
+#import "WorkTableViewCell.h"
+#import "CollectTableViewCell.h"
 
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -71,9 +74,27 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1" forIndexPath:indexPath];
-    
-    return cell;
+    switch (indexPath.row) {
+        case 0:
+        {
+            MessageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1" forIndexPath:indexPath];
+            return cell;
+        }
+            break;
+        case 1:
+        {
+            WorkTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2" forIndexPath:indexPath];
+            return cell;
+        }
+            break;
+        default:
+        {
+            CollectTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell3" forIndexPath:indexPath];
+            return cell;
+        }
+            break;
+    }
+//    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
@@ -83,7 +104,7 @@
         case 0:
         {
             if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
-                MessageNavViewController *messageNav = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MessageNav"];
+                MessageNavViewController *messageNav = [Utilities getStoryboard:@"Sliding" instanceByIdentity:@"MessageNav"];
                 [self presentViewController:messageNav animated:YES completion:nil];
             }else{
                 [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
@@ -93,7 +114,7 @@
         case 1:
         {
             if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
-                MessageNavViewController *workNav = [Utilities getStoryboard:@"Home" instanceByIdentity:@"WorkNav"];
+                MessageNavViewController *workNav = [Utilities getStoryboard:@"Sliding" instanceByIdentity:@"WorkNav"];
                 [self presentViewController:workNav animated:YES completion:nil];
             }else{
                 [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
@@ -103,7 +124,7 @@
         case 2:
         {
             if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
-                MessageNavViewController *collectNav = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CollectNav"];
+                MessageNavViewController *collectNav = [Utilities getStoryboard:@"Sliding" instanceByIdentity:@"CollectNav"];
                 [self presentViewController:collectNav animated:YES completion:nil];
             }else{
                 [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];

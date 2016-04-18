@@ -54,31 +54,7 @@
     
     _headImg.image = [UIImage imageNamed:@"headImgBG"];
     
-    //获取模数指数
-    NSDictionary *dic = @{@"deviceType":@7001,
-                          @"deviceId":[Utilities uniqueVendor]
-                          };
-    
-    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
-        NSLog(@"responseObject : %@",responseObject);
-        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSDictionary *resultDict = responseObject[@"result"];
-            NSLog(@"resultDict = %@",resultDict);
-            NSString *exponent = resultDict[@"exponent"];
-            NSString *modulus = resultDict[@"modulus"];
-            //从单例化全局变量中删除数据
-            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
-            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
-            
-            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
-            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
-        }else{
-            NSLog(@"resultFailed");
-        }
-        
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
+    [self setMD5RSA];
 
 }
 
@@ -90,7 +66,7 @@
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
     //调试
-   
+    [self setMD5RSA];
     NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
     NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
     //MD5将原始密码进行MD5加密
@@ -103,6 +79,9 @@
                         @"deviceType":@7001,
                         @"deviceId":[Utilities uniqueVendor]};
     
+    NSLog(@"user = %@",_usernameTF.text);
+    NSLog(@"pw = %@",RSAPwd);
+
     if(_usernameTF.text.length == 0){
         [Utilities popUpAlertViewWithMsg:@"请填写用户名" andTitle:nil onView:self];
         return;
@@ -185,4 +164,32 @@
     return YES;
 }
 
+- (void)setMD5RSA{
+    //获取模数指数
+    NSDictionary *dic = @{@"deviceType":@7001,
+                          @"deviceId":[Utilities uniqueVendor]
+                          };
+    
+    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
+        NSLog(@"responseObject : %@",responseObject);
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *resultDict = responseObject[@"result"];
+            NSLog(@"resultDict = %@",resultDict);
+            NSString *exponent = resultDict[@"exponent"];
+            NSString *modulus = resultDict[@"modulus"];
+            //从单例化全局变量中删除数据
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
+            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
+            
+            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
+            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
+        }else{
+            NSLog(@"resultFailed");
+        }
+        
+    } failure:^(NSError *error) {
+        NSLog(@"%@",error);
+    }];
+
+}
 @end
