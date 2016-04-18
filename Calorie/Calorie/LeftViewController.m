@@ -64,8 +64,7 @@
     switch (indexPath.row) {
         case 0:
         {
-            MyMessageViewController *myMessageVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MyMessageVc"];
-
+//            MyMessageViewController *myMessageVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MyMessageVc"];
         }
             break;
         case 1:

@@ -47,7 +47,7 @@
     if (_phoneTF.text.length == 11) {
         [RequestAPI getURL:@"/register/verificationCode" withParameters:dic success:^(id responseObject) {
             NSLog(@"%@",responseObject);
-             [self setTime];
+//             [self setTime];
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
                 //定时器
                
@@ -92,23 +92,23 @@
 
 #pragma mark - Timer
 
-- (void)setTime{
-    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(changeTime) userInfo:nil repeats:YES];
-}
-
-- (void)changeTime{
-    NSString *str = @"秒";
-    if (count > 0) {
-        [_codeBtn setTitle:[NSString stringWithFormat:@"%ld%@",count,str] forState:UIControlStateNormal];
-        _codeBtn.userInteractionEnabled = NO;
-        count --;
-    }else{
-        [_codeBtn setTitle:@"重新发送" forState:UIControlStateNormal];
-        _codeBtn.userInteractionEnabled = YES;
-        count = 60;
-    }
-}
-
+//- (void)setTime{
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(changeTime) userInfo:nil repeats:YES];
+//}
+//
+//- (void)changeTime{
+//    NSString *str = @"秒";
+//    if (count > 0) {
+//        [_codeBtn setTitle:[NSString stringWithFormat:@"%ld%@",count,str] forState:UIControlStateNormal];
+//        _codeBtn.userInteractionEnabled = NO;
+//        count --;
+//    }else{
+//        [_codeBtn setTitle:@"重新发送" forState:UIControlStateNormal];
+//        _codeBtn.userInteractionEnabled = YES;
+//        count = 60;
+//    }
+//}
+//
 #pragma mark - TextField
 
 - (BOOL) textFieldShouldReturn:(UITextField *)textField{
