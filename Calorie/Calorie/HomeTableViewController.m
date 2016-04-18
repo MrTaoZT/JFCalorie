@@ -88,7 +88,7 @@
     if (hotClubOver) {
         return _hotClubInfoArray.count + 1;
     }else{
-        return 2;
+        return 1;
     }
 }
 
@@ -97,21 +97,13 @@
         TitleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (sportOver) {
-            //[cell.sportTypeBtn1 setTitle:_sportTypeArray[0][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn1 sd_setBackgroundImageWithURL:_sportTypeArray[0][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn2 setTitle:_sportTypeArray[1][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn2 sd_setBackgroundImageWithURL:_sportTypeArray[1][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn3 setTitle:_sportTypeArray[2][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn3 sd_setBackgroundImageWithURL:_sportTypeArray[2][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn4 setTitle:_sportTypeArray[3][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn4 sd_setBackgroundImageWithURL:_sportTypeArray[3][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn5 setTitle:_sportTypeArray[4][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn5 sd_setBackgroundImageWithURL:_sportTypeArray[4][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn6 setTitle:_sportTypeArray[5][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn6 sd_setBackgroundImageWithURL:_sportTypeArray[5][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn7 setTitle:_sportTypeArray[6][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn7 sd_setBackgroundImageWithURL:_sportTypeArray[6][@"frontImgUrl"] forState:UIControlStateNormal];
-            //[cell.sportTypeBtn8 setTitle:_sportTypeArray[7][@"name"] forState:UIControlStateNormal];
             [cell.sportTypeBtn8 sd_setBackgroundImageWithURL:_sportTypeArray[7][@"frontImgUrl"] forState:UIControlStateNormal];
             
             [cell.sportTypeBtn1 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -122,6 +114,7 @@
             [cell.sportTypeBtn6 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.sportTypeBtn7 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.sportTypeBtn8 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+            
             cell.sportTypeBtn1.tag = 1001;
             cell.sportTypeBtn2.tag = 1002;
             cell.sportTypeBtn3.tag = 1003;
@@ -146,17 +139,7 @@
             cell.addressLabel.text = tempDict[@"address"];
             cell.distanceLabel.text = [NSString stringWithFormat:@"距离%@米",tempDict[@"distance"]];
             cell.clubImageView.userInteractionEnabled = YES;
-            [cell.clubImageView sd_setImageWithURL:tempDict[@"image"]
-//                                  placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//                if(!error){
-//                    NSLog(@"imageURL-->%@",imageURL);
-//                }else{
-//                    NSLog(@"imageError-->%@",error.userInfo);
-//                }
-//            }
-             ];
-            
-            //hotClubOver = NO;
+            [cell.clubImageView sd_setImageWithURL:tempDict[@"image"]];
         }
         return cell;
     }
@@ -282,9 +265,7 @@
     if (hotClubOver) {
         [self getHotClub];
         //重新定位
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
-            [_locationManager startUpdatingLocation];
-        }
+        [_locationManager startUpdatingLocation];
     }else{
         if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
             [_locationManager startUpdatingLocation];
@@ -376,6 +357,29 @@
     }
 }
 
+//逆地理编码
+-(void)setAnnotatinAithDescriptionOnCoordinate:(CLLocationCoordinate2D)mapCoordinate completionHandler:(void(^)(NSDictionary * info))annotationCompletionHandler{
+    //初始化一个地理编码对象
+    CLGeocoder *geocoder = [CLGeocoder new];
+    //将CLLocationCoordinate2D对象转换成CLLocation对象
+    CLLocation *annotationLocation = [[CLLocation alloc]initWithLatitude:mapCoordinate.latitude longitude:mapCoordinate.longitude];
+    //执行你地理编码方法
+    [geocoder reverseGeocodeLocation:annotationLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (!error) {
+            //获取成功得到逆地理编码的结果
+            NSDictionary *info = [placemarks[0] addressDictionary];
+            NSLog(@"逆地理编码：%@",info);
+            /*
+             在此处触发annotationCompletionHandler这个block发生，并把info作为参数传递给方法执行方（乙方），此block会在逆地理编码成功后触发
+             */
+            annotationCompletionHandler(info);
+        }else{
+            [self checkError:error];
+            annotationCompletionHandler(nil);
+        }
+    }];
+}
+
 #pragma mark - privateNet
 
 - (void)getSportType{
@@ -411,8 +415,14 @@
 
 //获取热门俱乐部
 - (void)getHotClub{
+    if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
+        return;
+    }
     //参数配置
-    NSString *city = @"0510";
+//    if () {
+//        <#statements#>
+//    }
+    NSString *city = @"无锡";
     CGFloat setJing = jing;
     CGFloat setWei  = wei;
     if (_refresh.isRefreshing) {
@@ -522,9 +532,10 @@
             // 类方法，判断是否开启定位服务
             if ([CLLocationManager locationServicesEnabled]) {
                 NSLog(@"定位服务开启，被拒绝");
-                [Utilities popUpAlertViewWithMsg:@"您未对本程序授权定位，您可前往设置打开本app的定位，好为您服务" andTitle:@"" onView:self];
+                [Utilities popUpAlertViewWithMsg:@"您未对本程序授权定位，您可前往设置打开本app的定位，可更好的为您服务" andTitle:@"" onView:self];
             } else {
                 NSLog(@"定位服务关闭，不可用");
+                [Utilities popUpAlertViewWithMsg:@"定位服务关闭，不可用" andTitle:@"" onView:self];
             }
             break;
         }
@@ -548,28 +559,16 @@
 //滚动(上拉刷新)
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
-        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
-            if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-                hotClubPage ++;
-                
-                [self getHotClub];
-            }
-        }else{
-            if (scrollView.contentOffset.y > -64) {
-                hotClubPage ++;
-                [self getHotClub];
-            }
+        if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
+            hotClubPage ++;
+            
+            [self getHotClub];
         }
-    }
-    if (scrollView == _ADScrollView) {
-        NSLog(@"123%f,%f",_ADScrollView.frame.size.width,_ADScrollView.contentOffset.x);
-        if (_ADScrollView.contentOffset.x >= UI_SCREEN_W / 3) {
-            //_pageControl.currentPage = 1;
-        }else if(_ADScrollView.contentOffset.x >= UI_SCREEN_W / 3 * 2){
-            //_pageControl.currentPage = 2;
+    }else{
+        if (scrollView.contentOffset.y > -64) {
+            hotClubPage ++;
+            [self getHotClub];
         }
-        int currentPage = floor((_ADScrollView.contentOffset.x - _ADScrollView.frame.size.width / 5) / _ADScrollView.frame.size.width) + 1;
-        NSLog(@"%d",currentPage);
     }
 }
 
