@@ -109,8 +109,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
-    
-    [self.navigationController pushViewController:clubDetailView animated:YES];
+    if (requestOver) {
+        NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
+        NSLog(@"%@",clubKeyId);
+        clubDetailView.clubKeyId = clubKeyId;
+        [self.navigationController pushViewController:clubDetailView animated:YES];
+    }
 }
 
 /*
