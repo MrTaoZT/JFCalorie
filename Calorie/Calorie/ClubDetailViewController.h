@@ -10,4 +10,9 @@
 
 @interface ClubDetailViewController : UIViewController
 
+//运动id
+@property(nonatomic, strong)NSString *clubKeyId;
+//用户id
+@property(nonatomic, strong)NSString *memberId;
+
 @end

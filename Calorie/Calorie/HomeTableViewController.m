@@ -39,7 +39,11 @@
 //位置管理
 @property(nonatomic, strong)CLLocationManager *locationManager;
 
+//刷新器
 @property(nonatomic, strong)UIRefreshControl *refresh;
+
+//页码控制
+@property(nonatomic, strong)UIPageControl *pageControl;
 
 @end
 
@@ -126,8 +130,6 @@
             cell.sportTypeBtn6.tag = 1006;
             cell.sportTypeBtn7.tag = 1007;
             cell.sportTypeBtn8.tag = 1008;
-            
-            sportOver = NO;
         }
         return cell;
     }else{
@@ -163,7 +165,7 @@
 //cell高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
-        return 189;
+        return 190;
     }
     return 180;
 }
@@ -174,10 +176,10 @@
     if (indexPath.row != 0) {
         ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
         if (sportOver) {
-            
-            
+            NSString *clubKeyId = _hotClubInfoArray[indexPath.row][@"clubKeyId"];
+            clubDetailView.clubKeyId = clubKeyId;
+            [self.navigationController pushViewController:clubDetailView animated:YES];
         }
-        [self.navigationController pushViewController:clubDetailView animated:YES];
     }
 }
 
@@ -198,15 +200,40 @@
     
     //初始化刷新器
     [self initRefresh];
+    
+    //初始化广告
+    [self initAD];
+}
 
+- (void)initAD{
     //广告
-    UIView *view = [[UIView alloc]initWithFrame:self.view.frame];
-    view.backgroundColor = [UIColor orangeColor];
-    view.frame = CGRectMake(0, 0, 1000, 100);
-    [_ADScrollView addSubview:view];
+    _ADScrollView.delegate = self;
+    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UI_SCREEN_W, 80)];
+    UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(UI_SCREEN_W, 0, UI_SCREEN_W, 80)];
+    UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(UI_SCREEN_W * 2, 0, UI_SCREEN_W, 80)];
+    view1.backgroundColor = [UIColor orangeColor];
+    view2.backgroundColor = [UIColor blueColor];
+    view3.backgroundColor = [UIColor blackColor];
+    
+    [_ADScrollView addSubview:view1];
+    [_ADScrollView addSubview:view2];
+    [_ADScrollView addSubview:view3];
+    
+    _ADScrollView.showsHorizontalScrollIndicator = NO;
+    _ADScrollView.contentSize = CGSizeMake(UI_SCREEN_W * 3, 80);
     _ADScrollView.alwaysBounceHorizontal = YES;
     _ADScrollView.pagingEnabled = YES;
+    NSLog(@"%f",UI_SCREEN_W * 3);
+    NSLog(@"%f,%f",_ADScrollView.contentSize.width, _ADScrollView.contentOffset.x);
     
+//    CGFloat pageWidth = 10 * [_ADScrollView subviews].count;
+//    CGFloat pageHeight = 30;
+//    _pageControl = [[UIPageControl alloc]initWithFrame:CGRectMake((UI_SCREEN_W - pageWidth) / 2, _ADScrollView.frame.size.height - pageHeight, pageWidth, pageHeight)];
+//    //当前页码
+//    _pageControl.currentPage = 1;
+//    //共有几页
+//    _pageControl.numberOfPages = [_ADScrollView subviews].count - 1;
+//    [self.tableView addSubview:_pageControl];
 }
 
 - (void)initailCLLocation{
@@ -223,10 +250,13 @@
         [_locationManager requestWhenInUseAuthorization];
 #endif
     }
-    //开始持续获取设备坐标，更新位置
-    [_locationManager startUpdatingLocation];
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        //开始持续获取设备坐标，更新位置
+        [_locationManager startUpdatingLocation];
+    }
 }
 
+//初始化刷新器
 - (void)initRefresh{
     _refresh = [[UIRefreshControl alloc]init];
     
@@ -250,11 +280,22 @@
 //当第一次加载app完后才能刷新
 - (void)conRefresh{
     if (hotClubOver) {
-        [self initailData];
+        [self getHotClub];
         //重新定位
-        [_locationManager startUpdatingLocation];
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
+            [_locationManager startUpdatingLocation];
+        }
     }else{
-        [Utilities popUpAlertViewWithMsg:@"已经在刷新了" andTitle:@"" onView:self];
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
+            [_locationManager startUpdatingLocation];
+        }
+        [Utilities popUpAlertViewWithMsg:@"正在获取数据" andTitle:@"" onView:self];
+        if (_refresh.isRefreshing) {
+            [_refresh endRefreshing];
+        }
+    }
+    if (!sportOver) {
+        [self getSportType];
     }
 }
 
@@ -368,7 +409,8 @@
     }];
 }
 
-- (void)initailData{
+//获取热门俱乐部
+- (void)getHotClub{
     //参数配置
     NSString *city = @"0510";
     CGFloat setJing = jing;
@@ -386,11 +428,6 @@
                                  @"page":@(hotClubPage),
                                  @"perPage":@(perPage)
                                  };
-    [self getHotClub:parameters];
-}
-
-//获取热门俱乐部
-- (void)getHotClub:(NSDictionary *)parameters{
     
     __weak HomeTableViewController *weakSelf = self;
     
@@ -419,15 +456,18 @@
                 NSString *address = info[i][@"address"];
                 NSString *distance = info[i][@"distance"];
                 NSString *image = info[i][@"image"];
+                NSString *clubKeyId = info[i][@"id"];
+                
                 NSDictionary *dict = @{
                                        @"name":name,
                                        @"address":address,
                                        @"distance":distance,
-                                       @"image":image
+                                       @"image":image,
+                                       @"clubKeyId":clubKeyId
                                        };
                 [weakSelf.hotClubInfoArray addObject:dict];
             }
-            //网络请求完毕后刷新cell
+            //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
             hotClubOver = YES;
             totalPage = [responseObject[@"totalPage"] integerValue];
             [weakSelf.tableView reloadData];
@@ -435,6 +475,9 @@
             [Utilities popUpAlertViewWithMsg:@"保持网络畅通，稍后再试" andTitle:@"" onView:self];
         }
     } failure:^(NSError *error) {
+        if (_refresh.isRefreshing) {
+            [_refresh endRefreshing];
+        }
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
     }];
     
@@ -442,13 +485,14 @@
 
 #pragma mark - CLLocationManagerDelegate
 
+//定位开始执行
 - (void)locationManager:(CLLocationManager *)manager
     didUpdateToLocation:(CLLocation *)newLocation
            fromLocation:(CLLocation *)oldLocation{
     if (newLocation.coordinate.latitude == oldLocation.coordinate.latitude && newLocation.coordinate.longitude == oldLocation.coordinate.longitude) {
         jing = newLocation.coordinate.longitude;
         wei = newLocation.coordinate.latitude;
-        [self initailData];
+        [self getHotClub];
         [manager stopUpdatingLocation];
     }
 }
@@ -478,6 +522,7 @@
             // 类方法，判断是否开启定位服务
             if ([CLLocationManager locationServicesEnabled]) {
                 NSLog(@"定位服务开启，被拒绝");
+                [Utilities popUpAlertViewWithMsg:@"您未对本程序授权定位，您可前往设置打开本app的定位，好为您服务" andTitle:@"" onView:self];
             } else {
                 NSLog(@"定位服务关闭，不可用");
             }
@@ -503,15 +548,28 @@
 //滚动(上拉刷新)
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
-        if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-            hotClubPage ++;
-            [self initailData];
+        if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorizedWhenInUse) {
+            if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
+                hotClubPage ++;
+                
+                [self getHotClub];
+            }
+        }else{
+            if (scrollView.contentOffset.y > -64) {
+                hotClubPage ++;
+                [self getHotClub];
+            }
         }
-    }else{
-        if (scrollView.contentOffset.y > -64) {
-            hotClubPage ++;
-            [self initailData];
+    }
+    if (scrollView == _ADScrollView) {
+        NSLog(@"123%f,%f",_ADScrollView.frame.size.width,_ADScrollView.contentOffset.x);
+        if (_ADScrollView.contentOffset.x >= UI_SCREEN_W / 3) {
+            //_pageControl.currentPage = 1;
+        }else if(_ADScrollView.contentOffset.x >= UI_SCREEN_W / 3 * 2){
+            //_pageControl.currentPage = 2;
         }
+        int currentPage = floor((_ADScrollView.contentOffset.x - _ADScrollView.frame.size.width / 5) / _ADScrollView.frame.size.width) + 1;
+        NSLog(@"%d",currentPage);
     }
 }
 
