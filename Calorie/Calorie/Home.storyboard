@@ -269,7 +269,7 @@
             </objects>
             <point key="canvasLocation" x="2191.5" y="456.5"/>
         </scene>
-        <!--Club Detail View Controller-->
+        <!--会所详情-->
         <scene sceneID="Od1-tU-ej2">
             <objects>
                 <viewController storyboardIdentifier="ClubDetailView" useStoryboardIdentifierAsRestorationIdentifier="YES" id="F8G-2J-0FP" customClass="ClubDetailViewController" sceneMemberID="viewController">
@@ -280,9 +280,49 @@
                     <view key="view" contentMode="scaleToFill" id="3UV-YO-IhA">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SFf-5q-2cx">
+                                <rect key="frame" x="0.0" y="64" width="375" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="180" id="up7-VE-Jx2"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="飓风健身馆" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TAd-kX-P0f">
+                                <rect key="frame" x="0.0" y="244" width="300" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mKv-9d-6kS">
+                                <rect key="frame" x="300" y="244" width="75" height="30"/>
+                                <state key="normal" title="已收藏"/>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LZJ-Tk-n7j">
+                                <rect key="frame" x="0.0" y="274" width="375" height="1"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="2Xu-aC-ySd"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="LZJ-Tk-n7j" firstAttribute="leading" secondItem="3UV-YO-IhA" secondAttribute="leading" id="0FQ-xn-E4K"/>
+                            <constraint firstItem="SFf-5q-2cx" firstAttribute="top" secondItem="iXz-Gx-2Va" secondAttribute="bottom" id="6HC-zY-2K6"/>
+                            <constraint firstAttribute="trailing" secondItem="mKv-9d-6kS" secondAttribute="trailing" id="7bH-99-qkI"/>
+                            <constraint firstItem="LZJ-Tk-n7j" firstAttribute="top" secondItem="mKv-9d-6kS" secondAttribute="bottom" id="GFA-kK-lEe"/>
+                            <constraint firstAttribute="trailing" secondItem="SFf-5q-2cx" secondAttribute="trailing" id="M8a-qQ-x1W"/>
+                            <constraint firstItem="mKv-9d-6kS" firstAttribute="leading" secondItem="TAd-kX-P0f" secondAttribute="trailing" id="MBZ-GP-liu"/>
+                            <constraint firstItem="SFf-5q-2cx" firstAttribute="leading" secondItem="3UV-YO-IhA" secondAttribute="leading" id="O1W-Kb-y2N"/>
+                            <constraint firstItem="mKv-9d-6kS" firstAttribute="width" secondItem="TAd-kX-P0f" secondAttribute="width" multiplier="1:4" id="XfL-mb-0Yd"/>
+                            <constraint firstItem="TAd-kX-P0f" firstAttribute="leading" secondItem="3UV-YO-IhA" secondAttribute="leading" id="aju-5v-0Ob"/>
+                            <constraint firstItem="mKv-9d-6kS" firstAttribute="height" secondItem="TAd-kX-P0f" secondAttribute="height" id="h68-HI-MXs"/>
+                            <constraint firstItem="TAd-kX-P0f" firstAttribute="top" secondItem="SFf-5q-2cx" secondAttribute="bottom" id="imX-6m-5p0"/>
+                            <constraint firstItem="mKv-9d-6kS" firstAttribute="top" secondItem="SFf-5q-2cx" secondAttribute="bottom" id="o3p-Wx-88c"/>
+                            <constraint firstAttribute="trailing" secondItem="LZJ-Tk-n7j" secondAttribute="trailing" id="zgP-Cy-dyn"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="1oR-Dx-5Iu"/>
+                    <navigationItem key="navigationItem" title="会所详情" id="1oR-Dx-5Iu"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5j6-1e-v7L" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
