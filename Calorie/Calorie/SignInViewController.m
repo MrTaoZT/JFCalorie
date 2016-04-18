@@ -37,8 +37,9 @@
         _usernameTF.text = username;
         _passwordTF.text = password;
     }
-//    UINavigationController *signInNc = [[UINavigationController alloc]init];
-//    [signInNc addChildViewController:self];
+    _usernameTF.text = [[StorageMgr singletonStorageMgr]objectForKey:@"LeftUsername"];
+    [[StorageMgr singletonStorageMgr] removeObjectForKey:@"LeftUsername"];
+    
 }
 
 - (void)viewDidLoad {
@@ -138,6 +139,8 @@
             
             [[StorageMgr singletonStorageMgr]addKey:@"LeftUsername" andValue:_usernameTF.text];
             
+            //缓存  键名  能判断用户上一次是否登录
+            [Utilities setUserDefaults:@"OrLogin" content:@YES];
             [aiv stopAnimating];
             [self.navigationController pushViewController:_slidingVc animated:YES];
             

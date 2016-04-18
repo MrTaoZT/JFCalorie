@@ -24,6 +24,8 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    //判断用户上一次是否登录,且有没有退出登录
+    [self lastOrLogin];
     //判断用户是否登录
     [self signInOrSignUp];
 }
@@ -52,6 +54,16 @@
     }
 }
 
+- (void)lastOrLogin{
+    //首先判断用户上次是否登录
+    if([[Utilities getUserDefaults:@"OrLogin"] boolValue]){
+        //如果登录了那么这里在判断  上一次是否按了退出按钮   yse  表示按了
+        if ( [[Utilities getUserDefaults:@"AddUserAndPw"] boolValue]) {
+//            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
+//            [StorageMgr singletonStorageMgr]addKey:@"" andValue:<#(id)#>
+        }
+    }
+}
 #pragma mark - TabView
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -114,13 +126,17 @@
 #pragma mark - signOut
 
 - (IBAction)signOut:(UIButton *)sender forEvent:(UIEvent *)event {
+    [Utilities removeUserDefaults:@"AddUserAndPw"];
+    [Utilities setUserDefaults:@"AddUserAndPw" content:@NO];
+    
     //值如果是YES  则是登录了  else  NO则是未登录
     if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
+        //缓存一个bool 类型 键名   可以判断下次登录是否自动显示账号密码
+        [Utilities setUserDefaults:@"AddUserAndPw" content:@YES];
         
         SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
         [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
         [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_nickName.text];
-        [[StorageMgr singletonStorageMgr] removeObjectForKey:@"LeftUsername"];
         [self presentViewController:signIn animated:YES completion:nil];
     }else{
         
