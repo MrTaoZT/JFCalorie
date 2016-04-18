@@ -35,7 +35,6 @@
 		3878787A1CC496A500FEE5B5 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 387878791CC496A500FEE5B5 /* MessageTableViewCell.m */; };
 		3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787C1CC496B400FEE5B5 /* WorkTableViewCell.m */; };
 		387878801CC496C700FEE5B5 /* CollectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787F1CC496C700FEE5B5 /* CollectTableViewCell.m */; };
-		38B573071CC482C700F020BF /* Sliding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 38B573061CC482C700F020BF /* Sliding.storyboard */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
 		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA151CC3565500864F24 /* TabBarViewController.m */; };
@@ -126,7 +125,6 @@
 		3878787C1CC496B400FEE5B5 /* WorkTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkTableViewCell.m; sourceTree = "<group>"; };
 		3878787E1CC496C700FEE5B5 /* CollectTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectTableViewCell.h; sourceTree = "<group>"; };
 		3878787F1CC496C700FEE5B5 /* CollectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectTableViewCell.m; sourceTree = "<group>"; };
-		38B573061CC482C700F020BF /* Sliding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Sliding.storyboard; sourceTree = "<group>"; };
 		4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		B808BA0D1CC3242C00864F24 /* SportTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportTypeTableViewCell.h; sourceTree = "<group>"; };
@@ -205,7 +203,6 @@
 				187725E21CC20F5B003F8BD8 /* Assets.xcassets */,
 				187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */,
 				186685EC1CC2318C00B22A25 /* Home.storyboard */,
-				38B573061CC482C700F020BF /* Sliding.storyboard */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -554,7 +551,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38B573071CC482C700F020BF /* Sliding.storyboard in Resources */,
 				187725E61CC20F5B003F8BD8 /* LaunchScreen.storyboard in Resources */,
 				187725E31CC20F5B003F8BD8 /* Assets.xcassets in Resources */,
 				187725DE1CC20F5B003F8BD8 /* Main.storyboard in Resources */,
