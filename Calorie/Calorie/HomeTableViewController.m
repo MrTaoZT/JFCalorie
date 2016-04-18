@@ -231,7 +231,6 @@
 
 - (void)initailAllControl{
     sportOver = NO;
-    hotClubOver = NO;
     locationError = NO;
     _sportTypeArray = [NSMutableArray new];
     _hotClubInfoArray = [NSMutableArray new];
@@ -313,9 +312,12 @@
 
 //当第一次加载app完后才能刷新
 - (void)conRefresh{
+    //获得运动类型
     if (!sportOver) {
+      
         [self getSportType];
     }
+    //获得热门俱乐部
     [self getHotClub];
 }
 
@@ -333,6 +335,7 @@
             break;
         case kCLErrorLocationUnknown:{
             [Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
+            locationError = YES;
         }
             break;
         default:{
@@ -458,17 +461,23 @@
 
 //获取热门俱乐部
 - (void)getHotClub{
+    NSLog(@"刷新？%d",_refresh.isRefreshing);
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
         [Utilities popUpAlertViewWithMsg:@"您没有给与位置权限" andTitle:@"" onView:self];
+        if (_refresh.isRefreshing) {
+            [_refresh endRefreshing];
+        }
         return;
     }
     
     //没有位置不能获得经纬度
     if (locationError) {
         [_refresh endRefreshing];
-        locationError = NO;
         return;
     }
+    
+    NSLog(@"获取数据");
+    hotClubOver = YES;
     
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
     __weak HomeTableViewController *weakSelf = self;
@@ -495,6 +504,8 @@
         
         //网络请求
         [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
+            //关闭上拉翻页提示
+            [weakSelf showLoding:NO];
             if (weakSelf.refresh.isRefreshing) {
                 [weakSelf.refresh endRefreshing];
             }
@@ -555,6 +566,7 @@
            fromLocation:(CLLocation *)oldLocation{
     if (newLocation.coordinate.latitude == oldLocation.coordinate.latitude && newLocation.coordinate.longitude == oldLocation.coordinate.longitude) {
         NSLog(@"获得完毕经纬度");
+        locationError = NO;
         _jing = newLocation.coordinate.longitude;
         _wei = newLocation.coordinate.latitude;
         [self getHotClub];
@@ -615,14 +627,37 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
         if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-            _hotClubPage ++;
-            [self getHotClub];
+            if (_hotClubPage > _totalPage) {
+                _hotClubPage ++;
+                [self getHotClub];
+            }else{
+                [self showLoding:YES];
+            }
         }
     }else{
         if (scrollView.contentOffset.y > -64) {
-            _hotClubPage ++;
-            [self getHotClub];
+            if (_hotClubPage > _totalPage) {
+                _hotClubPage ++;
+                [self getHotClub];
+            }else{
+                [self showLoding:YES];
+            }
         }
+    }
+}
+
+- (void)showLoding:(BOOL)show{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UI_SCREEN_W, 40)];
+    view.backgroundColor = [UIColor lightGrayColor];
+    CGFloat width = 100;
+    CGFloat height = 40;
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake((UI_SCREEN_W - width) / 2, (UI_SCREEN_H - height) / 2, width, height)];
+    label.text = @"加载中";
+    [view addSubview:label];
+    if (show) {
+        [self.tableView.tableFooterView addSubview:view];
+    }else{
+        [view removeFromSuperview];
     }
 }
 
