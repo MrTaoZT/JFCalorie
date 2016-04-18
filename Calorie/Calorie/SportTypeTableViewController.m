@@ -16,11 +16,18 @@
     BOOL requestOver;
 }
 
+@property(nonatomic)NSInteger clubPage;
+@property(nonatomic)NSInteger totalPage;
 @property(nonatomic, strong)NSMutableArray *clubArray;
 
 @end
 
 @implementation SportTypeTableViewController
+
+- (void)viewDidAppear:(BOOL)animated{
+    _clubPage = 1;
+    
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -29,7 +36,10 @@
     
     _clubArray = [NSMutableArray new];
     
-    NSLog(@"id%@",_sportType);
+    self.title = _sportName;
+    
+    //NSLog(@"id%@",_sportType);
+    _totalPage = 0;
     
     //获得当前类型id的会所
     [self getSportClub];
@@ -56,7 +66,7 @@
     
     if (requestOver) {
         NSDictionary *dict = _clubArray[indexPath.row];
-        NSLog(@"dict%@",dict[@"clubAddressB"]);
+        //NSLog(@"dict%@",dict[@"clubAddressB"]);
         cell.nameLabel.text = dict[@"clubName"];
         cell.addressLabel.text = dict[@"clubAddressB"];
         cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",dict[@"distance"]];
@@ -76,8 +86,7 @@
     //根据条件，获取会所列表
     NSString *netUrl = @"/clubController/nearSearchClub";
     //默认
-    NSString *city = @"0510";
-    NSInteger page = 1;
+    NSString *city = _city;
     NSInteger perPage = 10;
     NSInteger type = 0;
     NSString *featureId = _sportType;
@@ -86,16 +95,39 @@
                                  @"city":city,
                                  @"jing":@(_setJing),
                                  @"wei":@(_setWei),
-                                 @"page":@(page),
+                                 @"page":@(_clubPage),
                                  @"perPage":@(perPage),
                                  @"type":@(type),
                                  @"featureId":featureId
                                  };
+    
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             //NSLog(@"-->%@",responseObject);
+            if (weakSelf.clubPage == 1) {
+                weakSelf.clubArray = nil;
+                weakSelf.clubArray = [NSMutableArray new];
+            }
             NSDictionary *dict = responseObject[@"result"];
-            weakSelf.clubArray = dict[@"models"];
+            NSArray *info = dict[@"models"];
+            NSDictionary *pageinfo = dict[@"pagingInfo"];
+            weakSelf.totalPage =  [pageinfo[@"totalPage"] integerValue];
+            NSLog(@"total%ld",_totalPage);
+            //封装数据
+            for (int i = 0; i < info.count; i++) {
+                NSString *name = info[i][@"clubName"];
+                NSString *address = info[i][@"clubAddressB"];
+                NSString *distance = info[i][@"distance"];
+                NSString *image = info[i][@"clubLogo"];
+                
+                NSDictionary *dict = @{
+                                       @"clubName":name,
+                                       @"clubAddressB":address,
+                                       @"distance":distance,
+                                       @"clubLogo":image,
+                                       };
+                [weakSelf.clubArray addObject:dict];
+            }
             requestOver = YES;
             [weakSelf.tableView reloadData];
         }else{
@@ -111,9 +143,34 @@
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
     if (requestOver) {
         NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
-        NSLog(@"%@",clubKeyId);
+        //NSLog(@"%@",clubKeyId);
         clubDetailView.clubKeyId = clubKeyId;
         [self.navigationController pushViewController:clubDetailView animated:YES];
+    }
+}
+
+#pragma mark - UIScrollViewDelegate
+
+//滚动(上拉刷新)
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
+        if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
+            if (_totalPage > _clubPage) {
+                ++_clubPage;
+                [self getSportClub];
+            }else{
+                NSLog(@"没有更多数据");
+            }
+        }
+    }else{
+        if (scrollView.contentOffset.y > -74) {
+            if (_totalPage < _clubPage) {
+                ++_clubPage;
+                [self getSportClub];
+            }else{
+                NSLog(@"没有更多数据");
+            }
+        }
     }
 }
 
