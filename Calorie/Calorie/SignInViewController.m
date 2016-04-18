@@ -32,7 +32,7 @@
         NSString *username = [[StorageMgr singletonStorageMgr] objectForKey:@"Username"];
         NSString *password = [[StorageMgr singletonStorageMgr] objectForKey:@"Password"];
         //清除用完的用户名和密码
-        [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Username"];
+         [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Username"];
         [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Password"];
         _usernameTF.text = username;
         _passwordTF.text = password;
@@ -110,6 +110,7 @@
         [Utilities popUpAlertViewWithMsg:@"请填写密码" andTitle:nil onView:self];
         return;
     }
+    UIActivityIndicatorView *aiv = [Utilities getCoverOnView:self.view];
     [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
         NSLog(@"%@",responseObject);
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
@@ -135,10 +136,13 @@
             //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
             [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
             
+            [[StorageMgr singletonStorageMgr]addKey:@"LeftUsername" andValue:_usernameTF.text];
+            
+            [aiv stopAnimating];
             [self.navigationController pushViewController:_slidingVc animated:YES];
-            [self presentViewController:_slidingVc animated:YES completion:nil];
             
         }else{
+            //这还要修改
             [Utilities popUpAlertViewWithMsg:@"用户名或密码错误" andTitle:nil onView:self];
             _passwordTF.text = @"";
         }

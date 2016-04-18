@@ -8,8 +8,14 @@
 
 #import "LeftViewController.h"
 #import "SignInViewController.h"
-#import "MyMessageViewController.h"
 #import "NavigationViewController.h"
+#import "MyMessageViewController.h"
+#import "MyWorkViewController.h"
+#import "MyCollectViewController.h"
+#import "MessageNavViewController.h"
+#import "WorkNavViewController.h"
+#import "CollectNavViewController.h"
+
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @end
@@ -37,7 +43,7 @@
     //值如果是YES  则是登录了  else  NO则是未登录
     if([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]){
         _headImg.image = [UIImage imageNamed:@"headImgBG"];
-        _nickName.text = @"18379151744";
+        _nickName.text = [[StorageMgr singletonStorageMgr] objectForKey:@"LeftUsername"];
     }else{
         _headImg.image = [UIImage imageNamed:@"headImgBG"];
         _nickName.text = @"未登录";
@@ -64,14 +70,33 @@
     switch (indexPath.row) {
         case 0:
         {
-//            MyMessageViewController *myMessageVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MyMessageVc"];
+            if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
+                MessageNavViewController *messageNav = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MessageNav"];
+                [self presentViewController:messageNav animated:YES completion:nil];
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
+            }
         }
             break;
         case 1:
-
+        {
+            if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
+                MessageNavViewController *workNav = [Utilities getStoryboard:@"Home" instanceByIdentity:@"WorkNav"];
+                [self presentViewController:workNav animated:YES completion:nil];
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
+            }
+        }
             break;
         case 2:
-            
+        {
+            if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
+                MessageNavViewController *collectNav = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CollectNav"];
+                [self presentViewController:collectNav animated:YES completion:nil];
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
+            }
+        }
             break;
         default:
             break;
@@ -85,6 +110,9 @@
     NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
     [self presentViewController:navView animated:YES completion:nil];
 }
+
+#pragma mark - signOut
+
 - (IBAction)signOut:(UIButton *)sender forEvent:(UIEvent *)event {
     //值如果是YES  则是登录了  else  NO则是未登录
     if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
@@ -92,6 +120,7 @@
         SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
         [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
         [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_nickName.text];
+        [[StorageMgr singletonStorageMgr] removeObjectForKey:@"LeftUsername"];
         [self presentViewController:signIn animated:YES completion:nil];
     }else{
         
