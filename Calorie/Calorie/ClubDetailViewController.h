@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ClubDetailViewController : UIViewController
+@interface ClubDetailViewController : UITableViewController
 
 //运动id
 @property(nonatomic, strong)NSString *clubKeyId;

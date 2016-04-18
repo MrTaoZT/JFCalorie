@@ -39,6 +39,9 @@
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
 		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA151CC3565500864F24 /* TabBarViewController.m */; };
+		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
+		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
+		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
 		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
 		B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D91CC2710900641C06 /* HomeTableViewController.m */; };
 		B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */; };
@@ -130,6 +133,12 @@
 		B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewCell.m; sourceTree = "<group>"; };
 		B808BA141CC3565500864F24 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		B808BA151CC3565500864F24 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		B8783B5E1CC4D34400F01B4B /* FirstTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTableViewCell.h; sourceTree = "<group>"; };
+		B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTableViewCell.m; sourceTree = "<group>"; };
+		B8783B611CC4D36200F01B4B /* SecontTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecontTableViewCell.h; sourceTree = "<group>"; };
+		B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecontTableViewCell.m; sourceTree = "<group>"; };
+		B8783B641CC4D37500F01B4B /* ThiredTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThiredTableViewCell.h; sourceTree = "<group>"; };
+		B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThiredTableViewCell.m; sourceTree = "<group>"; };
 		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		B8D900D61CC2554C00641C06 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		B8D900D81CC2710900641C06 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
@@ -189,6 +198,7 @@
 		184477721CC21982003B2354 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B8783B5D1CC4D2F700F01B4B /* ClubDetailCell */,
 				387878771CC4966E00FEE5B5 /* SlidingCell */,
 				B808BA101CC3246500864F24 /* HomeCell */,
 				187725DC1CC20F5B003F8BD8 /* Main.storyboard */,
@@ -393,6 +403,19 @@
 				B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */,
 			);
 			name = HomeCell;
+			sourceTree = "<group>";
+		};
+		B8783B5D1CC4D2F700F01B4B /* ClubDetailCell */ = {
+			isa = PBXGroup;
+			children = (
+				B8783B5E1CC4D34400F01B4B /* FirstTableViewCell.h */,
+				B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */,
+				B8783B611CC4D36200F01B4B /* SecontTableViewCell.h */,
+				B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */,
+				B8783B641CC4D37500F01B4B /* ThiredTableViewCell.h */,
+				B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */,
+			);
+			name = ClubDetailCell;
 			sourceTree = "<group>";
 		};
 		B8D900D41CC2551D00641C06 /* Login */ = {
@@ -616,11 +639,13 @@
 				B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
+				B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */,
 				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
 				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,
 				B8F6B0551CC46EE700D5C7F1 /* CollectNavViewController.m in Sources */,
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
+				B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */,
 				1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */,
 				B8F6B04F1CC46D9100D5C7F1 /* MessageNavViewController.m in Sources */,
 				B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */,
@@ -634,6 +659,7 @@
 				B8F6B04C1CC46D0400D5C7F1 /* MyCollectViewController.m in Sources */,
 				382815BD1CC395E60016A1A5 /* MyMessageViewController.m in Sources */,
 				1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */,
+				B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */,
 				387878801CC496C700FEE5B5 /* CollectTableViewCell.m in Sources */,
 				382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */,
 				3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */,
