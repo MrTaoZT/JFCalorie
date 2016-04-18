@@ -38,6 +38,7 @@
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
 		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA151CC3565500864F24 /* TabBarViewController.m */; };
+		B82AB4751CC51DDB005FADEA /* Sliding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B82AB4741CC51DDB005FADEA /* Sliding.storyboard */; };
 		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
 		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
@@ -131,6 +132,7 @@
 		B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewCell.m; sourceTree = "<group>"; };
 		B808BA141CC3565500864F24 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		B808BA151CC3565500864F24 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		B82AB4741CC51DDB005FADEA /* Sliding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Sliding.storyboard; sourceTree = "<group>"; };
 		B8783B5E1CC4D34400F01B4B /* FirstTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTableViewCell.h; sourceTree = "<group>"; };
 		B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTableViewCell.m; sourceTree = "<group>"; };
 		B8783B611CC4D36200F01B4B /* SecontTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecontTableViewCell.h; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				187725E21CC20F5B003F8BD8 /* Assets.xcassets */,
 				187725E41CC20F5B003F8BD8 /* LaunchScreen.storyboard */,
 				186685EC1CC2318C00B22A25 /* Home.storyboard */,
+				B82AB4741CC51DDB005FADEA /* Sliding.storyboard */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B82AB4751CC51DDB005FADEA /* Sliding.storyboard in Resources */,
 				187725E61CC20F5B003F8BD8 /* LaunchScreen.storyboard in Resources */,
 				187725E31CC20F5B003F8BD8 /* Assets.xcassets in Resources */,
 				187725DE1CC20F5B003F8BD8 /* Main.storyboard in Resources */,
