@@ -33,6 +33,8 @@
     
     //获得当前类型id的会所
     [self getSportClub];
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {

@@ -39,6 +39,8 @@
 //位置管理
 @property(nonatomic, strong)CLLocationManager *locationManager;
 
+@property(nonatomic, strong)UIRefreshControl *refresh;
+
 @end
 
 @implementation HomeTableViewController
@@ -226,7 +228,7 @@
 }
 
 - (void)initRefresh{
-    self.refreshControl = [[UIRefreshControl alloc]init];
+    _refresh = [[UIRefreshControl alloc]init];
     
     NSString *title = [NSString stringWithFormat:@"刷新ing..."];
     NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
@@ -237,17 +239,20 @@
                                       NSParagraphStyleAttributeName:style,
                                       NSForegroundColorAttributeName:[UIColor magentaColor]};
     NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
-    self.refreshControl.attributedTitle = attributedTitle;
+    _refresh.attributedTitle = attributedTitle;
     
-    self.refreshControl.tintColor = [UIColor orangeColor];
-    self.refreshControl.backgroundColor = [UIColor whiteColor];
-    [self.refreshControl addTarget:self action:@selector(conRefresh) forControlEvents:UIControlEventValueChanged];
+    _refresh.tintColor = [UIColor orangeColor];
+    _refresh.backgroundColor = [UIColor whiteColor];
+    [_refresh addTarget:self action:@selector(conRefresh) forControlEvents:UIControlEventValueChanged];
+    [self.tableView addSubview:_refresh];
 }
 
 //当第一次加载app完后才能刷新
 - (void)conRefresh{
     if (hotClubOver) {
         [self initailData];
+        //重新定位
+        [_locationManager startUpdatingLocation];
     }else{
         [Utilities popUpAlertViewWithMsg:@"已经在刷新了" andTitle:@"" onView:self];
     }
@@ -368,7 +373,7 @@
     NSString *city = @"0510";
     CGFloat setJing = jing;
     CGFloat setWei  = wei;
-    if (self.refreshControl.isRefreshing) {
+    if (_refresh.isRefreshing) {
         hotClubPage = 1;
     }
     //hotClubPage = 1;
@@ -394,8 +399,8 @@
 
     //网络请求
     [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
-        if (self.refreshControl.isRefreshing) {
-            [self.refreshControl endRefreshing];
+        if (_refresh.isRefreshing) {
+            [_refresh endRefreshing];
         }
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             //NSLog(@"%@",responseObject);

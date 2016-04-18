@@ -39,6 +39,11 @@
 		B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D91CC2710900641C06 /* HomeTableViewController.m */; };
 		B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */; };
 		B8D900E11CC2718A00641C06 /* HotClubTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */; };
+		B8F6B0491CC46CB100D5C7F1 /* MyWorkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B0481CC46CB100D5C7F1 /* MyWorkViewController.m */; };
+		B8F6B04C1CC46D0400D5C7F1 /* MyCollectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B04B1CC46D0400D5C7F1 /* MyCollectViewController.m */; };
+		B8F6B04F1CC46D9100D5C7F1 /* MessageNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B04E1CC46D9100D5C7F1 /* MessageNavViewController.m */; };
+		B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B0511CC46EC800D5C7F1 /* WorkNavViewController.m */; };
+		B8F6B0551CC46EE700D5C7F1 /* CollectNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B0541CC46EE700D5C7F1 /* CollectNavViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +127,16 @@
 		B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleTableViewCell.m; sourceTree = "<group>"; };
 		B8D900DF1CC2718A00641C06 /* HotClubTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotClubTableViewCell.h; sourceTree = "<group>"; };
 		B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotClubTableViewCell.m; sourceTree = "<group>"; };
+		B8F6B0471CC46CB100D5C7F1 /* MyWorkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyWorkViewController.h; sourceTree = "<group>"; };
+		B8F6B0481CC46CB100D5C7F1 /* MyWorkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyWorkViewController.m; sourceTree = "<group>"; };
+		B8F6B04A1CC46D0400D5C7F1 /* MyCollectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectViewController.h; sourceTree = "<group>"; };
+		B8F6B04B1CC46D0400D5C7F1 /* MyCollectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectViewController.m; sourceTree = "<group>"; };
+		B8F6B04D1CC46D9100D5C7F1 /* MessageNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageNavViewController.h; sourceTree = "<group>"; };
+		B8F6B04E1CC46D9100D5C7F1 /* MessageNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageNavViewController.m; sourceTree = "<group>"; };
+		B8F6B0501CC46EC800D5C7F1 /* WorkNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WorkNavViewController.h; sourceTree = "<group>"; };
+		B8F6B0511CC46EC800D5C7F1 /* WorkNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WorkNavViewController.m; sourceTree = "<group>"; };
+		B8F6B0531CC46EE700D5C7F1 /* CollectNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectNavViewController.h; sourceTree = "<group>"; };
+		B8F6B0541CC46EE700D5C7F1 /* CollectNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectNavViewController.m; sourceTree = "<group>"; };
 		C9967E4C9082FD02452937B4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -300,6 +315,10 @@
 				382815B91CC382010016A1A5 /* LeftViewController.m */,
 				382815BB1CC395E60016A1A5 /* MyMessageViewController.h */,
 				382815BC1CC395E60016A1A5 /* MyMessageViewController.m */,
+				B8F6B0471CC46CB100D5C7F1 /* MyWorkViewController.h */,
+				B8F6B0481CC46CB100D5C7F1 /* MyWorkViewController.m */,
+				B8F6B04A1CC46D0400D5C7F1 /* MyCollectViewController.h */,
+				B8F6B04B1CC46D0400D5C7F1 /* MyCollectViewController.m */,
 			);
 			name = SlidingView;
 			sourceTree = "<group>";
@@ -309,6 +328,12 @@
 			children = (
 				382815C11CC3AAAB0016A1A5 /* NavigationViewController.h */,
 				382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */,
+				B8F6B04D1CC46D9100D5C7F1 /* MessageNavViewController.h */,
+				B8F6B04E1CC46D9100D5C7F1 /* MessageNavViewController.m */,
+				B8F6B0501CC46EC800D5C7F1 /* WorkNavViewController.h */,
+				B8F6B0511CC46EC800D5C7F1 /* WorkNavViewController.m */,
+				B8F6B0531CC46EE700D5C7F1 /* CollectNavViewController.h */,
+				B8F6B0541CC46EE700D5C7F1 /* CollectNavViewController.m */,
 			);
 			name = Nav;
 			sourceTree = "<group>";
@@ -561,19 +586,24 @@
 				385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
 				1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */,
+				B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
 				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,
+				B8F6B0551CC46EE700D5C7F1 /* CollectNavViewController.m in Sources */,
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
 				1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */,
+				B8F6B04F1CC46D9100D5C7F1 /* MessageNavViewController.m in Sources */,
 				B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */,
 				187725D51CC20F5B003F8BD8 /* main.m in Sources */,
 				B8D900E11CC2718A00641C06 /* HotClubTableViewCell.m in Sources */,
 				1844778F1CC21B62003B2354 /* RequestAPI.m in Sources */,
+				B8F6B0491CC46CB100D5C7F1 /* MyWorkViewController.m in Sources */,
 				B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */,
 				187725E11CC20F5B003F8BD8 /* Calorie.xcdatamodeld in Sources */,
+				B8F6B04C1CC46D0400D5C7F1 /* MyCollectViewController.m in Sources */,
 				382815BD1CC395E60016A1A5 /* MyMessageViewController.m in Sources */,
 				1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */,
 				382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */,
