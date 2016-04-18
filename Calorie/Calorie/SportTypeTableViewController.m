@@ -112,19 +112,21 @@
             NSArray *info = dict[@"models"];
             NSDictionary *pageinfo = dict[@"pagingInfo"];
             weakSelf.totalPage =  [pageinfo[@"totalPage"] integerValue];
-            NSLog(@"total%ld",_totalPage);
+            //NSLog(@"total%ld",_totalPage);
             //封装数据
             for (int i = 0; i < info.count; i++) {
                 NSString *name = info[i][@"clubName"];
                 NSString *address = info[i][@"clubAddressB"];
                 NSString *distance = info[i][@"distance"];
                 NSString *image = info[i][@"clubLogo"];
+                NSString *clubId = info[i][@"clubId"];
                 
                 NSDictionary *dict = @{
                                        @"clubName":name,
                                        @"clubAddressB":address,
                                        @"distance":distance,
                                        @"clubLogo":image,
+                                       @"clubId":clubId
                                        };
                 [weakSelf.clubArray addObject:dict];
             }
@@ -143,7 +145,7 @@
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
     if (requestOver) {
         NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
-        //NSLog(@"%@",clubKeyId);
+        //NSLog(@"clubKeyId%@",clubKeyId);
         clubDetailView.clubKeyId = clubKeyId;
         [self.navigationController pushViewController:clubDetailView animated:YES];
     }
