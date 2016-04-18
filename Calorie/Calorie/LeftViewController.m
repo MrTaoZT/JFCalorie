@@ -65,8 +65,7 @@
         case 0:
         {
             MyMessageViewController *myMessageVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"MyMessageVc"];
-//            [self.navigationController pushViewController:myMessageVc animated:YES];
-//            [self presentViewController:myMessageVc animated:YES completion:nil];
+
         }
             break;
         case 1:
@@ -83,20 +82,20 @@
 #pragma mark - signIn
 
 - (void)signIn{
-//    SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
-    //这里用push 跳转到 signIn
-//    [self.navigationController pushViewController:signIn animated:YES];
+    //因为 侧滑没有  导航体系  所以这边直接跳转到跳转类的导航条上
     NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
     [self presentViewController:navView animated:YES completion:nil];
-//    [self.navigationController ]
 }
 - (IBAction)signOut:(UIButton *)sender forEvent:(UIEvent *)event {
     //值如果是YES  则是登录了  else  NO则是未登录
     if ([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]) {
+        
         SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
+        [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+        [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_nickName.text];
         [self presentViewController:signIn animated:YES completion:nil];
-
     }else{
+        
         [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
     }
 }
