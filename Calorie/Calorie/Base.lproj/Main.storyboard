@@ -77,6 +77,7 @@
                                 <state key="normal" title="创建新用户！"/>
                                 <connections>
                                     <action selector="signUpAction:forEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9c6-q7-K2L"/>
+                                    <segue destination="HhG-9V-gXu" kind="show" id="aXs-Yu-asH"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -409,25 +410,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YTn-x5-xbg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3962.5" y="302.5"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="06R-mQ-KBc">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Xk1-sV-wGl" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lUD-dj-2Gx">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="HhG-9V-gXu" kind="relationship" relationship="rootViewController" id="jJt-D2-983"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tPd-Di-KDL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1517.5" y="285.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ufS-Fi-nmK">
