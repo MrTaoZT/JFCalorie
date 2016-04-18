@@ -32,7 +32,7 @@
         NSString *username = [[StorageMgr singletonStorageMgr] objectForKey:@"Username"];
         NSString *password = [[StorageMgr singletonStorageMgr] objectForKey:@"Password"];
         //清除用完的用户名和密码
-         [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Username"];
+        [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Username"];
         [[StorageMgr singletonStorageMgr] removeObjectForKey:@"Password"];
         _usernameTF.text = username;
         _passwordTF.text = password;

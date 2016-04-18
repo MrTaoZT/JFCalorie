@@ -43,34 +43,6 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    //获取模数指数
-    NSDictionary *dic = @{@"deviceType":@7001,
-                          @"deviceId":[Utilities uniqueVendor]
-                          };
-    
-    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
-        NSLog(@"responseObject : %@",responseObject);
-        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSDictionary *resultDict = responseObject[@"result"];
-            NSString *exponent = resultDict[@"exponent"];
-            NSString *modulus = resultDict[@"modulus"];
-            //从单例化全局变量中删除数据
-            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
-            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
-            
-            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
-            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
-        }else{
-            NSLog(@"resultFailed");
-        }
-        
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
-    
-    
-    //判断用户上一次是否登录,且有没有退出登录
-    [self lastOrLogin];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,9 +53,7 @@
     //值如果是YES  则是登录了  else  NO则是未登录
     if([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]){
         _headImg.image = [UIImage imageNamed:@"headImgBG"];
-        _nickName.text = [[StorageMgr singletonStorageMgr] objectForKey:@"LeftUsername"];
-        [Utilities removeUserDefaults:@"OrLogin"];
-        [Utilities setUserDefaults:@"OrLogin" content:@NO];
+        _nickName.text = [Utilities getUserDefaults:@"Username"];
     }else{
         _headImg.image = [UIImage imageNamed:@"headImgBG"];
         _nickName.text = @"未登录";
@@ -92,57 +62,6 @@
     }
 }
 
-- (void)lastOrLogin{
-    //首先判断用户是否登录过
-    if([[Utilities getUserDefaults:@"OrLogin"] boolValue]){
-        NSString *username = [Utilities getUserDefaults:@"Username"];
-        NSString *password = [Utilities getUserDefaults:@"Password"];
-        if (username.length == 0 || password.length == 0) {
-            return;
-        }
-        //如果登录了那么这里在判断  上一次是否按了退出按钮   yse  表示按了
-        NSLog(@"1");
-        if ( [[Utilities getUserDefaults:@"AddUserAndPw"] boolValue]) {
-            NSLog(@"2");
-            //表示用户 登录后  按了退出  这边依旧设置未登录
-            _headImg.image = [UIImage imageNamed:@"headImgBG"];
-            _nickName.text = @"未登录";
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(signIn)];
-            [_headImg addGestureRecognizer:tap];
-            
-        }else{
-            NSLog(@"3");
-            //得到缓存的密码   准备帮用户自动登录
-           
-            
-//            NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
-//            NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
-//            //MD5将原始密码进行MD5加密
-//            NSString *MD5Pwd = [password getMD5_32BitString];
-//            //将MD5加密过后的密码进行RSA非对称加密
-//            NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
-            
-            NSDictionary *dic = @{@"userName":username,
-                                  @"password":password,
-                                  @"deviceType":@7001,
-                                  @"deviceId":[Utilities uniqueVendor]};
-        
-            [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
-                NSLog(@"obj =======  %@",responseObject);
-                if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-                    NSLog(@"自动登录成功");
-                    NSDictionary *result = responseObject[@"result"];
-                    _nickName.text = result[@"contactTel"];
-                }else{
-                    [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
-                }
-            } failure:^(NSError *error) {
-                [Utilities popUpAlertViewWithMsg:@"系统繁忙,请重新登录" andTitle:nil onView:self];
-            }];
-
-        }
-    }
-}
 #pragma mark - TabView
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -232,43 +151,19 @@
         [Utilities setUserDefaults:@"AddUserAndPw" content:@YES];
         
         NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
+        //这里是当登录退出时  将全局变量SignUpSuccessfully  设置成yes   当调到  登录页面就会运行  viewWillA里的方法
+        [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
         [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
+        //接着给全局变量 键Username 值（_nickName.text）   这样登录退出后就会有用户名显示
         [[StorageMgr singletonStorageMgr]addKey:@"Username" andValue:_nickName.text];
+        //缓存到 键为Username的值   homeTabVc  中能用到
+        [Utilities removeUserDefaults:@"Username"];
+        [Utilities setUserDefaults:@"Username" content:_nickName.text];
         [self presentViewController:navView animated:YES completion:nil];
     }else{
         
         [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
     }
-}
-
-#pragma mark - setMD5RSA
-
-- (void)setMD5RSA{
-    //获取模数指数
-    NSDictionary *dic = @{@"deviceType":@7001,
-                          @"deviceId":[Utilities uniqueVendor]
-                          };
-    
-    [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
-        NSLog(@"responseObject : %@",responseObject);
-        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSDictionary *resultDict = responseObject[@"result"];
-            NSString *exponent = resultDict[@"exponent"];
-            NSString *modulus = resultDict[@"modulus"];
-            //从单例化全局变量中删除数据
-            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"exponent"];
-            [[StorageMgr singletonStorageMgr] removeObjectForKey:@"modulus"];
-            
-            [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
-            [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
-        }else{
-            NSLog(@"resultFailed");
-        }
-        
-    } failure:^(NSError *error) {
-        NSLog(@"%@",error);
-    }];
-    
 }
 
 @end

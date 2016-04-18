@@ -45,9 +45,6 @@
     //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
     [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@NO];
     
-    [Utilities removeUserDefaults:@"OrLogin"];
-    [Utilities setUserDefaults:@"OrLogin" content:@YES];
-    
     self.window.rootViewController = _slidingVc;
     return YES;
 
