@@ -221,7 +221,7 @@
     if (indexPath.row == 0) {
         return 190;
     }
-    return 180;
+    return 190;
 }
 
 //按下cell
