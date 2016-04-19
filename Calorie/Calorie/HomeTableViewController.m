@@ -189,6 +189,7 @@
     }else{
         HotClubTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clubCell" forIndexPath:indexPath];
         //设置cell按下无效果
+        //cell.clubImageView.contentMode = UIViewContentModeScaleAspectFill;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (hotClubOver) {
             //接下当前行对应的字典

@@ -12,10 +12,12 @@
 #import "ThiredTableViewCell.h"
 
 #import <UIImageView+WebCache.h>
+#import <SDWebImageDownloader.h>
 
 @interface ClubDetailViewController (){
     BOOL loadOver;
     NSInteger scrollViewTag;
+    NSInteger collectionBtnTag;
 }
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
@@ -28,6 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     scrollViewTag = 1001;
+    collectionBtnTag = 1002;
     loadOver = NO;
     
     _clubDict = [NSDictionary new];
@@ -80,6 +83,18 @@
     }
 }
 
+- (void)collectionBtn{
+    UIButton *button = (UIButton *)[self.tableView viewWithTag:collectionBtnTag];
+    [button addTarget:self action:@selector(collectionAction) forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)collectionAction{
+    //收藏接口
+    NSString *netUrl = @"/mySelfController/addFavorites";
+    NSString *memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
+    NSLog(@"memberId %@",memberId);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -89,20 +104,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
 }
-//property (weak, nonatomic) IBOutlet UIImageView *clubImage;
-//@property (weak, nonatomic) IBOutlet UILabel *name;
-//@property (weak, nonatomic) IBOutlet UIButton *collection;
-//@property (weak, nonatomic) IBOutlet UILabel *address;
-//@property (weak, nonatomic) IBOutlet UIButton *call;
-
-//@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-//
-//@property (weak, nonatomic) IBOutlet UILabel *openTime;
-
-//@property (weak, nonatomic) IBOutlet UILabel *clubTime;
-//@property (weak, nonatomic) IBOutlet UILabel *storeNums;
-//@property (weak, nonatomic) IBOutlet UILabel *clubPerson;
-//@property (weak, nonatomic) IBOutlet UITextView *clubIntroduce;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
@@ -114,6 +115,8 @@
                 //俱乐部名字
                 cell.name.text = _clubDict[@"clubName"];
                 //收藏情况
+                cell.collection.tag = collectionBtnTag;
+                [self collectionBtn];
                 if ([_clubDict[@"isFavicons"] boolValue]) {
                     [cell.collection setTitle:@"已收藏" forState:UIControlStateNormal];
                 }else{
@@ -132,20 +135,20 @@
             SecontTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2" forIndexPath:indexPath];
             cell.scrollView.tag = scrollViewTag;
             
-//            NSArray *clubPic = _clubDict[@"clubPic"];
-//            for (NSDictionary *dict in clubPic) {
-//                NSLog(@"%@",dict);
-//                UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.scrollView.frame.size.width / 3, cell.scrollView.frame.size.height)];
-//                [view sd_setImageWithURL:dict[@"imgUrl"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
-//                [cell.scrollView addSubview:view];
-//            }
             [self addPic];
+            //营业时间（UI搞反了）
+            cell.openTime.text = _clubDict[@"clubTime"];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
             break;
         }
         default:{
             ThiredTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell3" forIndexPath:indexPath];
+            
+            cell.clubTime.text = [NSString stringWithFormat:@"开业时间：%@",_clubDict[@"openTime"]];
+            cell.storeNums.text = [NSString stringWithFormat:@"拥有分店数量：%@",_clubDict[@"storeNums"]] ;
+            cell.clubPerson.text = [NSString stringWithFormat:@"教练数量：%@",_clubDict[@"clubPerson"]];
+            cell.clubIntroduce.text = _clubDict[@"clubIntroduce"];
             
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
