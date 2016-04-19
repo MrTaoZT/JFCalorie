@@ -232,7 +232,9 @@
             NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 1][@"id"];
             NSLog(@"id%@",clubKeyId);
             clubDetailView.clubKeyId = clubKeyId;
+            self.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:clubDetailView animated:YES];
+            self.hidesBottomBarWhenPushed = NO;
         }
     }
 }
@@ -401,8 +403,9 @@
                 break;
             }
         }
-        
+        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:sportTypeView animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
         NSString *fId = tempDict[@"id"];
         NSString *typeName = tempDict[@"name"];
         //将运动id和经纬度传过去
@@ -654,7 +657,7 @@
     footerView.backgroundColor = [UIColor blackColor];
     self.tableView.tableFooterView = footerView;
     
-    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake(UI_SCREEN_W  / 2 - 20, 0, 120, 40)];
+    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40)];
     //loadMore.backgroundColor = [UIColor brownColor];
     loadMore.textColor = [UIColor whiteColor];
     loadMore.textAlignment = NSTextAlignmentCenter;
@@ -691,7 +694,7 @@
     UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
     //UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
     loadMore.text = @"没有更多数据";
-    loadMore.frame = CGRectMake(UI_SCREEN_W  / 2 - 60, 0, 120, 40);
+    loadMore.frame = CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40);
     //[acFooter stopAnimating];
     //acFooter = nil;
 }

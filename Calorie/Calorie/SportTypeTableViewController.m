@@ -14,7 +14,7 @@
 
 @interface SportTypeTableViewController (){
     BOOL requestOver;
-    BOOL isLoading;
+    BOOL loadingOver;
 }
 
 @property(nonatomic)NSInteger clubPage;
@@ -26,7 +26,6 @@
 @implementation SportTypeTableViewController
 
 - (void)viewDidAppear:(BOOL)animated{
-    _clubPage = 1;
     
 }
 
@@ -34,18 +33,17 @@
     [super viewDidLoad];
     
     requestOver = NO;
-    isLoading = NO;
+    loadingOver = NO;
     
     _clubArray = [NSMutableArray new];
     
     self.title = _sportName;
     
     //NSLog(@"id%@",_sportType);
-    _totalPage = 0;
-    
+    _totalPage = 1;
+    _clubPage = 1;
     //获得当前类型id的会所
     [self getSportClub];
-    
     
 }
 
@@ -108,8 +106,9 @@
                                  };
     
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        [self loadDataEnd];
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            //NSLog(@"-->%@",responseObject);
+            NSLog(@"-->%@",responseObject);
             if (weakSelf.clubPage == 1) {
                 weakSelf.clubArray = nil;
                 weakSelf.clubArray = [NSMutableArray new];
@@ -118,7 +117,7 @@
             NSArray *info = dict[@"models"];
             NSDictionary *pageinfo = dict[@"pagingInfo"];
             weakSelf.totalPage =  [pageinfo[@"totalPage"] integerValue];
-            //NSLog(@"total%ld",_totalPage);
+            NSLog(@"total%ld",_totalPage);
             //封装数据
             for (int i = 0; i < info.count; i++) {
                 NSString *name = info[i][@"clubName"];
@@ -137,6 +136,7 @@
                 [weakSelf.clubArray addObject:dict];
             }
             requestOver = YES;
+            loadingOver = YES;
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:@"请保持网络畅通，稍后试试" andTitle:@"" onView:self];
@@ -151,7 +151,7 @@
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
     if (requestOver) {
         NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
-        NSLog(@"clubKeyId%@",clubKeyId);
+        //NSLog(@"clubKeyId%@",clubKeyId);
         clubDetailView.clubKeyId = clubKeyId;
         [self.navigationController pushViewController:clubDetailView animated:YES];
     }
@@ -163,21 +163,13 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
         if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-            if (_totalPage > _clubPage) {
-                ++_clubPage;
-                [self getSportClub];
-            }else{
-                NSLog(@"没有更多数据");
-            }
+            [self createTableFooter];
+            [self loadDataing];
         }
     }else{
-        if (scrollView.contentOffset.y > -74) {
-            if (_totalPage < _clubPage) {
-                ++_clubPage;
-                [self getSportClub];
-            }else{
-                NSLog(@"没有更多数据");
-            }
+        if (scrollView.contentOffset.y > -64) {
+            [self createTableFooter];
+            [self loadDataing];
         }
     }
 }
@@ -187,7 +179,7 @@
     footerView.backgroundColor = [UIColor blackColor];
     self.tableView.tableFooterView = footerView;
     
-    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake(UI_SCREEN_W  / 2 - 20, 0, 120, 40)];
+    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40)];
     //loadMore.backgroundColor = [UIColor brownColor];
     loadMore.textColor = [UIColor whiteColor];
     loadMore.textAlignment = NSTextAlignmentCenter;
@@ -196,35 +188,28 @@
     loadMore.font = [UIFont systemFontOfSize:B_Font];
     loadMore.textColor = [UIColor lightGrayColor];
     [footerView addSubview:loadMore];
-    
-    //    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
-    //    acFooter.tag = 10010;
-    //    acFooter.color = [UIColor orangeColor];
-    //    [footerView addSubview:acFooter];
-    //    [acFooter startAnimating];
-    
 }
 
-//-(void)loadDataing{
-//    //判断是否还存在下一页
-//    if (_totalPage > _hotClubPage) {
-//        if (loadingOver) {
-//            //之前如果是yes说明正常进入了网络请求，页数加一，把加载成功改为NO
-//            _clubPage ++;
-//            loadingOver = NO;
-//            [self getSportClub];
-//        }
-//    }else{
-//        [self beforeLoadEnd];
-//        [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0f];
-//    }
-//}
+-(void)loadDataing{
+    //判断是否还存在下一页
+    if (_totalPage > _clubPage) {
+        if (loadingOver) {
+            //之前如果是yes说明正常进入了网络请求，页数加一，把加载成功改为NO
+            _clubPage ++;
+            loadingOver = NO;
+            [self getSportClub];
+        }
+    }else{
+        [self beforeLoadEnd];
+        [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0f];
+    }
+}
 
 - (void)beforeLoadEnd{
     UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
     //UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
     loadMore.text = @"没有更多数据";
-    loadMore.frame = CGRectMake(UI_SCREEN_W  / 2 - 60, 0, 120, 40);
+    loadMore.frame = CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40);
     //[acFooter stopAnimating];
     //acFooter = nil;
 }
