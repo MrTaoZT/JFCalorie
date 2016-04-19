@@ -753,4 +753,9 @@
     }];
     
 }
+- (IBAction)chooseLocationAction:(UIButton *)sender forEvent:(UIEvent *)event {
+}
+
+- (IBAction)searchAction:(UIBarButtonItem *)sender {
+}
 @end

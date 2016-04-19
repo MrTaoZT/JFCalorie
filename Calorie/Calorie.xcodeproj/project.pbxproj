@@ -44,6 +44,8 @@
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
 		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
 		B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */; };
+		B8D87FEA1CC618A000F7CBEF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FE91CC618A000F7CBEF /* SearchViewController.m */; };
+		B8D87FED1CC61DA000F7CBEF /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FEC1CC61DA000F7CBEF /* SearchTableViewCell.m */; };
 		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
 		B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D91CC2710900641C06 /* HomeTableViewController.m */; };
 		B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */; };
@@ -145,6 +147,10 @@
 		B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThiredTableViewCell.m; sourceTree = "<group>"; };
 		B8D87FDE1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectSubpageTableViewCell.h; sourceTree = "<group>"; };
 		B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectSubpageTableViewCell.m; sourceTree = "<group>"; };
+		B8D87FE81CC618A000F7CBEF /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		B8D87FE91CC618A000F7CBEF /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
+		B8D87FEB1CC61DA000F7CBEF /* SearchTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchTableViewCell.h; sourceTree = "<group>"; };
+		B8D87FEC1CC61DA000F7CBEF /* SearchTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchTableViewCell.m; sourceTree = "<group>"; };
 		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		B8D900D61CC2554C00641C06 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		B8D900D81CC2710900641C06 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
@@ -410,6 +416,8 @@
 				B8D900E01CC2718A00641C06 /* HotClubTableViewCell.m */,
 				B808BA0D1CC3242C00864F24 /* SportTypeTableViewCell.h */,
 				B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */,
+				B8D87FEB1CC61DA000F7CBEF /* SearchTableViewCell.h */,
+				B8D87FEC1CC61DA000F7CBEF /* SearchTableViewCell.m */,
 			);
 			name = HomeCell;
 			sourceTree = "<group>";
@@ -462,6 +470,8 @@
 				1820D3251CC3231F0010A405 /* SportTypeTableViewController.m */,
 				1820D3271CC3233D0010A405 /* ClubDetailViewController.h */,
 				1820D3281CC3233D0010A405 /* ClubDetailViewController.m */,
+				B8D87FE81CC618A000F7CBEF /* SearchViewController.h */,
+				B8D87FE91CC618A000F7CBEF /* SearchViewController.m */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -655,10 +665,12 @@
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
 				B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */,
 				1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */,
+				B8D87FEA1CC618A000F7CBEF /* SearchViewController.m in Sources */,
 				B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */,
+				B8D87FED1CC61DA000F7CBEF /* SearchTableViewCell.m in Sources */,
 				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
 				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,
 				B8F6B0551CC46EE700D5C7F1 /* CollectNavViewController.m in Sources */,
