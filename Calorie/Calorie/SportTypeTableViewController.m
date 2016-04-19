@@ -86,13 +86,17 @@
     //根据条件，获取会所列表
     NSString *netUrl = @"/clubController/nearSearchClub";
     //默认
+    /*
+     ++++++++++++++++++++++++++++++++
+     */
+    //暂时取消
     NSString *city = _city;
     NSInteger perPage = 10;
     NSInteger type = 0;
     NSString *featureId = _sportType;
     
     NSDictionary *parameters = @{
-                                 @"city":city,
+                                 @"city":@"0510",
                                  @"jing":@(_setJing),
                                  @"wei":@(_setWei),
                                  @"page":@(_clubPage),

@@ -15,6 +15,7 @@
 
 @interface ClubDetailViewController (){
     BOOL loadOver;
+    NSInteger scrollViewTag;
 }
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
@@ -26,9 +27,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    scrollViewTag = 1001;
     loadOver = NO;
+    
     _clubDict = [NSDictionary new];
+    
     self.title = @"clubDetail";
+    
     [self getClubDetail];
     // Do any additional setup after loading the view.
 }
@@ -41,7 +46,7 @@
                                   };
     
     [RequestAPI getURL:netUrl withParameters:paramenters success:^(id responseObject) {
-        //NSLog(@"%@",responseObject);
+        NSLog(@"%@",responseObject);
         _clubDict = responseObject[@"result"];
 //        NSDictionary *infoDict = @{
 //                                   @"clubLogo":dict[@"clubLogo"]
@@ -52,6 +57,27 @@
     } failure:^(NSError *error) {
         
     }];
+}
+
+- (void)addPic{
+    NSArray *clubPic = _clubDict[@"clubPic"];
+    CGFloat widthGap = UI_SCREEN_H / 4;
+    
+    //int widthVariable = 1;
+    //位置变量
+    int orginVariable = 0;
+    UIScrollView *scrollView = (UIScrollView *)[self.tableView viewWithTag:scrollViewTag];
+    scrollView.alwaysBounceHorizontal = YES;
+    scrollView.bounces = YES;
+    scrollView.userInteractionEnabled = YES;
+    for (NSDictionary *dict in clubPic) {
+        //NSLog(@"%@",dict);
+        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(widthGap * orginVariable, 0, widthGap, scrollView.frame.size.height)];
+        view.contentMode = UIViewContentModeScaleAspectFill;
+        orginVariable ++;
+        [view sd_setImageWithURL:dict[@"imgUrl"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
+        [scrollView addSubview:view];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,20 +109,45 @@
         case 0:{
             FirstTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1" forIndexPath:indexPath];
             if (loadOver) {
+                //俱乐部图片
                 [cell.clubImage sd_setImageWithURL:_clubDict[@"clubLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
-                cell.name = _clubDict[@"clubName"];
+                //俱乐部名字
+                cell.name.text = _clubDict[@"clubName"];
+                //收藏情况
+                if ([_clubDict[@"isFavicons"] boolValue]) {
+                    [cell.collection setTitle:@"已收藏" forState:UIControlStateNormal];
+                }else{
+                    [cell.collection setTitle:@"未收藏" forState:UIControlStateNormal];
+                }
+                //地址
+                cell.address.text = _clubDict[@"clubAddressB"];
+                //电话
+                //
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            
             return cell;
            break;
         }
         case 1:{
             SecontTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2" forIndexPath:indexPath];
+            cell.scrollView.tag = scrollViewTag;
+            
+//            NSArray *clubPic = _clubDict[@"clubPic"];
+//            for (NSDictionary *dict in clubPic) {
+//                NSLog(@"%@",dict);
+//                UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cell.scrollView.frame.size.width / 3, cell.scrollView.frame.size.height)];
+//                [view sd_setImageWithURL:dict[@"imgUrl"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
+//                [cell.scrollView addSubview:view];
+//            }
+            [self addPic];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
             break;
         }
         default:{
             ThiredTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell3" forIndexPath:indexPath];
+            
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
             break;
         }
