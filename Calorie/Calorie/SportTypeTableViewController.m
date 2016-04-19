@@ -14,7 +14,7 @@
 
 @interface SportTypeTableViewController (){
     BOOL requestOver;
-    BOOL isLoading;
+    BOOL loadingOver;
 }
 
 @property(nonatomic)NSInteger clubPage;
@@ -34,7 +34,7 @@
     [super viewDidLoad];
     
     requestOver = NO;
-    isLoading = NO;
+    loadingOver = NO;
     
     _clubArray = [NSMutableArray new];
     
@@ -109,7 +109,7 @@
     
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            //NSLog(@"-->%@",responseObject);
+            NSLog(@"-->%@",responseObject);
             if (weakSelf.clubPage == 1) {
                 weakSelf.clubArray = nil;
                 weakSelf.clubArray = [NSMutableArray new];
@@ -137,6 +137,7 @@
                 [weakSelf.clubArray addObject:dict];
             }
             requestOver = YES;
+            loadingOver = YES;
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:@"请保持网络畅通，稍后试试" andTitle:@"" onView:self];
@@ -163,21 +164,13 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
         if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-            if (_totalPage > _clubPage) {
-                ++_clubPage;
-                [self getSportClub];
-            }else{
-                NSLog(@"没有更多数据");
-            }
+            [self createTableFooter];
+            [self loadDataing];
         }
     }else{
-        if (scrollView.contentOffset.y > -74) {
-            if (_totalPage < _clubPage) {
-                ++_clubPage;
-                [self getSportClub];
-            }else{
-                NSLog(@"没有更多数据");
-            }
+        if (scrollView.contentOffset.y > -64) {
+            [self createTableFooter];
+            [self loadDataing];
         }
     }
 }
@@ -187,7 +180,7 @@
     footerView.backgroundColor = [UIColor blackColor];
     self.tableView.tableFooterView = footerView;
     
-    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake(UI_SCREEN_W  / 2 - 20, 0, 120, 40)];
+    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40)];
     //loadMore.backgroundColor = [UIColor brownColor];
     loadMore.textColor = [UIColor whiteColor];
     loadMore.textAlignment = NSTextAlignmentCenter;
@@ -196,35 +189,28 @@
     loadMore.font = [UIFont systemFontOfSize:B_Font];
     loadMore.textColor = [UIColor lightGrayColor];
     [footerView addSubview:loadMore];
-    
-    //    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
-    //    acFooter.tag = 10010;
-    //    acFooter.color = [UIColor orangeColor];
-    //    [footerView addSubview:acFooter];
-    //    [acFooter startAnimating];
-    
 }
 
-//-(void)loadDataing{
-//    //判断是否还存在下一页
-//    if (_totalPage > _hotClubPage) {
-//        if (loadingOver) {
-//            //之前如果是yes说明正常进入了网络请求，页数加一，把加载成功改为NO
-//            _clubPage ++;
-//            loadingOver = NO;
-//            [self getSportClub];
-//        }
-//    }else{
-//        [self beforeLoadEnd];
-//        [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0f];
-//    }
-//}
+-(void)loadDataing{
+    //判断是否还存在下一页
+    if (_totalPage > _clubPage) {
+        if (loadingOver) {
+            //之前如果是yes说明正常进入了网络请求，页数加一，把加载成功改为NO
+            _clubPage ++;
+            loadingOver = NO;
+            [self getSportClub];
+        }
+    }else{
+        [self beforeLoadEnd];
+        [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0f];
+    }
+}
 
 - (void)beforeLoadEnd{
     UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
     //UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
     loadMore.text = @"没有更多数据";
-    loadMore.frame = CGRectMake(UI_SCREEN_W  / 2 - 60, 0, 120, 40);
+    loadMore.frame = CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40);
     //[acFooter stopAnimating];
     //acFooter = nil;
 }

@@ -18,10 +18,14 @@
     BOOL loadOver;
     NSInteger scrollViewTag;
     NSInteger collectionBtnTag;
+    NSInteger callTag;
 }
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
 @property(nonatomic, strong)NSMutableDictionary *clubDict;
+
+//用户id
+@property(nonatomic, strong)NSString *memberId;
 
 @end
 
@@ -31,47 +35,66 @@
     [super viewDidLoad];
     scrollViewTag = 1001;
     collectionBtnTag = 1002;
+    callTag = 1003;
     loadOver = NO;
     
     _clubDict = [NSMutableDictionary new];
     
-    self.title = @"clubDetail";
+    self.title = @"会所详情";
+    
+    //得到用户ID
+    _memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
     
     [self getClubDetail];
     // Do any additional setup after loading the view.
 }
 
 - (void)getClubDetail{
+    //获得会所详情
     NSString *netUrl = @"/clubController/getClubDetails";
-    NSString *memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
-    NSDictionary *paramenters = @{
-                                  @"clubKeyId":_clubKeyId,
-                                  @"memberId":memberId
-                                  };
+    NSDictionary *paramenters;
     
+    //判断用户是否登录
+    if ([_memberId isKindOfClass:[NSNull class]] || _memberId == nil || _memberId == NULL) {
+        paramenters = @{
+                        @"clubKeyId":_clubKeyId,
+                        };
+    }else{
+        paramenters = @{
+                        @"clubKeyId":_clubKeyId,
+                        @"memberId":_memberId
+                        };
+    }
+    
+    //网络请求
     [RequestAPI getURL:netUrl withParameters:paramenters success:^(id responseObject) {
-        //NSLog(@"%@",responseObject);
-        _clubDict = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"result"]];
-        
-        loadOver = YES;
-        [self.tableView reloadData];
-        
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            //NSLog(@"%@",responseObject);
+            _clubDict = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"result"]];
+            
+            loadOver = YES;
+            [self.tableView reloadData];
+        }else{
+            [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后再试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
+        }
     } failure:^(NSError *error) {
-        
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
     }];
 }
 
+//scrollView滚动
 - (void)addPic{
     NSArray *clubPic = _clubDict[@"clubPic"];
     CGFloat widthGap = UI_SCREEN_H / 4;
     
-    //int widthVariable = 1;
     //位置变量
     int orginVariable = 0;
     UIScrollView *scrollView = (UIScrollView *)[self.tableView viewWithTag:scrollViewTag];
+    scrollView.contentSize = CGSizeMake(widthGap * clubPic.count, 90);
     scrollView.alwaysBounceHorizontal = YES;
     scrollView.bounces = YES;
     scrollView.userInteractionEnabled = YES;
+    
     for (NSDictionary *dict in clubPic) {
         //NSLog(@"%@",dict);
         UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(widthGap * orginVariable, 0, widthGap, scrollView.frame.size.height)];
@@ -87,18 +110,22 @@
     [button addTarget:self action:@selector(collectionAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
+//收藏事件
 - (void)collectionAction:(UIButton *)sender{
     //收藏接口
     NSString *netUrl = @"/mySelfController/addFavorites";
-    NSString *memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
-    NSLog(@"memberId %@",memberId);
+    if ([_memberId isKindOfClass:[NSNull class]] || _memberId == nil || _memberId == NULL) {
+        [Utilities popUpAlertViewWithMsg:@"请先登录" andTitle:@"" onView:self];
+        return;
+    }
+    NSLog(@"memberId %@",_memberId);
     NSString *clubId = _clubDict[@"clubId"];
     //NSLog(@"clubId%@",clubId);
     //获取当前收藏状态
     BOOL type = [_clubDict[@"isFavicons"] boolValue];
     //NSLog(@"type%@",@(type));
     NSDictionary *parameters = @{
-                                 @"memberId":memberId,
+                                 @"memberId":_memberId,
                                  @"clubId":clubId,
                                  //反向一下
                                  @"type":@(!type)
@@ -127,11 +154,45 @@
     }];
 }
 
+- (void)callAction{
+    UIButton *callBtn = (UIButton *)[self.tableView viewWithTag:callTag];
+    [callBtn addTarget:self action:@selector(callAction:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+//打电话事件
+- (void)callAction:(UIButton *)sender{
+    //获得电话
+    NSString *phoneTemp = _clubDict[@"clubTel"];
+    NSArray *phoneAllArray = [phoneTemp componentsSeparatedByString:@","];
+    if (phoneAllArray.count > 1) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"选择您要拨打的会所电话" preferredStyle:UIAlertControllerStyleAlert];
+        //有几个电话弹窗有几个选项
+        for (int i = 0; i < phoneAllArray.count; i++) {
+            UIAlertAction *action = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",phoneAllArray[i]] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phoneAllArray[i]]];
+                [[UIApplication sharedApplication] openURL:url];
+                //NSLog(@"phoneAllArray%@",phoneAllArray[i]);
+            }];
+            [alert addAction:action];
+        }
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+    }else{
+        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phoneAllArray[0]]];
+         [[UIApplication sharedApplication] openURL:url];
+    }
+    //NSLog(@"%@",phoneAllArray);
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return 3;
@@ -149,7 +210,7 @@
                 //收藏情况
                 cell.collection.tag = collectionBtnTag;
                 [self collectionBtn];
-                NSLog(@"-->%d",[_clubDict[@"isFavicons"] boolValue]);
+                //NSLog(@"-->%d",[_clubDict[@"isFavicons"] boolValue]);
                 if ([_clubDict[@"isFavicons"] boolValue]) {
                     [cell.collection setTitle:@"已收藏" forState:UIControlStateNormal];
                 }else{
@@ -158,7 +219,8 @@
                 //地址
                 cell.address.text = _clubDict[@"clubAddressB"];
                 //电话
-                //
+                cell.call.tag = callTag;
+                [self callAction];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             return cell;
@@ -166,11 +228,13 @@
         }
         case 1:{
             SecontTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2" forIndexPath:indexPath];
-            cell.scrollView.tag = scrollViewTag;
             
+            //滚动视图
+            cell.scrollView.tag = scrollViewTag;
             [self addPic];
             //营业时间（UI搞反了）
             cell.openTime.text = _clubDict[@"clubTime"];
+            
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
             break;
@@ -202,15 +266,5 @@
             break;
     }
 }
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

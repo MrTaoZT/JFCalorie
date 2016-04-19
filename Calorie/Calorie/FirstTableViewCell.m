@@ -12,6 +12,7 @@
 
 - (void)awakeFromNib {
     // Initialization code
+    _clubImage.clipsToBounds = YES;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
