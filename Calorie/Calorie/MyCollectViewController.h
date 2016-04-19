@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface MyCollectViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end

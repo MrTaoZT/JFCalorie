@@ -43,6 +43,7 @@
 		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
 		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
+		B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */; };
 		B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D61CC2554C00641C06 /* SignInViewController.m */; };
 		B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900D91CC2710900641C06 /* HomeTableViewController.m */; };
 		B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D900DD1CC2716900641C06 /* TitleTableViewCell.m */; };
@@ -142,6 +143,8 @@
 		B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecontTableViewCell.m; sourceTree = "<group>"; };
 		B8783B641CC4D37500F01B4B /* ThiredTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThiredTableViewCell.h; sourceTree = "<group>"; };
 		B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThiredTableViewCell.m; sourceTree = "<group>"; };
+		B8D87FDE1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectSubpageTableViewCell.h; sourceTree = "<group>"; };
+		B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectSubpageTableViewCell.m; sourceTree = "<group>"; };
 		B8D900D51CC2554C00641C06 /* SignInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignInViewController.h; sourceTree = "<group>"; };
 		B8D900D61CC2554C00641C06 /* SignInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignInViewController.m; sourceTree = "<group>"; };
 		B8D900D81CC2710900641C06 /* HomeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTableViewController.h; sourceTree = "<group>"; };
@@ -201,6 +204,7 @@
 		184477721CC21982003B2354 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B8D87FDD1CC5C13F00F7CBEF /* SlidingSubpageCell */,
 				B8783B5D1CC4D2F700F01B4B /* ClubDetailCell */,
 				387878771CC4966E00FEE5B5 /* SlidingCell */,
 				B808BA101CC3246500864F24 /* HomeCell */,
@@ -423,6 +427,15 @@
 			name = ClubDetailCell;
 			sourceTree = "<group>";
 		};
+		B8D87FDD1CC5C13F00F7CBEF /* SlidingSubpageCell */ = {
+			isa = PBXGroup;
+			children = (
+				B8D87FDE1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.h */,
+				B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */,
+			);
+			name = SlidingSubpageCell;
+			sourceTree = "<group>";
+		};
 		B8D900D41CC2551D00641C06 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -640,6 +653,7 @@
 				184477831CC21B4E003B2354 /* BasicEncodingRules.m in Sources */,
 				385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */,
 				1844778C1CC21B62003B2354 /* AppAPIClient.m in Sources */,
+				B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */,
 				1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */,
 				B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
