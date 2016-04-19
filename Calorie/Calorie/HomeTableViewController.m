@@ -57,7 +57,7 @@
     
     //取消tableview下划线
 //    self.tableView.tableFooterView = [[UIView alloc]init];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [self initailAllControl];
     
@@ -71,7 +71,6 @@
     //[self getHotClub];
     
     //user
-    
     [self setMD5RSA];
     //判断用户上一次是否登录,且有没有退出登录
 //    [self lastOrLogin];
@@ -194,6 +193,7 @@
             NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
             //接受字典中的数组
             //NSArray *experienceArray = tempDict[@"experience"];
+            NSLog(@"cellShow");
             
             cell.nameLabel.text = tempDict[@"name"];
             cell.addressLabel.text = tempDict[@"address"];
@@ -231,8 +231,8 @@
 
 - (void)initailAllControl{
     sportOver = NO;
-    hotClubOver = NO;
     locationError = NO;
+    hotClubOver = YES;
     _sportTypeArray = [NSMutableArray new];
     _hotClubInfoArray = [NSMutableArray new];
     
@@ -313,9 +313,11 @@
 
 //当第一次加载app完后才能刷新
 - (void)conRefresh{
+    //获得运动类型
     if (!sportOver) {
         [self getSportType];
     }
+    //获得热门俱乐部
     [self getHotClub];
 }
 
@@ -333,6 +335,7 @@
             break;
         case kCLErrorLocationUnknown:{
             [Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
+            locationError = YES;
         }
             break;
         default:{
@@ -458,33 +461,37 @@
 
 //获取热门俱乐部
 - (void)getHotClub{
+    NSLog(@"刷新？%d",_refresh.isRefreshing);
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
         [Utilities popUpAlertViewWithMsg:@"您没有给与位置权限" andTitle:@"" onView:self];
+        if (_refresh.isRefreshing) {
+            [_refresh endRefreshing];
+        }
         return;
     }
     
     //没有位置不能获得经纬度
     if (locationError) {
         [_refresh endRefreshing];
-        locationError = NO;
         return;
     }
     
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
+    //CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
     __weak HomeTableViewController *weakSelf = self;
     //
-    [self setAnnotatinAithDescriptionOnCoordinate:coordinate completionHandler:^(NSDictionary *info) {
-        NSString *city = info[@"City"];
-        NSString *cityNot = [city substringToIndex:city.length - 1];
-        weakSelf.title = city;
-        weakSelf.city= cityNot;
+    //[self setAnnotatinAithDescriptionOnCoordinate:coordinate completionHandler:^(NSDictionary *info) {
+       [weakSelf loadDataEnd];
+        //NSString *city = info[@"City"];
+        //NSString *cityNot = [city substringToIndex:city.length - 1];
+        //weakSelf.title = city;
+        //weakSelf.city= cityNot;
         if (weakSelf.refresh.isRefreshing) {
             _hotClubPage = 1;
         }
         NSInteger perPage = 5;
         
         NSDictionary *parameters = @{
-                                     @"city":cityNot,
+                                     @"city":@"0510",
                                      @"jing":@(weakSelf.jing),
                                      @"wei":@(weakSelf.wei),
                                      @"page":@(weakSelf.hotClubPage),
@@ -499,7 +506,7 @@
                 [weakSelf.refresh endRefreshing];
             }
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-                NSLog(@"%@",responseObject);
+                //NSLog(@"%@",responseObject);
                 
                 //等于1表示是下拉刷新或者刚进入页面
                 if (weakSelf.hotClubPage == 1) {
@@ -509,6 +516,7 @@
                 
                 NSDictionary *result = responseObject[@"result"];
                 NSArray *info = result[@"models"];
+                NSDictionary *pagingInfo = result[@"pagingInfo"];
                 //封装数据
                 for (int i = 0; i < info.count; i++) {
                     NSString *name = info[i][@"name"];
@@ -528,7 +536,8 @@
                 }
                 //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
                 hotClubOver = YES;
-                weakSelf.totalPage = [responseObject[@"totalPage"] integerValue];
+                weakSelf.totalPage = [pagingInfo[@"totalPage"] integerValue];
+                NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
                 [weakSelf.tableView reloadData];
             }else{
                 if ([responseObject[@"resultFlag"] integerValue] == 8020) {
@@ -544,7 +553,7 @@
             }
             [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:weakSelf];
         }];
-    }];
+    //}];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -555,8 +564,10 @@
            fromLocation:(CLLocation *)oldLocation{
     if (newLocation.coordinate.latitude == oldLocation.coordinate.latitude && newLocation.coordinate.longitude == oldLocation.coordinate.longitude) {
         NSLog(@"获得完毕经纬度");
+        locationError = NO;
         _jing = newLocation.coordinate.longitude;
         _wei = newLocation.coordinate.latitude;
+        //没有网络加载报错
         [self getHotClub];
         [manager stopUpdatingLocation];
     }
@@ -615,15 +626,62 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
         if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-            _hotClubPage ++;
-            [self getHotClub];
+                [self createTableFooter];
+                [self loadDataing];
         }
     }else{
         if (scrollView.contentOffset.y > -64) {
-            _hotClubPage ++;
-            [self getHotClub];
+                [self createTableFooter];
+                [self loadDataing];
         }
     }
+}
+
+-(void)createTableFooter{
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 40)];
+    footerView.backgroundColor = [UIColor blackColor];
+    self.tableView.tableFooterView = footerView;
+    
+    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake(UI_SCREEN_W  / 2 - 20, 0, 120, 40)];
+    //loadMore.backgroundColor = [UIColor brownColor];
+    loadMore.textColor = [UIColor whiteColor];
+    loadMore.textAlignment = NSTextAlignmentCenter;
+    loadMore.tag = 10086;
+    loadMore.text = @"Loading...";
+    loadMore.font = [UIFont systemFontOfSize:B_Font];
+    loadMore.textColor = [UIColor lightGrayColor];
+    [footerView addSubview:loadMore];
+    
+    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
+    acFooter.tag = 10010;
+    acFooter.color = [UIColor orangeColor];
+    [footerView addSubview:acFooter];
+    [acFooter startAnimating];
+    
+}
+
+-(void)loadDataing{
+    //判断是否还存在下一页
+    if (_totalPage > _hotClubPage) {
+        _hotClubPage ++;
+        [self getHotClub];
+    }else{
+        [self beforeLoadEnd];
+        [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0f];
+    }
+}
+
+- (void)beforeLoadEnd{
+    UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
+    UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
+    loadMore.text = @"没有更多数据";
+    loadMore.frame = CGRectMake(UI_SCREEN_W  / 2 - 60, 0, 120, 40);
+    [acFooter stopAnimating];
+    acFooter = nil;
+}
+
+- (void)loadDataEnd{
+    self.tableView.tableFooterView =[[UIView alloc]init];
 }
 
 /*
