@@ -232,7 +232,9 @@
             NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 1][@"id"];
             NSLog(@"id%@",clubKeyId);
             clubDetailView.clubKeyId = clubKeyId;
+            self.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:clubDetailView animated:YES];
+            self.hidesBottomBarWhenPushed = NO;
         }
     }
 }
@@ -401,8 +403,9 @@
                 break;
             }
         }
-        
+        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:sportTypeView animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
         NSString *fId = tempDict[@"id"];
         NSString *typeName = tempDict[@"name"];
         //将运动id和经纬度传过去

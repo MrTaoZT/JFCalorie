@@ -26,7 +26,6 @@
 @implementation SportTypeTableViewController
 
 - (void)viewDidAppear:(BOOL)animated{
-    _clubPage = 1;
     
 }
 
@@ -41,11 +40,10 @@
     self.title = _sportName;
     
     //NSLog(@"id%@",_sportType);
-    _totalPage = 0;
-    
+    _totalPage = 1;
+    _clubPage = 1;
     //获得当前类型id的会所
     [self getSportClub];
-    
     
 }
 
@@ -108,6 +106,7 @@
                                  };
     
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        [self loadDataEnd];
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             NSLog(@"-->%@",responseObject);
             if (weakSelf.clubPage == 1) {
@@ -118,7 +117,7 @@
             NSArray *info = dict[@"models"];
             NSDictionary *pageinfo = dict[@"pagingInfo"];
             weakSelf.totalPage =  [pageinfo[@"totalPage"] integerValue];
-            //NSLog(@"total%ld",_totalPage);
+            NSLog(@"total%ld",_totalPage);
             //封装数据
             for (int i = 0; i < info.count; i++) {
                 NSString *name = info[i][@"clubName"];
@@ -152,7 +151,7 @@
     ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
     if (requestOver) {
         NSString *clubKeyId = _clubArray[indexPath.row][@"clubId"];
-        NSLog(@"clubKeyId%@",clubKeyId);
+        //NSLog(@"clubKeyId%@",clubKeyId);
         clubDetailView.clubKeyId = clubKeyId;
         [self.navigationController pushViewController:clubDetailView animated:YES];
     }
