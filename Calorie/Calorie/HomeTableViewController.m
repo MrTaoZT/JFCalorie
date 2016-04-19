@@ -461,7 +461,6 @@
             _sportTypeArray = result[@"models"];
             //NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
-            loadingOver = YES;
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请保持网络畅通,稍后试试吧%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
@@ -548,6 +547,7 @@
                 }
                 //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
                 hotClubOver = YES;
+                loadingOver = YES;
                 weakSelf.totalPage = [pagingInfo[@"totalPage"] integerValue];
                 NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
                 [weakSelf.tableView reloadData];

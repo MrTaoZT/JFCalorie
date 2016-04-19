@@ -21,7 +21,7 @@
 }
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
-@property(nonatomic, strong)NSDictionary *clubDict;
+@property(nonatomic, strong)NSMutableDictionary *clubDict;
 
 @end
 
@@ -33,7 +33,7 @@
     collectionBtnTag = 1002;
     loadOver = NO;
     
-    _clubDict = [NSDictionary new];
+    _clubDict = [NSMutableDictionary new];
     
     self.title = @"clubDetail";
     
@@ -43,17 +43,16 @@
 
 - (void)getClubDetail{
     NSString *netUrl = @"/clubController/getClubDetails";
-    
+    NSString *memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
     NSDictionary *paramenters = @{
                                   @"clubKeyId":_clubKeyId,
+                                  @"memberId":memberId
                                   };
     
     [RequestAPI getURL:netUrl withParameters:paramenters success:^(id responseObject) {
-        NSLog(@"%@",responseObject);
-        _clubDict = responseObject[@"result"];
-//        NSDictionary *infoDict = @{
-//                                   @"clubLogo":dict[@"clubLogo"]
-//                                   };
+        //NSLog(@"%@",responseObject);
+        _clubDict = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"result"]];
+        
         loadOver = YES;
         [self.tableView reloadData];
         
@@ -85,14 +84,47 @@
 
 - (void)collectionBtn{
     UIButton *button = (UIButton *)[self.tableView viewWithTag:collectionBtnTag];
-    [button addTarget:self action:@selector(collectionAction) forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:@selector(collectionAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
-- (void)collectionAction{
+- (void)collectionAction:(UIButton *)sender{
     //收藏接口
     NSString *netUrl = @"/mySelfController/addFavorites";
     NSString *memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
     NSLog(@"memberId %@",memberId);
+    NSString *clubId = _clubDict[@"clubId"];
+    //NSLog(@"clubId%@",clubId);
+    //获取当前收藏状态
+    BOOL type = [_clubDict[@"isFavicons"] boolValue];
+    //NSLog(@"type%@",@(type));
+    NSDictionary *parameters = @{
+                                 @"memberId":memberId,
+                                 @"clubId":clubId,
+                                 //反向一下
+                                 @"type":@(!type)
+                                 };
+    
+    [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            [_clubDict removeObjectForKey:@"isFavicons"];
+            //NSLog(@"%@",_clubDict[@"isFavicons"]);
+            NSInteger temp = !type;
+            [_clubDict setValue:@(temp) forKey:@"isFavicons"];
+            //NSLog(@"...%@",_clubDict[@"isFavicons"]);
+            
+            if ([_clubDict[@"isFavicons"] boolValue]) {
+                [Utilities popUpAlertViewWithMsg:@"收藏成功，您可前往我的收藏查看" andTitle:@"" onView:self];
+                [sender setTitle:@"已收藏" forState:UIControlStateNormal];
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"取消收藏成功" andTitle:@"" onView:self];
+                [sender setTitle:@"未收藏" forState:UIControlStateNormal];
+            }
+        }else{
+            [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"请保持网络连接" andTitle:@"" onView:self];
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -117,6 +149,7 @@
                 //收藏情况
                 cell.collection.tag = collectionBtnTag;
                 [self collectionBtn];
+                NSLog(@"-->%d",[_clubDict[@"isFavicons"] boolValue]);
                 if ([_clubDict[@"isFavicons"] boolValue]) {
                     [cell.collection setTitle:@"已收藏" forState:UIControlStateNormal];
                 }else{
@@ -129,7 +162,7 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
             return cell;
-           break;
+            break;
         }
         case 1:{
             SecontTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2" forIndexPath:indexPath];
@@ -171,13 +204,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
