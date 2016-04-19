@@ -132,6 +132,13 @@
             [aiv stopAnimating];
             HomeNavViewController *homeNav = [[HomeNavViewController alloc]initWithRootViewController:_slidingVc];
             _slidingVc.navigationController.navigationBar.hidden = YES;
+            
+            //这里获取到  ID  并存进全局变量
+            NSDictionary *result = responseObject[@"result"];
+            NSString *memberId = result[@"memberId"];
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"memberId"];
+            [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
+            
             [self presentViewController:homeNav animated:YES completion:nil];
             
         }else{
