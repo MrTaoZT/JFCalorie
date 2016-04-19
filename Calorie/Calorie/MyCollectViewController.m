@@ -16,6 +16,7 @@
     CGFloat wei;
     BOOL done;
     NSString *clubId;
+    NSInteger count;
 }
 @property(nonatomic,strong)CLLocationManager *locMgr;
 @property(nonatomic,strong)NSMutableArray *favorites;
@@ -25,12 +26,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self getUserCoolect];
     
     done = NO;
+    count = 2;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    
+    _tableView.tableFooterView = [UIView new];
     //初始化可变数组
     _favorites = [NSMutableArray new];
     
@@ -81,14 +84,38 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
-    //取消选中
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    ClubDetailViewController *clubDVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
-    NSDictionary *dic = _favorites[indexPath.row];
-    clubDVc.clubKeyId = dic[@"clubId"];
-    [self.navigationController pushViewController:clubDVc animated:YES];
+    if([_rightButton.title isEqualToString:@"编辑"]){
+        //取消选中
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        ClubDetailViewController *clubDVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
+        NSDictionary *dic = _favorites[indexPath.row];
+        clubDVc.clubKeyId = dic[@"clubId"];
+        [self.navigationController pushViewController:clubDVc animated:YES];
+    }else{
+        
+    }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 300;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleDelete;
+}
+
+
+
+//- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if ([_rightButton.title  isEqual: @"确定"]) {
+//        [_favorites removeObjectForKey:[_favorites objectAtIndex:indexPath.row]];
+//    }
+//}
 #pragma mark-GetUserCollect
 
 - (void) getUserCoolect{
@@ -119,7 +146,6 @@
     }];
     
 }
-
 
 #pragma mark-CLLocationManagerDelegate
 
@@ -189,6 +215,19 @@
         }
         default:
             break;
+    }
+}
+- (IBAction)rightBtnAction:(UIBarButtonItem *)sender {
+    
+    if (count%2 == 0) {
+        [_tableView setEditing:YES animated:YES];
+        [_rightButton setTitle:@"确定"];
+        count ++;
+    }else{
+        [_tableView setEditing:YES animated:NO];
+        [_rightButton setTitle:@"编辑"];
+        count --;
+
     }
 }
 @end

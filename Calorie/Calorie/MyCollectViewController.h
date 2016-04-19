@@ -10,5 +10,7 @@
 
 @interface MyCollectViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;
+- (IBAction)rightBtnAction:(UIBarButtonItem *)sender;
 
 @end
