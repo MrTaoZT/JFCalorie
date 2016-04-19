@@ -18,6 +18,7 @@
 
 #import "SportTypeTableViewController.h"
 #import "ClubDetailViewController.h"
+#import "SearchViewController.h"
 
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
@@ -703,6 +704,27 @@
     self.tableView.tableFooterView =[[UIView alloc]init];
 }
 
+#pragma mark - titleAction
+
+- (IBAction)chooseLocationAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    
+
+}
+
+- (IBAction)searchAction:(UIBarButtonItem *)sender {
+    
+    SearchViewController *searchView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SearchView"];
+    if (!locationError) {
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:searchView animated:YES];
+        searchView.jing = _jing;
+        searchView.wei = _wei;
+        self.hidesBottomBarWhenPushed = NO;
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"正在获取位置,稍等" andTitle:@"" onView:self];
+    }
+}
+
 /*
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -752,10 +774,5 @@
         NSLog(@"%@",error);
     }];
     
-}
-- (IBAction)chooseLocationAction:(UIButton *)sender forEvent:(UIEvent *)event {
-}
-
-- (IBAction)searchAction:(UIBarButtonItem *)sender {
 }
 @end
