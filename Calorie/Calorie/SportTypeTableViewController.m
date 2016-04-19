@@ -108,7 +108,7 @@
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
         [self loadDataEnd];
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSLog(@"-->%@",responseObject);
+            //NSLog(@"-->%@",responseObject);
             if (weakSelf.clubPage == 1) {
                 weakSelf.clubArray = nil;
                 weakSelf.clubArray = [NSMutableArray new];
@@ -179,7 +179,7 @@
     footerView.backgroundColor = [UIColor blackColor];
     self.tableView.tableFooterView = footerView;
     
-    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40)];
+    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 120)  / 2 , 0, 120, 40)];
     //loadMore.backgroundColor = [UIColor brownColor];
     loadMore.textColor = [UIColor whiteColor];
     loadMore.textAlignment = NSTextAlignmentCenter;
@@ -209,13 +209,17 @@
     UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
     //UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
     loadMore.text = @"没有更多数据";
-    loadMore.frame = CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40);
+    loadMore.frame = CGRectMake((UI_SCREEN_W - 120)  / 2 , 0, 120, 40);
     //[acFooter stopAnimating];
     //acFooter = nil;
 }
 
 - (void)loadDataEnd{
     self.tableView.tableFooterView =[[UIView alloc]init];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 256;
 }
 
 /*

@@ -23,9 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _keyword = _searchTextField.text;
-    
-    [self requestData];
     // Do any additional setup after loading the view.
 }
 
@@ -82,14 +79,22 @@
 }
 
 - (IBAction)searchButton:(UIButton *)sender forEvent:(UIEvent *)event {
-    
+    _keyword = _searchTextField.text;
+    [self requestData];
+    NSLog(@"hotClubOver");
 }
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event {
     
 }
 
 - (IBAction)typeAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    
+    if (_typeInt) {
+        _typeInt = 0;
+        [sender setTitle:@"按距离" forState:UIControlStateNormal];
+    }else{
+        _typeInt = 1;
+        [sender setTitle:@"按人气" forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction)perPageAction:(UIButton *)sender forEvent:(UIEvent *)event {

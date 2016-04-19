@@ -204,7 +204,7 @@
             NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
             //接受字典中的数组
             //NSArray *experienceArray = tempDict[@"experience"];
-            NSLog(@"cellShow");
+            //NSLog(@"cellShow");
             
             cell.nameLabel.text = tempDict[@"name"];
             cell.addressLabel.text = tempDict[@"address"];
@@ -365,7 +365,7 @@
     SportTypeTableViewController *sportTypeView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"SportTypeView"];
     
     NSDictionary *tempDict = [NSDictionary new];
-    if (hotClubOver) {
+    if (!locationError) {
         switch (sender.tag) {
             case 1001:{
                 tempDict = _sportTypeArray[0];
@@ -658,7 +658,7 @@
     footerView.backgroundColor = [UIColor blackColor];
     self.tableView.tableFooterView = footerView;
     
-    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40)];
+    UILabel *loadMore = [[UILabel alloc]initWithFrame:CGRectMake((UI_SCREEN_W - 120)  / 2 , 0, 120, 40)];
     //loadMore.backgroundColor = [UIColor brownColor];
     loadMore.textColor = [UIColor whiteColor];
     loadMore.textAlignment = NSTextAlignmentCenter;
@@ -695,7 +695,7 @@
     UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
     //UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
     loadMore.text = @"没有更多数据";
-    loadMore.frame = CGRectMake((UI_SCREEN_W - 60)  / 2 , 0, 120, 40);
+    loadMore.frame = CGRectMake((UI_SCREEN_W - 120)  / 2 , 0, 120, 40);
     //[acFooter stopAnimating];
     //acFooter = nil;
 }

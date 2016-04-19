@@ -218,6 +218,7 @@
                 }
                 //地址
                 cell.address.text = _clubDict[@"clubAddressB"];
+                cell.address.adjustsFontSizeToFitWidth = YES;
                 //电话
                 cell.call.tag = callTag;
                 [self callAction];
