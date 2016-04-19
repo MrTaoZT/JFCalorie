@@ -12,6 +12,7 @@
 #import "TabBarViewController.h"
 #import <ECSlidingViewController/ECSlidingViewController.h>
 #import "LeftViewController.h"
+#import "HomeNavViewController.h"
 
 @interface SignInViewController ()<UITextFieldDelegate>
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
@@ -129,7 +130,9 @@
             [Utilities setUserDefaults:@"Password" content:_passwordTF.text];
             
             [aiv stopAnimating];
-            [self.navigationController pushViewController:_slidingVc animated:YES];
+            HomeNavViewController *homeNav = [[HomeNavViewController alloc]initWithRootViewController:_slidingVc];
+            _slidingVc.navigationController.navigationBar.hidden = YES;
+            [self presentViewController:homeNav animated:YES completion:nil];
             
         }else{
             [aiv stopAnimating];
