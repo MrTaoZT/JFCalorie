@@ -23,6 +23,8 @@
     BOOL sportOver;
     BOOL hotClubOver;
     BOOL locationError;
+    //防止刷新后没有网络上拉翻页页数增加
+    BOOL loadingOver;
 }
 
 @property(nonatomic)CGFloat jing;
@@ -232,6 +234,7 @@
 - (void)initailAllControl{
     sportOver = NO;
     locationError = NO;
+    loadingOver = NO;
     hotClubOver = YES;
     _sportTypeArray = [NSMutableArray new];
     _hotClubInfoArray = [NSMutableArray new];
@@ -450,6 +453,7 @@
             _sportTypeArray = result[@"models"];
             //NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
+            loadingOver = YES;
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请保持网络畅通,稍后试试吧%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
@@ -647,24 +651,28 @@
     loadMore.textColor = [UIColor whiteColor];
     loadMore.textAlignment = NSTextAlignmentCenter;
     loadMore.tag = 10086;
-    loadMore.text = @"Loading...";
+    loadMore.text = @"加载中...";
     loadMore.font = [UIFont systemFontOfSize:B_Font];
     loadMore.textColor = [UIColor lightGrayColor];
     [footerView addSubview:loadMore];
     
-    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
-    acFooter.tag = 10010;
-    acFooter.color = [UIColor orangeColor];
-    [footerView addSubview:acFooter];
-    [acFooter startAnimating];
+//    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
+//    acFooter.tag = 10010;
+//    acFooter.color = [UIColor orangeColor];
+//    [footerView addSubview:acFooter];
+//    [acFooter startAnimating];
     
 }
 
 -(void)loadDataing{
     //判断是否还存在下一页
     if (_totalPage > _hotClubPage) {
-        _hotClubPage ++;
-        [self getHotClub];
+        if (loadingOver) {
+            //之前如果是yes说明正常进入了网络请求，页数加一，把加载成功改为NO
+            _hotClubPage ++;
+            loadingOver = NO;
+            [self getHotClub];
+        }
     }else{
         [self beforeLoadEnd];
         [self performSelector:@selector(loadDataEnd) withObject:nil afterDelay:1.0f];
@@ -673,11 +681,11 @@
 
 - (void)beforeLoadEnd{
     UILabel *loadMore = (UILabel *)[self.tableView.tableFooterView viewWithTag:10086];
-    UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
+    //UIActivityIndicatorView *acFooter = (UIActivityIndicatorView *)[self.tableView.tableFooterView viewWithTag:10010];
     loadMore.text = @"没有更多数据";
     loadMore.frame = CGRectMake(UI_SCREEN_W  / 2 - 60, 0, 120, 40);
-    [acFooter stopAnimating];
-    acFooter = nil;
+    //[acFooter stopAnimating];
+    //acFooter = nil;
 }
 
 - (void)loadDataEnd{
