@@ -122,12 +122,19 @@
                 if ([responseObject[@"resultFlag"] integerValue] == 8001) {
                     NSLog(@"自动登录成功");
                     NSDictionary *result = responseObject[@"result"];
+                    
                     //这里将 全局变量键inOrUp  设置成yes  就可以运行leftVC  里的viewWillA  里的方法
                     [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
                     [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
+                    
                     //紧接着这边给缓存  键Username  给值（result[@"contactTel"]）
                     [Utilities removeUserDefaults:@"Username"];
                     [Utilities setUserDefaults:@"Username" content:result[@"contactTel"]];
+                    
+                    //这里获取到  ID  并存进全局变量
+                    NSString *memberId = result[@"memberId"];
+                    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"memberId"];
+                    [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
                 }else{
                     [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
                 }

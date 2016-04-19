@@ -10,8 +10,8 @@
 #import <CoreLocation/CoreLocation.h>
 
 @interface MyCollectViewController ()<CLLocationManagerDelegate>{
-    double jing;
-    double wei;
+    CGFloat jing;
+    CGFloat wei;
 }
 @property(nonatomic,strong)CLLocationManager *locMgr;
 @end
@@ -24,7 +24,6 @@
     //设置代理
     _locMgr.delegate=self;
     
-    [self getUserCoolect];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,11 +33,21 @@
 #pragma mark-GetUserCollect
 
 - (void) getUserCoolect{
-    NSDictionary *dic = @{@"memberId":,
-                        @"":,
-                        @"":,
-                        @"":,
+    NSString *memberId = [[StorageMgr singletonStorageMgr]objectForKey:@"memberId"];
+    NSDictionary *dic = @{@"memberId":memberId,
+                         @"jing":@(jing),
+                         @"wei":@(wei),
+                         @"favouriteId":@1,
                             };
+    [RequestAPI getURL:@"/mySelfController/memberScore" withParameters:dic success:^(id responseObject) {
+        NSLog(@"obj === %@",responseObject);
+        if ([responseObject[@"resultFlag"]]) {
+            <#statements#>
+        }
+        
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"系统繁忙,定位失败" andTitle:nil onView:self];
+    }];
 }
 
 #pragma mark-CLLocationManagerDelegate
@@ -53,9 +62,17 @@
     wei = loc.coordinate.latitude;
     NSLog(@"latitude = %f",loc.coordinate.latitude);
     NSLog(@"longitude = %f",loc.coordinate.longitude);
-    
+    NSString *longitude = [NSString stringWithFormat:@"%f",jing];
+    NSString *latitude = [NSString stringWithFormat:@"%f",wei];
+    if (longitude.length == 0 || latitude.length == 0) {
+        jing = 120;
+        wei = 120;
+        [self getUserCoolect];
+    }else{
+        [self getUserCoolect];
+    }
     //停止更新位置（如果定位服务不需要实时更新的话，那么应该停止位置的更新）
-    [_locMgr stopUpdatingLocation];
+//    [_locMgr stopUpdatingLocation];
 }
 
 /** 定位服务状态改变时调用*/
