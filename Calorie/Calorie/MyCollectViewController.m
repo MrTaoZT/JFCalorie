@@ -17,15 +17,19 @@
     BOOL done;
     NSString *clubId;
     NSInteger count;
+//    NSIndexPath *indexPath;
 }
 @property(nonatomic,strong)CLLocationManager *locMgr;
 @property(nonatomic,strong)NSMutableArray *favorites;
+@property(strong,nonatomic) NSMutableArray *deleteBooks;
 @end
 
 @implementation MyCollectViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+     // 设置tableView在编辑模式下可以多选，并且只需设置一次
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;
     [self getUserCoolect];
     
     done = NO;
@@ -36,6 +40,7 @@
     _tableView.tableFooterView = [UIView new];
     //初始化可变数组
     _favorites = [NSMutableArray new];
+    _deleteBooks = [NSMutableArray new];
     
     _locMgr=[[CLLocationManager alloc]init];
     //设置代理
@@ -83,7 +88,8 @@
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     if([_rightButton.title isEqualToString:@"编辑"]){
         //取消选中
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -91,9 +97,22 @@
         NSDictionary *dic = _favorites[indexPath.row];
         clubDVc.clubKeyId = dic[@"clubId"];
         [self.navigationController pushViewController:clubDVc animated:YES];
-    }else{
-        
     }
+    if ([_rightButton.title isEqualToString:@"确定"]) {
+        
+        [_deleteBooks addObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
+//        [_deleteBooks addObject:[_favorites objectAtIndex:indexPath.row]];
+        NSLog(@"------------------%@",[NSString stringWithFormat:@"%ld",indexPath.row]);
+        NSLog(@"--------------------------%@",_deleteBooks);
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath  {
+    
+    [_deleteBooks removeObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
+    NSLog(@"------------------%@",[NSString stringWithFormat:@"%ld",indexPath.row]);
+    NSLog(@"--------------------------%@",_deleteBooks);
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -106,16 +125,13 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return UITableViewCellEditingStyleDelete;
+    return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
 }
 
-
-
-//- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if ([_rightButton.title  isEqual: @"确定"]) {
-//        [_favorites removeObjectForKey:[_favorites objectAtIndex:indexPath.row]];
-//    }
-//}
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"删除";
+}
 #pragma mark-GetUserCollect
 
 - (void) getUserCoolect{
@@ -199,7 +215,7 @@
                 [Utilities popUpAlertViewWithMsg:@"您未对本程序授权定位，您可前往设置打开本app的定位，可更好的为您服务" andTitle:@"" onView:self];
             } else {
                 NSLog(@"定位服务关闭，不可用");
-                [Utilities popUpAlertViewWithMsg:@"定位服务关闭，不可用" andTitle:@"" onView:self];
+                [Utilities popUpAlertViewWithMsg:@"定位服务关闭，不可用" andTitle:nil onView:self];
             }
             break;
         }
@@ -224,10 +240,35 @@
         [_rightButton setTitle:@"确定"];
         count ++;
     }else{
-        [_tableView setEditing:YES animated:NO];
+        [_tableView setEditing:NO animated:YES];
         [_rightButton setTitle:@"编辑"];
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"您确定要取消这些收藏吗" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *leftBtn = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [_tableView setEditing:NO animated:YES];
+            [_tableView setEditing:NO animated:YES];
+            [_rightButton setTitle:@"编辑"];
+            return ;
+        }];
+        UIAlertAction *rightBtn = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            for (int i = 0; i <= _deleteBooks.count - 1; i ++) {
+                [_favorites removeObjectAtIndex:[_deleteBooks[i] integerValue]];
+            }
+            [_tableView reloadData];
+        }];
+        [alert addAction:leftBtn];
+        [alert addAction:rightBtn];
+        [self presentViewController:alert animated:YES completion:nil];
         count --;
 
     }
 }
+
+//-(void)deleteButtonPress:(UIButton*)sender
+//{
+//    //首先获得Cell：button的父视图是contentView，再上一层才是UITableViewCell
+//    CollectSubpageTableViewCell *cell = (CollectSubpageTableViewCell*)sender.superview.superview;
+//    
+//    //然后使用indexPathForCell方法，就得到indexPath了~
+//    indexPath = [_tableView indexPathForCell:cell];
+//}
 @end
