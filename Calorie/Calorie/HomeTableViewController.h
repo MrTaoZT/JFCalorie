@@ -11,8 +11,11 @@
 @interface HomeTableViewController : UITableViewController
 
 @property (weak, nonatomic) IBOutlet UIScrollView *ADScrollView;//广告图片
+
 - (IBAction)chooseLocationAction:(UIButton *)sender forEvent:(UIEvent *)event;
+
 - (IBAction)searchAction:(UIBarButtonItem *)sender;
+
 @property (weak, nonatomic) IBOutlet UIButton *chooseLocationButton;
 
 @end
