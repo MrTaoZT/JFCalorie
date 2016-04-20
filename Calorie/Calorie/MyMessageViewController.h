@@ -9,5 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @interface MyMessageViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UIImageView *headImg;//头像
+@property (weak, nonatomic) IBOutlet UILabel *userID;//用户ID
+@property (weak, nonatomic) IBOutlet UITextField *nickName;//昵称
+@property (weak, nonatomic) IBOutlet UISegmentedControl *gender;//性别
+@property (weak, nonatomic) IBOutlet UITextField *cardID;//身份证
+
+
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;//编辑
+- (IBAction)rightAction:(UIBarButtonItem *)sender;
 
 @end

@@ -9,7 +9,9 @@
 #import "MyMessageViewController.h"
 
 @interface MyMessageViewController ()
-
+{
+    NSInteger count;
+}
 @end
 
 @implementation MyMessageViewController
@@ -17,6 +19,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    count = 2;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,4 +38,20 @@
 }
 */
 
+
+- (void)edit {
+    
+}
+
+
+- (IBAction)rightAction:(UIBarButtonItem *)sender {
+    
+    if (count%2 == 0) {
+
+        count ++;
+
+    }else{
+
+    }
+}
 @end
