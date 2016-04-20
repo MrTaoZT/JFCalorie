@@ -43,6 +43,7 @@
 		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
 		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
+		B8CD9A151CC7890F0073EDDA /* CityTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CD9A141CC7890F0073EDDA /* CityTableViewController.m */; };
 		B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */; };
 		B8D87FEA1CC618A000F7CBEF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FE91CC618A000F7CBEF /* SearchViewController.m */; };
 		B8D87FED1CC61DA000F7CBEF /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FEC1CC61DA000F7CBEF /* SearchTableViewCell.m */; };
@@ -145,6 +146,8 @@
 		B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecontTableViewCell.m; sourceTree = "<group>"; };
 		B8783B641CC4D37500F01B4B /* ThiredTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThiredTableViewCell.h; sourceTree = "<group>"; };
 		B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThiredTableViewCell.m; sourceTree = "<group>"; };
+		B8CD9A131CC7890F0073EDDA /* CityTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityTableViewController.h; sourceTree = "<group>"; };
+		B8CD9A141CC7890F0073EDDA /* CityTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityTableViewController.m; sourceTree = "<group>"; };
 		B8D87FDE1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectSubpageTableViewCell.h; sourceTree = "<group>"; };
 		B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectSubpageTableViewCell.m; sourceTree = "<group>"; };
 		B8D87FE81CC618A000F7CBEF /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
@@ -472,6 +475,8 @@
 				1820D3281CC3233D0010A405 /* ClubDetailViewController.m */,
 				B8D87FE81CC618A000F7CBEF /* SearchViewController.h */,
 				B8D87FE91CC618A000F7CBEF /* SearchViewController.m */,
+				B8CD9A131CC7890F0073EDDA /* CityTableViewController.h */,
+				B8CD9A141CC7890F0073EDDA /* CityTableViewController.m */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -695,6 +700,7 @@
 				382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */,
 				386DB3E51CC5B6F9007B2C95 /* HomeNavViewController.m in Sources */,
 				3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */,
+				B8CD9A151CC7890F0073EDDA /* CityTableViewController.m in Sources */,
 				382815BA1CC382010016A1A5 /* LeftViewController.m in Sources */,
 				1844778D1CC21B62003B2354 /* NSData+Base64.m in Sources */,
 				385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */,
