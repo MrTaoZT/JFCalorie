@@ -604,14 +604,14 @@
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="飓风健身馆" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJw-pK-e1E">
                                             <rect key="frame" x="2" y="180" width="297" height="39"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NMe-Le-hGs">
                                             <rect key="frame" x="299" y="180" width="74" height="39"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <state key="normal" title="已收藏">
                                                 <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
@@ -1188,21 +1188,21 @@
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kca-WD-oiP">
                                 <rect key="frame" x="0.0" y="64" width="125" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="城市"/>
                                 <connections>
                                     <action selector="cityButtonAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="Izu-KJ-S6J"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uhi-cc-wad">
                                 <rect key="frame" x="125" y="64" width="125" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="按距离"/>
                                 <connections>
                                     <action selector="typeAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="hom-5B-uXK"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emT-GD-VgY">
                                 <rect key="frame" x="250" y="64" width="125" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="行数"/>
                                 <connections>
                                     <action selector="perPageAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="925-SG-RJh"/>
                                 </connections>
@@ -1248,6 +1248,7 @@
                         <outlet property="cityBtn" destination="Kca-WD-oiP" id="dhX-sZ-MLD"/>
                         <outlet property="perPageBtn" destination="emT-GD-VgY" id="hyb-En-AZL"/>
                         <outlet property="searchTextField" destination="uH9-TW-RAb" id="0R9-jb-GDr"/>
+                        <outlet property="tableView" destination="GbU-gX-WvE" id="ufu-TV-naI"/>
                         <outlet property="typeBtn" destination="Uhi-cc-wad" id="tSe-sM-Mze"/>
                     </connections>
                 </viewController>

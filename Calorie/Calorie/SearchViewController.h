@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface SearchViewController : UIViewController
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)searchButton:(UIButton *)sender forEvent:(UIEvent *)event;
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event;
