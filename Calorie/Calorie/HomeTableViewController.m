@@ -510,7 +510,7 @@
         NSInteger perPage = 5;
         
         NSDictionary *parameters = @{
-                                     @"city":@"0510",
+                                     @"city":@"0838",
                                      @"jing":@(weakSelf.jing),
                                      @"wei":@(weakSelf.wei),
                                      @"page":@(weakSelf.hotClubPage),

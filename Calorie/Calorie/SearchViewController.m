@@ -13,6 +13,7 @@
 
 @interface SearchViewController (){
     BOOL loadOver;
+    BOOL cityLoadOver;
 }
 
 @property(nonatomic)NSInteger page;
@@ -23,6 +24,10 @@
 
 @property(nonatomic, strong)NSMutableArray *dataArray;
 
+@property(nonatomic, strong)NSMutableArray *cityArray;
+@property(nonatomic, strong)NSArray *hotArray;
+@property(nonatomic, strong)NSArray *upgradedArray;
+
 @end
 
 @implementation SearchViewController
@@ -31,12 +36,48 @@
     [super viewDidLoad];
     
     loadOver = NO;
+    cityLoadOver = NO;
+    _page = 1;
+    _perPage = 5;
+    //默认按距离排序
+    _typeInt = 0;
     
     _dataArray = [NSMutableArray new];
+    _hotArray = [NSMutableArray new];
+    _upgradedArray = [NSMutableArray new];
+    
+    _keyword = _searchTextField.text;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    
+    _cityTableView.dataSource = self;
+    _cityTableView.delegate = self;
+    
     // Do any additional setup after loading the view.
+}
+
+- (void)getCity{
+    __weak SearchViewController *weakSelf = self;
+
+    NSString *netUrl = @"/city/hotAndUpgradedList";
+    
+    [RequestAPI getURL:netUrl withParameters:nil success:^(id responseObject) {
+        //NSLog(@"responseObject..%@",responseObject);
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *result = responseObject[@"result"];
+            weakSelf.hotArray = result[@"hot"];
+            weakSelf.upgradedArray = result[@"upgraded"];
+            cityLoadOver = YES;
+            [weakSelf.cityTableView reloadData];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
+            //返回
+            //[self.navigationController popViewControllerAnimated:YES];
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+    }];
 }
 
 - (void)requestData{
@@ -59,17 +100,11 @@
      */
     
     _city = @"0510";
-    CGFloat jing = _jing;
-    CGFloat wei = _wei;
-    _page = 1;
-    _perPage = 5;
-    //默认按距离排序
-    _typeInt = 0;
     
     NSDictionary *parameters = @{
                                   @"city":_city,
-                                  @"jing":@(jing),
-                                  @"wei":@(wei),
+                                  @"jing":@(_jing),
+                                  @"wei":@(_wei),
                                   @"page":@(_page),
                                   @"perPage":@(_perPage),
                                   @"type":@(_typeInt),
@@ -78,7 +113,7 @@
     
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
         if ([responseObject[@"resultFlag"]integerValue] == 8001) {
-            NSLog(@".,.,.>>>>>%@",responseObject);
+            //NSLog(@".,.,.>>>>>%@",responseObject);
             NSDictionary *result = responseObject[@"result"];
             weakSelf.dataArray = result[@"models"];
             
@@ -86,9 +121,11 @@
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
+             //[self.navigationController popViewControllerAnimated:YES];
         }
     } failure:^(NSError *error) {
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+         //[self.navigationController popViewControllerAnimated:YES];
     }];
 }
 
@@ -100,35 +137,55 @@
 #pragma mark - UItableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _dataArray.count;
+    if (tableView == _tableView) {
+        return _dataArray.count;
+    }
+    return _cityArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    
-    if (loadOver) {
-        cell.nameLabel.text = _dataArray[indexPath.row][@"clubName"];
-        cell.addressLabel.text = _dataArray[indexPath.row][@"clubAddressB"];
-        cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",_dataArray[indexPath.row][@"distance"]];
-        [cell.image sd_setImageWithURL:_dataArray[indexPath.row][@"clubLogo"]];
+    if (tableView == _tableView) {
+        SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+        if (loadOver) {
+            cell.nameLabel.text = _dataArray[indexPath.row][@"clubName"];
+            cell.addressLabel.text = _dataArray[indexPath.row][@"clubAddressB"];
+            cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",_dataArray[indexPath.row][@"distance"]];
+            [cell.image sd_setImageWithURL:_dataArray[indexPath.row][@"clubLogo"]];
+            return cell;
+        }
+    }else{
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CityCell"];
+        if (cityLoadOver) {
+            cell.textLabel.text = _hotArray[indexPath.row];
+        }
+        cell.textLabel.text = @"加载中";
+        return cell;
     }
-    
-    return cell;
+    return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    NSLog(@"13");
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 220;
+    if (tableView == _tableView) {
+        return 220;
+    }
+    return 30;
 }
 
 #pragma mark - private
 
 - (IBAction)searchButton:(UIButton *)sender forEvent:(UIEvent *)event {
     _keyword = _searchTextField.text;
+    
     [self requestData];
-    NSLog(@"hotClubOver");
 }
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    
+    _bgView.hidden = NO;
+    _cityTableView.hidden = NO;
+    [self getCity];
 }
 
 - (IBAction)typeAction:(UIButton *)sender forEvent:(UIEvent *)event {
@@ -141,7 +198,34 @@
     }
 }
 
+//行数按钮，用于显示用户输入行数
 - (IBAction)perPageAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    
+    _bgView.hidden = NO;
+    _perPageTextField.hidden = NO;
+    _choosePerPage.hidden = NO;
+    _perPageTextField.text = @"";
+    _perPageTextField.alpha = 1;
+}
+- (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event {
+    NSString *perPageStr = _perPageTextField.text;
+    //判断其是整数且是空
+    if (perPageStr.length != 0 && [self isPureInt:perPageStr]) {
+        //赋值给入参
+        _perPage = [perPageStr integerValue];
+        [_perPageBtn setTitle:perPageStr forState:UIControlStateNormal];
+        //重载请求数据
+        [self requestData];
+    }else{
+        [_perPageBtn setTitle:@"默认" forState:UIControlStateNormal];
+    }
+    _choosePerPage.hidden = YES;
+    _perPageTextField.hidden = YES;
+    _bgView.hidden = YES;
+}
+
+- (BOOL)isPureInt:(NSString*)string{
+    NSScanner* scan = [NSScanner scannerWithString:string];
+    int val;
+    return[scan scanInt:&val] && [scan isAtEnd];
 }
 @end
