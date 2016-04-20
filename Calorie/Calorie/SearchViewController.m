@@ -7,14 +7,21 @@
 //
 
 #import "SearchViewController.h"
+#import "SearchTableViewCell.h"
 
-@interface SearchViewController ()
+#import <UIImageView+WebCache.h>
+
+@interface SearchViewController (){
+    BOOL loadOver;
+}
 
 @property(nonatomic)NSInteger page;
 @property(nonatomic)NSInteger perPage;
 @property(nonatomic,strong)NSString *city;
 @property(nonatomic)NSInteger typeInt;
 @property(nonatomic, strong)NSString *keyword;
+
+@property(nonatomic, strong)NSMutableArray *dataArray;
 
 @end
 
@@ -23,10 +30,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    loadOver = NO;
+    
+    _dataArray = [NSMutableArray new];
+    
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     // Do any additional setup after loading the view.
 }
 
 - (void)requestData{
+    __weak SearchViewController *weakSelf = self;
     //搜索API
     NSString *netUrl = @"/clubController/nearSearchClub";
     /*
@@ -65,6 +79,11 @@
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
         if ([responseObject[@"resultFlag"]integerValue] == 8001) {
             NSLog(@".,.,.>>>>>%@",responseObject);
+            NSDictionary *result = responseObject[@"result"];
+            weakSelf.dataArray = result[@"models"];
+            
+            loadOver = YES;
+            [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
         }
@@ -77,6 +96,31 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - UItableViewDelegate
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return _dataArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    
+    if (loadOver) {
+        cell.nameLabel.text = _dataArray[indexPath.row][@"clubName"];
+        cell.addressLabel.text = _dataArray[indexPath.row][@"clubAddressB"];
+        cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",_dataArray[indexPath.row][@"distance"]];
+        [cell.image sd_setImageWithURL:_dataArray[indexPath.row][@"clubLogo"]];
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return 220;
+}
+
+#pragma mark - private
 
 - (IBAction)searchButton:(UIButton *)sender forEvent:(UIEvent *)event {
     _keyword = _searchTextField.text;
