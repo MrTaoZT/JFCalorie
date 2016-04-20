@@ -26,7 +26,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *bgView;
 @property (weak, nonatomic) IBOutlet UITextField *perPageTextField;
-@property (weak, nonatomic) IBOutlet UITableView *cityTableView;
 
 - (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UIButton *choosePerPage;

@@ -8,6 +8,7 @@
 
 #import "SearchViewController.h"
 #import "SearchTableViewCell.h"
+#import "CityTableViewController.h"
 
 #import <UIImageView+WebCache.h>
 
@@ -51,34 +52,31 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    _cityTableView.dataSource = self;
-    _cityTableView.delegate = self;
-    
     // Do any additional setup after loading the view.
 }
-
-- (void)getCity{
-    __weak SearchViewController *weakSelf = self;
-
-    NSString *netUrl = @"/city/hotAndUpgradedList";
-    
-    [RequestAPI getURL:netUrl withParameters:nil success:^(id responseObject) {
-        //NSLog(@"responseObject..%@",responseObject);
-        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSDictionary *result = responseObject[@"result"];
-            weakSelf.hotArray = result[@"hot"];
-            weakSelf.upgradedArray = result[@"upgraded"];
-            cityLoadOver = YES;
-            [weakSelf.cityTableView reloadData];
-        }else{
-            [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
-            //返回
-            //[self.navigationController popViewControllerAnimated:YES];
-        }
-    } failure:^(NSError *error) {
-        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
-    }];
-}
+//
+//- (void)getCity{
+//    __weak SearchViewController *weakSelf = self;
+//
+//    NSString *netUrl = @"/city/hotAndUpgradedList";
+//    
+//    [RequestAPI getURL:netUrl withParameters:nil success:^(id responseObject) {
+//        //NSLog(@"responseObject..%@",responseObject);
+//        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+//            NSDictionary *result = responseObject[@"result"];
+//            weakSelf.hotArray = result[@"hot"];
+//            weakSelf.upgradedArray = result[@"upgraded"];
+//            cityLoadOver = YES;
+//            [weakSelf.cityTableView reloadData];
+//        }else{
+//            [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
+//            //返回
+//            //[self.navigationController popViewControllerAnimated:YES];
+//        }
+//    } failure:^(NSError *error) {
+//        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+//    }];
+//}
 
 - (void)requestData{
     __weak SearchViewController *weakSelf = self;
@@ -183,9 +181,12 @@
     [self requestData];
 }
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    _bgView.hidden = NO;
-    _cityTableView.hidden = NO;
-    [self getCity];
+    CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
+    [self.navigationController pushViewController:cityView animated:YES];
+    
+    cityView.cityBlock = ^(NSString *city, NSNumber *postalCode){
+        NSLog(@"%@,%@",city,postalCode);
+    };
 }
 
 - (IBAction)typeAction:(UIButton *)sender forEvent:(UIEvent *)event {
