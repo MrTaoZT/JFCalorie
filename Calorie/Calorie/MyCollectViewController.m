@@ -17,23 +17,29 @@
     BOOL done;
     NSString *clubId;
     NSInteger count;
-//    NSIndexPath *indexPath;
+    BOOL flag;
+    NSString *clubIdStr;
 }
 @property(nonatomic,strong)CLLocationManager *locMgr;
 @property(nonatomic,strong)NSMutableArray *favorites;
 @property(strong,nonatomic) NSMutableArray *deleteBooks;
+@property(strong,nonatomic) NSMutableArray *array;
+//@property(strong,nonatomic) NSMutableArray *clubIds;
+@property(strong,nonatomic) NSDictionary *dict;
 @end
 
 @implementation MyCollectViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
      // 设置tableView在编辑模式下可以多选，并且只需设置一次
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
-    [self getUserCoolect];
+//    [self getUserCoolect];
     
     done = NO;
     count = 2;
+    flag = NO;
     
     _tableView.delegate = self;
     _tableView.dataSource = self;
@@ -41,6 +47,7 @@
     //初始化可变数组
     _favorites = [NSMutableArray new];
     _deleteBooks = [NSMutableArray new];
+    _array = [NSMutableArray new];
     
     _locMgr=[[CLLocationManager alloc]init];
     //设置代理
@@ -64,27 +71,27 @@
 #pragma mark - TabView
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    
+  
     return _favorites.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"1");
     CollectSubpageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
-    if (done) {
-        NSDictionary *dic = _favorites[indexPath.row];
-        NSURL *imageURL = dic[@"clubImage"];
 
-        cell.clubName.text = dic[@"clubName"];
-        cell.clubAddress.text = dic[@"clubAddress"];
+    if (done) {
+        _dict = _favorites[indexPath.row];
+        NSURL *imageURL = _dict[@"clubImage"];
+
+        cell.clubName.text = _dict[@"clubName"];
+        cell.clubAddress.text = _dict[@"clubAddress"];
         
-        NSNumber *num = dic[@"distance"];
+        NSNumber *num = _dict[@"distance"];
         cell.distance.text = [NSString stringWithFormat:@"%@米",num];
         [cell.clubImage sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@""]];
     }else{
+        NSLog(@"2");
         return cell;
     }
-   
     return cell;
 }
 
@@ -99,20 +106,17 @@
         [self.navigationController pushViewController:clubDVc animated:YES];
     }
     if ([_rightButton.title isEqualToString:@"确定"]) {
-        
+        //选中时  从_deleteBooks 中添加这个indexPath
         [_deleteBooks addObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
-//        [_deleteBooks addObject:[_favorites objectAtIndex:indexPath.row]];
-        NSLog(@"------------------%@",[NSString stringWithFormat:@"%ld",indexPath.row]);
-        NSLog(@"--------------------------%@",_deleteBooks);
+
     }
 }
 
+//取消选中时  从_deleteBooks 中移除掉这个indexPath
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath  {
     
     [_deleteBooks removeObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
-    NSLog(@"------------------%@",[NSString stringWithFormat:@"%ld",indexPath.row]);
-    NSLog(@"--------------------------%@",_deleteBooks);
-    
+
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -128,10 +132,10 @@
     return UITableViewCellEditingStyleDelete | UITableViewCellEditingStyleInsert;
 }
 
--(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return @"删除";
-}
+//-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return @"删除";
+//}
 #pragma mark-GetUserCollect
 
 - (void) getUserCoolect{
@@ -150,7 +154,6 @@
             
             NSDictionary *result = responseObject[@"result"];
             _favorites = result[@"favorites"];
-            NSLog(@"ffff%@",_favorites[0]);
             done = YES;
         }else {
             NSLog(@"错误码   修改！");
@@ -181,12 +184,12 @@
     NSString *latitude = [NSString stringWithFormat:@"%f",wei];
     
     if (longitude.length == 0 || latitude.length == 0) {
-
+        NSLog(@"1111111111");
         jing = 120.3;
         wei = 31.57;
         [self getUserCoolect];
     }else{
-
+        NSLog(@"00000000000");
         [self getUserCoolect];
     }
     //停止更新位置（如果定位服务不需要实时更新的话，那么应该停止位置的更新）
@@ -234,11 +237,12 @@
     }
 }
 - (IBAction)rightBtnAction:(UIBarButtonItem *)sender {
-    
+    NSLog(@"-------count = %ld",count);
     if (count%2 == 0) {
         [_tableView setEditing:YES animated:YES];
         [_rightButton setTitle:@"确定"];
         count ++;
+        [_tableView reloadData];
     }else{
         [_tableView setEditing:NO animated:YES];
         [_rightButton setTitle:@"编辑"];
@@ -247,28 +251,44 @@
             [_tableView setEditing:NO animated:YES];
             [_tableView setEditing:NO animated:YES];
             [_rightButton setTitle:@"编辑"];
+            [_deleteBooks removeAllObjects];
+            [_tableView reloadData];
             return ;
         }];
         UIAlertAction *rightBtn = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+            NSLog(@"_deleteBooks.count = %ld",_deleteBooks.count);
             for (int i = 0; i <= _deleteBooks.count - 1; i ++) {
-                [_favorites removeObjectAtIndex:[_deleteBooks[i] integerValue]];
+                NSDictionary *dic = _favorites[[_deleteBooks[i] integerValue]];
+                if (i == 0) {
+                    clubIdStr = dic[@"favoritesId"];
+                }else{
+                    clubIdStr = [NSString stringWithFormat:@"%@,%@",dic[@"favoritesId"],clubIdStr];
+                }
             }
-            [_tableView reloadData];
+            NSString *memberId = [[StorageMgr singletonStorageMgr]objectForKey:@"memberId"];
+            NSDictionary *dic = @{@"memberId":memberId,
+                                @"favoritesId":clubIdStr,
+                                  };
+            [RequestAPI getURL:@"/mySelfController/delMyCollection" withParameters:dic success:^(id responseObject) {
+                NSLog(@"qxsc --- %@",responseObject);
+                if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                    [self getUserCoolect];
+                }
+            } failure:^(NSError *error) {
+                NSLog(@"error = %@",[error userInfo]);
+            }];
+            NSLog(@"clubIdStr = %@",clubIdStr);
+            done = YES;
+            [_deleteBooks removeAllObjects];
+            
         }];
         [alert addAction:leftBtn];
         [alert addAction:rightBtn];
         [self presentViewController:alert animated:YES completion:nil];
-        count --;
-
+        count ++;
     }
+    [_tableView reloadData];
 }
 
-//-(void)deleteButtonPress:(UIButton*)sender
-//{
-//    //首先获得Cell：button的父视图是contentView，再上一层才是UITableViewCell
-//    CollectSubpageTableViewCell *cell = (CollectSubpageTableViewCell*)sender.superview.superview;
-//    
-//    //然后使用indexPathForCell方法，就得到indexPath了~
-//    indexPath = [_tableView indexPathForCell:cell];
-//}
 @end
