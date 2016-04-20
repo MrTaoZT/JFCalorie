@@ -1128,33 +1128,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kca-WD-oiP">
-                                <rect key="frame" x="0.0" y="64" width="125" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="cityButtonAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="Izu-KJ-S6J"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uhi-cc-wad">
-                                <rect key="frame" x="125" y="64" width="125" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="typeAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="hom-5B-uXK"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emT-GD-VgY">
-                                <rect key="frame" x="250" y="64" width="125" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="perPageAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="925-SG-RJh"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="183" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GbU-gX-WvE">
                                 <rect key="frame" x="0.0" y="30" width="375" height="637"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="183" id="JFl-t8-4MC" customClass="SearchTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="183"/>
+                                        <rect key="frame" x="0.0" y="92" width="375" height="183"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JFl-t8-4MC" id="Q3q-Xh-yCH">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="182"/>
@@ -1207,6 +1186,27 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kca-WD-oiP">
+                                <rect key="frame" x="0.0" y="64" width="125" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="cityButtonAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="Izu-KJ-S6J"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uhi-cc-wad">
+                                <rect key="frame" x="125" y="64" width="125" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="typeAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="hom-5B-uXK"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="emT-GD-VgY">
+                                <rect key="frame" x="250" y="64" width="125" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="perPageAction:forEvent:" destination="8O0-BC-pj7" eventType="touchUpInside" id="925-SG-RJh"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
