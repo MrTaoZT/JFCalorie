@@ -60,7 +60,10 @@
     
     //取消tableview下划线
 //    self.tableView.tableFooterView = [[UIView alloc]init];
-    //self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //去掉tableView的滚动条
+    self.tableView.showsVerticalScrollIndicator = NO;
+    
     
     [self initailAllControl];
     
@@ -166,14 +169,15 @@
         TitleTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"titleCell" forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (sportOver) {
-            [cell.sportTypeBtn1 sd_setBackgroundImageWithURL:_sportTypeArray[0][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn2 sd_setBackgroundImageWithURL:_sportTypeArray[1][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn3 sd_setBackgroundImageWithURL:_sportTypeArray[2][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn4 sd_setBackgroundImageWithURL:_sportTypeArray[3][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn5 sd_setBackgroundImageWithURL:_sportTypeArray[4][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn6 sd_setBackgroundImageWithURL:_sportTypeArray[5][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn7 sd_setBackgroundImageWithURL:_sportTypeArray[6][@"frontImgUrl"] forState:UIControlStateNormal];
-            [cell.sportTypeBtn8 sd_setBackgroundImageWithURL:_sportTypeArray[7][@"frontImgUrl"] forState:UIControlStateNormal];
+            //[cell.sportTypeBtn1 sd_setBackgroundImageWithURL:_sportTypeArray[0][@"backImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn1 sd_setImageWithURL:_sportTypeArray[0][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn2 sd_setImageWithURL:_sportTypeArray[1][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn3 sd_setImageWithURL:_sportTypeArray[2][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn4 sd_setImageWithURL:_sportTypeArray[3][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn5 sd_setImageWithURL:_sportTypeArray[4][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn6 sd_setImageWithURL:_sportTypeArray[5][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn7 sd_setImageWithURL:_sportTypeArray[6][@"frontImgUrl"] forState:UIControlStateNormal];
+            [cell.sportTypeBtn8 sd_setImageWithURL:_sportTypeArray[7][@"frontImgUrl"] forState:UIControlStateNormal];
             
             [cell.sportTypeBtn1 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             [cell.sportTypeBtn2 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -198,7 +202,7 @@
         HotClubTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clubCell" forIndexPath:indexPath];
         //设置cell按下无效果
         //cell.clubImageView.contentMode = UIViewContentModeScaleAspectFill;
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (hotClubOver) {
             //接下当前行对应的字典
             NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
@@ -221,7 +225,7 @@
     if (indexPath.row == 0) {
         return 190;
     }
-    return 190;
+    return 220;
 }
 
 //按下cell
@@ -463,7 +467,7 @@
             NSDictionary *result = responseObject[@"result"];
             //数据解析得到name
             _sportTypeArray = result[@"models"];
-            //NSLog(@"%@",_sportTypeArray);
+            NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
             [weakSelf.tableView reloadData];
         }else{
