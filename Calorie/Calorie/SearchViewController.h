@@ -24,4 +24,9 @@
 @property(nonatomic)CGFloat jing;
 @property(nonatomic)CGFloat wei;
 
+@property (weak, nonatomic) IBOutlet UIView *bgView;
+@property (weak, nonatomic) IBOutlet UITextField *perPageTextField;
+@property (weak, nonatomic) IBOutlet UITableView *cityTableView;
+
+
 @end
