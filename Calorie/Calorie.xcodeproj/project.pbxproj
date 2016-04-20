@@ -37,12 +37,14 @@
 		3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787C1CC496B400FEE5B5 /* WorkTableViewCell.m */; };
 		387878801CC496C700FEE5B5 /* CollectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787F1CC496C700FEE5B5 /* CollectTableViewCell.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
+		9D761AF51CC7929200B43D7C /* citydict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D761AF41CC7929200B43D7C /* citydict.plist */; };
 		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA151CC3565500864F24 /* TabBarViewController.m */; };
 		B82AB4751CC51DDB005FADEA /* Sliding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B82AB4741CC51DDB005FADEA /* Sliding.storyboard */; };
 		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
 		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
+		B8CD9A151CC7890F0073EDDA /* CityTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CD9A141CC7890F0073EDDA /* CityTableViewController.m */; };
 		B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */; };
 		B8D87FEA1CC618A000F7CBEF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FE91CC618A000F7CBEF /* SearchViewController.m */; };
 		B8D87FED1CC61DA000F7CBEF /* SearchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D87FEC1CC61DA000F7CBEF /* SearchTableViewCell.m */; };
@@ -134,6 +136,7 @@
 		3878787F1CC496C700FEE5B5 /* CollectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectTableViewCell.m; sourceTree = "<group>"; };
 		4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		9D761AF41CC7929200B43D7C /* citydict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = citydict.plist; sourceTree = SOURCE_ROOT; };
 		B808BA0D1CC3242C00864F24 /* SportTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportTypeTableViewCell.h; sourceTree = "<group>"; };
 		B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewCell.m; sourceTree = "<group>"; };
 		B808BA141CC3565500864F24 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -145,6 +148,8 @@
 		B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecontTableViewCell.m; sourceTree = "<group>"; };
 		B8783B641CC4D37500F01B4B /* ThiredTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThiredTableViewCell.h; sourceTree = "<group>"; };
 		B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThiredTableViewCell.m; sourceTree = "<group>"; };
+		B8CD9A131CC7890F0073EDDA /* CityTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityTableViewController.h; sourceTree = "<group>"; };
+		B8CD9A141CC7890F0073EDDA /* CityTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityTableViewController.m; sourceTree = "<group>"; };
 		B8D87FDE1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectSubpageTableViewCell.h; sourceTree = "<group>"; };
 		B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectSubpageTableViewCell.m; sourceTree = "<group>"; };
 		B8D87FE81CC618A000F7CBEF /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
@@ -320,6 +325,7 @@
 				187725D61CC20F5B003F8BD8 /* AppDelegate.h */,
 				187725D71CC20F5B003F8BD8 /* AppDelegate.m */,
 				187725E71CC20F5B003F8BD8 /* Info.plist */,
+				9D761AF41CC7929200B43D7C /* citydict.plist */,
 				187725D41CC20F5B003F8BD8 /* main.m */,
 				184477901CC21BF6003B2354 /* PrefixHeader.pch */,
 			);
@@ -472,6 +478,8 @@
 				1820D3281CC3233D0010A405 /* ClubDetailViewController.m */,
 				B8D87FE81CC618A000F7CBEF /* SearchViewController.h */,
 				B8D87FE91CC618A000F7CBEF /* SearchViewController.m */,
+				B8CD9A131CC7890F0073EDDA /* CityTableViewController.h */,
+				B8CD9A141CC7890F0073EDDA /* CityTableViewController.m */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -583,6 +591,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B82AB4751CC51DDB005FADEA /* Sliding.storyboard in Resources */,
+				9D761AF51CC7929200B43D7C /* citydict.plist in Resources */,
 				187725E61CC20F5B003F8BD8 /* LaunchScreen.storyboard in Resources */,
 				187725E31CC20F5B003F8BD8 /* Assets.xcassets in Resources */,
 				187725DE1CC20F5B003F8BD8 /* Main.storyboard in Resources */,
@@ -695,6 +704,7 @@
 				382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */,
 				386DB3E51CC5B6F9007B2C95 /* HomeNavViewController.m in Sources */,
 				3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */,
+				B8CD9A151CC7890F0073EDDA /* CityTableViewController.m in Sources */,
 				382815BA1CC382010016A1A5 /* LeftViewController.m in Sources */,
 				1844778D1CC21B62003B2354 /* NSData+Base64.m in Sources */,
 				385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */,

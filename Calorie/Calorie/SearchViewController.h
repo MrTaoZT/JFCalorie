@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SearchViewController : UIViewController
+@interface SearchViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 - (IBAction)searchButton:(UIButton *)sender forEvent:(UIEvent *)event;
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event;
@@ -22,5 +23,12 @@
 
 @property(nonatomic)CGFloat jing;
 @property(nonatomic)CGFloat wei;
+
+@property (weak, nonatomic) IBOutlet UIView *bgView;
+@property (weak, nonatomic) IBOutlet UITextField *perPageTextField;
+
+- (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event;
+@property (weak, nonatomic) IBOutlet UIButton *choosePerPage;
+
 
 @end
