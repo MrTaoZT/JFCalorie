@@ -10,6 +10,6 @@
 
 @interface CityTableViewController : UITableViewController
 
-@property(nonatomic, strong) void (^cityBlock)(NSString *city, NSNumber *postalCode);
+@property(nonatomic, strong) void (^cityBlock)(NSString *city, NSString *postalCode);
 
 @end

@@ -24,7 +24,7 @@
 @property(nonatomic, strong)NSString *keyword;
 //选择的城市信息
 //@property(nonatomic, strong)NSString *cityName;
-@property(nonatomic, strong)NSNumber *postalCode;
+@property(nonatomic, strong)NSString *postalCode;
 //接受参数的数组
 @property(nonatomic, strong)NSMutableArray *dataArray;
 
@@ -54,7 +54,7 @@
     _tableView.dataSource = self;
     
     //默认无锡
-    _postalCode = @(0510);
+    _postalCode = @"0510";
 }
 
 - (void)requestData{
@@ -78,14 +78,14 @@
      */
     
     NSDictionary *parameters = @{
-                                  @"city":[NSString stringWithFormat:@"%@",_postalCode],
-                                  @"jing":@(_jing),
-                                  @"wei":@(_wei),
-                                  @"page":@(_page),
-                                  @"perPage":@(_perPage),
-                                  @"type":@(_typeInt),
-                                  @"keyword":_keyword
-                                  };
+                                 @"city":_postalCode,
+                                 @"jing":@(_jing),
+                                 @"wei":@(_wei),
+                                 @"page":@(_page),
+                                 @"perPage":@(_perPage),
+                                 @"type":@(_typeInt),
+                                 @"keyword":_keyword
+                                 };
     
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
         isLoading = NO;
@@ -97,7 +97,11 @@
             loadOver = YES;
             [weakSelf.tableView reloadData];
         }else{
-            [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
+            if ([responseObject[@"resultFlag"] integerValue] == 8020) {
+                [Utilities popUpAlertViewWithMsg:@"暂无数据" andTitle:@"" onView:self];
+            }else{
+                [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
+            }
         }
     } failure:^(NSError *error) {
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
@@ -148,12 +152,14 @@
         [Utilities popUpAlertViewWithMsg:@"请求正在进行，请稍后操作" andTitle:@"" onView:self];
     }
 }
+
+//选择城市按钮
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event {
     __weak SearchViewController *weakSelf  = self;
     CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
     [self.navigationController pushViewController:cityView animated:YES];
     
-    cityView.cityBlock = ^(NSString *city, NSNumber *postalCode){
+    cityView.cityBlock = ^(NSString *city, NSString *postalCode){
         //_cityName = city;
         _postalCode = postalCode;
         NSLog(@"--->%@,%@",city,postalCode);
@@ -162,6 +168,7 @@
     };
 }
 
+//类型按钮
 - (IBAction)typeAction:(UIButton *)sender forEvent:(UIEvent *)event {
     if (_typeInt) {
         _typeInt = 0;
@@ -180,26 +187,24 @@
 
 //行数按钮，用于显示用户输入行数
 - (IBAction)perPageAction:(UIButton *)sender forEvent:(UIEvent *)event {
-//    _bgView.hidden = NO;
-//    _perPageTextField.hidden = NO;
-//    _choosePerPage.hidden = NO;
-//    _perPageTextField.text = @"";
-}
-- (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event {
-    //NSString *perPageStr = _perPageTextField.text;
-    //判断其是整数且是空
-//    if (perPageStr.length != 0 && [self isPureInt:perPageStr]) {
-//        //赋值给入参
-//        _perPage = [perPageStr integerValue];
-//        [_perPageBtn setTitle:perPageStr forState:UIControlStateNormal];
-//        //重载请求数据
-//        [self requestData];
-//    }else{
-//        [_perPageBtn setTitle:@"默认" forState:UIControlStateNormal];
-//    }
-//    _choosePerPage.hidden = YES;
-//    _perPageTextField.hidden = YES;
-//    _bgView.hidden = YES;
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"请输入要显示的行数" preferredStyle:UIAlertControllerStyleAlert];
+    //添加输入框
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.keyboardType = UIKeyboardTypeNumberPad;
+    }];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"好了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (!isLoading) {
+            if ([self isPureInt:alert.textFields.firstObject.text]) {
+                _perPage = [alert.textFields.firstObject.text integerValue];
+                [sender setTitle:[NSString stringWithFormat:@"%ld行",_perPage] forState:UIControlStateNormal];
+                [self requestData];
+            }
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"请求正在进行，请稍后操作" andTitle:@"" onView:self];
+        }
+    }];
+    [alert addAction:action];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (BOOL)isPureInt:(NSString*)string{

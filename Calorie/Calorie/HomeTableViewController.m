@@ -75,12 +75,10 @@
     [super viewDidLoad];
     
     //取消tableview下划线
-//    self.tableView.tableFooterView = [[UIView alloc]init];
+    //    self.tableView.tableFooterView = [[UIView alloc]init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //去掉tableView的滚动条
     self.tableView.showsVerticalScrollIndicator = NO;
-    
-    
     
     [self initailAllControl];
     
@@ -114,7 +112,7 @@
         }
         //如果登录了那么这里在判断  上一次是否按了退出按钮   yse  表示按了
         if ( [[Utilities getUserDefaults:@"AddUserAndPw"] boolValue]) {
-           
+            
             //表示用户 登录后  按了退出  这边依旧设置未登录  因为这里是默认从appdelage 进入  所以  全局变量inOrup  这边默认是NO （也就是未登录）
             //然后让  SignUpSuccessfully这个键为YES   那么在进入登录界面时  会运行  viewWillA 里面的放法
             [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
@@ -124,46 +122,46 @@
             return;
         }
         //这里是当判断到用户有登陆过  并且没有退出过   开启APP时   默认请求登录
-            NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
-            NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
-            //MD5将原始密码进行MD5加密
-            NSString *MD5Pwd = [password getMD5_32BitString];
-            //将MD5加密过后的密码进行RSA非对称加密
-            NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
-            
-            NSDictionary *dic = @{@"userName":username,
-                                  @"password":RSAPwd,
-                                  @"deviceType":@7001,
-                                  @"deviceId":[Utilities uniqueVendor]};
-            
-            [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
-                //NSLog(@"obj =======  %@",responseObject);
-                if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-                    NSLog(@"自动登录成功");
-                    NSDictionary *result = responseObject[@"result"];
-                    
-                    //这里将 全局变量键inOrUp  设置成yes  就可以运行leftVC  里的viewWillA  里的方法
-                    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
-                    [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
-                    
-                    //紧接着这边给缓存  键Username  给值（result[@"contactTel"]）
-                    [Utilities removeUserDefaults:@"Username"];
-                    [Utilities setUserDefaults:@"Username" content:result[@"contactTel"]];
-                    
-                    //这里获取到  ID  并存进全局变量
-                    NSString *memberId = result[@"memberId"];
-                    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"memberId"];
-                    [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
-                }else{
-                    [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
-                    NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
-                    [self presentViewController:navView animated:YES completion:nil];
-                }
-            } failure:^(NSError *error) {
-                [Utilities popUpAlertViewWithMsg:@"系统繁忙,请重新登录" andTitle:nil onView:self];
+        NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
+        NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
+        //MD5将原始密码进行MD5加密
+        NSString *MD5Pwd = [password getMD5_32BitString];
+        //将MD5加密过后的密码进行RSA非对称加密
+        NSString *RSAPwd = [NSString encryptWithPublicKeyFromModulusAndExponent:MD5Pwd.UTF8String modulus:modulus exponent:exponent];
+        
+        NSDictionary *dic = @{@"userName":username,
+                              @"password":RSAPwd,
+                              @"deviceType":@7001,
+                              @"deviceId":[Utilities uniqueVendor]};
+        
+        [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
+            //NSLog(@"obj =======  %@",responseObject);
+            if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                NSLog(@"自动登录成功");
+                NSDictionary *result = responseObject[@"result"];
+                
+                //这里将 全局变量键inOrUp  设置成yes  就可以运行leftVC  里的viewWillA  里的方法
+                [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
+                [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@YES];
+                
+                //紧接着这边给缓存  键Username  给值（result[@"contactTel"]）
+                [Utilities removeUserDefaults:@"Username"];
+                [Utilities setUserDefaults:@"Username" content:result[@"contactTel"]];
+                
+                //这里获取到  ID  并存进全局变量
+                NSString *memberId = result[@"memberId"];
+                [[StorageMgr singletonStorageMgr]removeObjectForKey:@"memberId"];
+                [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
                 NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
                 [self presentViewController:navView animated:YES completion:nil];
-            }];
+            }
+        } failure:^(NSError *error) {
+            [Utilities popUpAlertViewWithMsg:@"系统繁忙,请重新登录" andTitle:nil onView:self];
+            NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
+            [self presentViewController:navView animated:YES completion:nil];
+        }];
     }
 }
 
@@ -197,15 +195,6 @@
             [cell.sportTypeBtn6 sd_setImageWithURL:_sportTypeArray[5][@"frontImgUrl"] forState:UIControlStateNormal];
             [cell.sportTypeBtn7 sd_setImageWithURL:_sportTypeArray[6][@"frontImgUrl"] forState:UIControlStateNormal];
             [cell.sportTypeBtn8 sd_setImageWithURL:_sportTypeArray[7][@"frontImgUrl"] forState:UIControlStateNormal];
-            
-            [cell.sportTypeBtn1 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn2 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn3 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn4 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn5 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn6 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn7 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.sportTypeBtn8 addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
             
             cell.sportTypeBtn1.tag = 1001;
             cell.sportTypeBtn2.tag = 1002;
@@ -276,6 +265,8 @@
     //初始化经纬度
     _jing = 0;
     _wei = 0;
+    _city = @"0510";
+    [_chooseLocationButton setTitle:@"无锡" forState:UIControlStateNormal];
     
     //初始化开始页面
     _hotClubPage = 1;
@@ -285,6 +276,14 @@
     
     //初始化广告
     [self initAD];
+    
+}
+
+- (void)btnAction{
+    for (int i = 1001; i <= 1008 ; i++) {
+        UIButton *button = [self.tableView viewWithTag:1001];
+        [button addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
 }
 
 - (void)initAD{
@@ -329,23 +328,6 @@
 
 //初始化刷新器
 - (void)initRefresh{
-//    _refresh = [[UIRefreshControl alloc]init];
-//    
-//    NSString *title = [NSString stringWithFormat:@"刷新ing..."];
-//    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-//    [style setAlignment:NSTextAlignmentCenter];
-//    [style setLineBreakMode:NSLineBreakByTruncatingTail];
-//    NSDictionary *attrsDictionary = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
-//                                      NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody],
-//                                      NSParagraphStyleAttributeName:style,
-//                                      NSForegroundColorAttributeName:[UIColor magentaColor]};
-//    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
-//    _refresh.attributedTitle = attributedTitle;
-//    
-//    _refresh.tintColor = [UIColor orangeColor];
-//    _refresh.backgroundColor = [UIColor whiteColor];
-//    [_refresh addTarget:self action:@selector(conRefresh) forControlEvents:UIControlEventValueChanged];
-//    [self.tableView addSubview:_refresh];
     
     JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
     loadingViewCircle.tintColor = [UIColor whiteColor];
@@ -378,20 +360,23 @@
     locationError = YES;
     switch (error.code) {
         case kCLErrorNetwork:{
-            [Utilities popUpAlertViewWithMsg:@"没有网络连接" andTitle:@"" onView:self];
+            NSLog(@"没有网络连接");
+            //[Utilities popUpAlertViewWithMsg:@"没有网络连接" andTitle:@"" onView:self];
         }
             break;
         case kCLErrorDenied:{
-            [Utilities popUpAlertViewWithMsg:@"您没有开定位" andTitle:@"" onView:self];
+            NSLog(@"您没有开定位");
+            //[Utilities popUpAlertViewWithMsg:@"您没有开定位" andTitle:@"" onView:self];
         }
             break;
         case kCLErrorLocationUnknown:{
-            [Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
+            NSLog(@"获取位置失败");
+            //[Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
             locationError = YES;
         }
             break;
         default:{
-            [Utilities popUpAlertViewWithMsg:@"UnKnow Error" andTitle:@"" onView:self];
+            //[Utilities popUpAlertViewWithMsg:@"UnKnow Error" andTitle:@"" onView:self];
         }
             break;
     }
@@ -503,6 +488,9 @@
             _sportTypeArray = result[@"models"];
             //NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
+            
+            //初始化按钮事件
+            [self btnAction];
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请保持网络畅通,稍后试试吧%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
@@ -529,85 +517,76 @@
         return;
     }
     
-    //CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(_wei, _jing);
     __weak HomeTableViewController *weakSelf = self;
-    //
-    //[self setAnnotatinAithDescriptionOnCoordinate:coordinate completionHandler:^(NSDictionary *info) {
-       [weakSelf loadDataEnd];
-        //NSString *city = info[@"City"];
-        //NSString *cityNot = [city substringToIndex:city.length - 1];
-        //weakSelf.title = city;
-        //weakSelf.city= cityNot;
+    [weakSelf loadDataEnd];
+    if (weakSelf.refresh.isRefreshing) {
+        _hotClubPage = 1;
+    }
+    NSInteger perPage = 5;
+    
+    NSDictionary *parameters = @{
+                                 @"city":_city,
+                                 @"jing":@(weakSelf.jing),
+                                 @"wei":@(weakSelf.wei),
+                                 @"page":@(weakSelf.hotClubPage),
+                                 @"perPage":@(perPage)
+                                 };
+    //获取热门会所（及其体验券）列表
+    NSString *nerUrl = @"/homepage/choice";
+    
+    //网络请求
+    [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
+        hotClubOver = YES;
         if (weakSelf.refresh.isRefreshing) {
-            _hotClubPage = 1;
+            [weakSelf.refresh endRefreshing];
         }
-        NSInteger perPage = 5;
-        
-        NSDictionary *parameters = @{
-                                     @"city":@"0838",
-                                     @"jing":@(weakSelf.jing),
-                                     @"wei":@(weakSelf.wei),
-                                     @"page":@(weakSelf.hotClubPage),
-                                     @"perPage":@(perPage)
-                                     };
-        //获取热门会所（及其体验券）列表
-        NSString *nerUrl = @"/homepage/choice";
-        
-        //网络请求
-        [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
-            if (weakSelf.refresh.isRefreshing) {
-                [weakSelf.refresh endRefreshing];
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            //NSLog(@"%@",responseObject);
+            
+            //等于1表示是下拉刷新或者刚进入页面
+            if (weakSelf.hotClubPage == 1) {
+                _hotClubInfoArray = nil;
+                _hotClubInfoArray = [NSMutableArray new];
             }
-            if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-                //NSLog(@"%@",responseObject);
+            
+            NSDictionary *result = responseObject[@"result"];
+            NSArray *info = result[@"models"];
+            NSDictionary *pagingInfo = result[@"pagingInfo"];
+            //封装数据
+            for (int i = 0; i < info.count; i++) {
+                NSString *name = info[i][@"name"];
+                NSString *address = info[i][@"address"];
+                NSString *distance = info[i][@"distance"];
+                NSString *image = info[i][@"image"];
+                NSString *clubKeyId = info[i][@"id"];
                 
-                //等于1表示是下拉刷新或者刚进入页面
-                if (weakSelf.hotClubPage == 1) {
-                    _hotClubInfoArray = nil;
-                    _hotClubInfoArray = [NSMutableArray new];
-                }
-                
-                NSDictionary *result = responseObject[@"result"];
-                NSArray *info = result[@"models"];
-                NSDictionary *pagingInfo = result[@"pagingInfo"];
-                //封装数据
-                for (int i = 0; i < info.count; i++) {
-                    NSString *name = info[i][@"name"];
-                    NSString *address = info[i][@"address"];
-                    NSString *distance = info[i][@"distance"];
-                    NSString *image = info[i][@"image"];
-                    NSString *clubKeyId = info[i][@"id"];
-                    
-                    NSDictionary *dict = @{
-                                           @"name":name,
-                                           @"address":address,
-                                           @"distance":distance,
-                                           @"image":image,
-                                           @"id":clubKeyId
-                                           };
-                    [weakSelf.hotClubInfoArray addObject:dict];
-                }
-                //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
-                hotClubOver = YES;
-                loadingOver = YES;
-                weakSelf.totalPage = [pagingInfo[@"totalPage"] integerValue];
-                //NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
-                [weakSelf.tableView reloadData];
-            }else{
-                if ([responseObject[@"resultFlag"] integerValue] == 8020) {
-                    [Utilities popUpAlertViewWithMsg:@"暂无数据" andTitle:@"" onView:weakSelf];
-                    hotClubOver = YES;
-                    return ;
-                }
-                [Utilities popUpAlertViewWithMsg: [NSString stringWithFormat:@"保持网络畅通，稍后再试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:weakSelf];
+                NSDictionary *dict = @{
+                                       @"name":name,
+                                       @"address":address,
+                                       @"distance":distance,
+                                       @"image":image,
+                                       @"id":clubKeyId
+                                       };
+                [weakSelf.hotClubInfoArray addObject:dict];
             }
-        } failure:^(NSError *error) {
-            if (weakSelf.refresh.isRefreshing) {
-                [weakSelf.refresh endRefreshing];
+            //网络请求完毕后刷新cell（用于判断是否经历过第一次刷新）
+            loadingOver = YES;
+            weakSelf.totalPage = [pagingInfo[@"totalPage"] integerValue];
+            //NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
+            [weakSelf.tableView reloadData];
+        }else{
+            if ([responseObject[@"resultFlag"] integerValue] == 8020) {
+                [Utilities popUpAlertViewWithMsg:@"暂无数据" andTitle:@"" onView:weakSelf];
+                return ;
             }
-            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:weakSelf];
-        }];
-    //}];
+            [Utilities popUpAlertViewWithMsg: [NSString stringWithFormat:@"保持网络畅通，稍后再试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:weakSelf];
+        }
+    } failure:^(NSError *error) {
+        if (weakSelf.refresh.isRefreshing) {
+            [weakSelf.refresh endRefreshing];
+        }
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:weakSelf];
+    }];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -631,6 +610,8 @@
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error{
     [self checkError:error];
+    //定位获取失败，让用户自己选城市
+    [self chooseCity];
 }
 
 /** 定位服务状态改变时调用*/
@@ -680,13 +661,13 @@
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
     if (scrollView.contentSize.height + 64 > scrollView.frame.size.height ) {
         if(scrollView.contentOffset.y + scrollView.frame.size.height > scrollView.contentSize.height + 74){
-                [self createTableFooter];
-                [self loadDataing];
+            [self createTableFooter];
+            [self loadDataing];
         }
     }else{
         if (scrollView.contentOffset.y > -64) {
-                [self createTableFooter];
-                [self loadDataing];
+            [self createTableFooter];
+            [self loadDataing];
         }
     }
 }
@@ -706,11 +687,11 @@
     loadMore.textColor = [UIColor lightGrayColor];
     [footerView addSubview:loadMore];
     
-//    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
-//    acFooter.tag = 10010;
-//    acFooter.color = [UIColor orangeColor];
-//    [footerView addSubview:acFooter];
-//    [acFooter startAnimating];
+    //    UIActivityIndicatorView *acFooter = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(UI_SCREEN_W / 2 - 40, 10, 20, 20)];
+    //    acFooter.tag = 10010;
+    //    acFooter.color = [UIColor orangeColor];
+    //    [footerView addSubview:acFooter];
+    //    [acFooter startAnimating];
     
 }
 
@@ -745,10 +726,7 @@
 #pragma mark - titleAction
 
 - (IBAction)chooseLocationAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
-    [self presentViewController:cityView animated:YES completion:^{
-        
-    }];
+    [self chooseCity];
 }
 
 - (IBAction)searchAction:(UIBarButtonItem *)sender {
@@ -765,25 +743,40 @@
     }
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
+- (void)chooseCity{
+    CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
+    if (loadingOver) {
+        [self.navigationController pushViewController:cityView animated:YES];
+    }
+    cityView.cityBlock = ^(NSString *city, NSString *postalCode){
+        [_chooseLocationButton setTitle:city forState:UIControlStateNormal];
+        _city = postalCode;
+        NSLog(@"%@,%@",city,postalCode);
+        locationError = NO;
+        [self getHotClub];
+    };
 }
-*/
 
 /*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
+ // Override to support conditional editing of the table view.
+ - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+ // Return NO if you do not want the specified item to be editable.
+ return YES;
+ }
+ */
+
+/*
+ // Override to support editing the table view.
+ - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+ if (editingStyle == UITableViewCellEditingStyleDelete) {
+ // Delete the row from the data source
+ [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+ } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+ // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+ }
+ }
+ */
+
 #pragma mark - setMD5RSA
 
 - (void)setMD5RSA{

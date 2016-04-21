@@ -51,6 +51,7 @@
     [self getCity];
 }
 
+//获得数据
 - (void)getCity{
     __weak CityTableViewController *weakSelf = self;
     
@@ -62,37 +63,10 @@
             NSDictionary *result = responseObject[@"result"];
             weakSelf.hotArray = result[@"hot"];
             weakSelf.upgradedArray = result[@"upgraded"];
-            
-            for (int key = 0; key < _keys.count; key ++) {
-                NSArray *array = _citys[_keys[key]];
-                for (int i = 0; i < array.count; i++) {
-                    NSString *postal = array[i][@"id"];
-                    //循环_hotArray
-                    for (int j = 0; j < _hotArray.count; j++) {
-                        if (postal == _hotArray[j]) {
-                            NSDictionary *dict = @{
-                                                   @"name":array[i][@"name"],
-                                                   @"id":array[i][@"id"]
-                                                   };
-                            [_infoHotArray addObject:dict];
-                        }
-                    }
-                    //循环_upgradedArray
-                    for (int n = 0; n < _upgradedArray.count; n++) {
-                        if (postal == _upgradedArray[n]) {
-                            NSDictionary *dict = @{
-                                                   @"name":array[i][@"name"],
-                                                   @"id":array[i][@"id"]
-                                                   };
-                            [_infoUpgradedArray addObject:dict];
-                        }
-                    }
-                }
-            }
+            //
+            [self lastDataPreparation];
             cityLoadOver = YES;
-            _cityArray = [[NSArray alloc]initWithObjects:_infoHotArray, _infoUpgradedArray, nil];
             [weakSelf.tableView reloadData];
-            //NSLog(@"%@",_cityArray[0]);
         }else{
             [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
         }
@@ -101,6 +75,38 @@
     }];
 }
 
+//筛选出接口的数据
+- (void)lastDataPreparation{
+    for (int key = 0; key < _keys.count; key ++) {
+        NSArray *array = _citys[_keys[key]];
+        for (int i = 0; i < array.count; i++) {
+            NSString *postal = array[i][@"id"];
+            //循环_hotArray
+            for (int j = 0; j < _hotArray.count; j++) {
+                if (postal == _hotArray[j]) {
+                    NSDictionary *dict = @{
+                                           @"name":array[i][@"name"],
+                                           @"id":array[i][@"id"]
+                                           };
+                    [_infoHotArray addObject:dict];
+                }
+            }
+            //循环_upgradedArray
+            for (int n = 0; n < _upgradedArray.count; n++) {
+                if (postal == _upgradedArray[n]) {
+                    NSDictionary *dict = @{
+                                           @"name":array[i][@"name"],
+                                           @"id":array[i][@"id"]
+                                           };
+                    [_infoUpgradedArray addObject:dict];
+                }
+            }
+        }
+    }
+    _cityArray = [[NSArray alloc]initWithObjects:_infoHotArray, _infoUpgradedArray, nil];
+}
+
+//获得全国区号对应的城市
 -(void)dataPreparation{
     _citys = [NSMutableDictionary new];
     _keys = [NSMutableArray new];
@@ -177,7 +183,7 @@
     //    NSDictionary *dataDict = tempArray[indexPath.row];
     //
     NSString *city = _cityArray[indexPath.section][indexPath.row][@"name"];
-    NSNumber *postalCode = _cityArray[indexPath.section][indexPath.row][@"id"];
+    NSString *postalCode = _cityArray[indexPath.section][indexPath.row][@"id"];
     _cityBlock(city, postalCode);
     [self.navigationController popViewControllerAnimated:YES];
 }
