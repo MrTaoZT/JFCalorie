@@ -329,7 +329,6 @@
 		187725D21CC20F5B003F8BD8 /* Calorie */ = {
 			isa = PBXGroup;
 			children = (
-				7B3A91661CC950050061ECC1 /* Calorie.entitlements */,
 				1844777F1CC21B36003B2354 /* 3rd */,
 				184477751CC219CC003B2354 /* Utilities */,
 				184477741CC21991003B2354 /* Constants */,
@@ -350,6 +349,7 @@
 				9D761AF41CC7929200B43D7C /* citydict.plist */,
 				187725D41CC20F5B003F8BD8 /* main.m */,
 				184477901CC21BF6003B2354 /* PrefixHeader.pch */,
+				7B3A91661CC950050061ECC1 /* Calorie.entitlements */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";

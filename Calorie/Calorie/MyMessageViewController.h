@@ -14,9 +14,13 @@
 @property (weak, nonatomic) IBOutlet UITextField *nickName;//昵称
 @property (weak, nonatomic) IBOutlet UISegmentedControl *gender;//性别
 @property (weak, nonatomic) IBOutlet UITextField *cardID;//身份证
+@property (weak, nonatomic) IBOutlet UITextField *birthday;//生日
+
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;//编辑
 - (IBAction)rightAction:(UIBarButtonItem *)sender;
+- (IBAction)returnAction:(UIBarButtonItem *)sender;//返回
 
+- (IBAction)birthdayAction:(UITextField *)sender forEvent:(UIEvent *)event;//生日事件
 @end

@@ -10,17 +10,37 @@
 
 @interface MyMessageViewController ()
 {
-    NSInteger count;
+    NSInteger sexy;
 }
+@property (strong,nonatomic)UIDatePicker *datePicker;
+
 @end
 
 @implementation MyMessageViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    sexy = 1;
     // Do any additional setup after loading the view.
     
-    count = 2;
+    
+    NSString *memberId = _userID.text;
+    NSString *name = _nickName.text;
+    NSString *cardID = _cardID.text;
+ 
+
+    [_gender addTarget:self action:@selector(changeGender:) forControlEvents:UIControlEventValueChanged];
+    
+    NSDictionary *dic = @{@"memberId":memberId,
+                          @"name":name,
+                          @"identitificationcard":cardID
+                          };
+    [RequestAPI postURL:@"/mySelfController/updateMyselfInfos" withParameters:dic success:^(id responseObject) {
+
+    } failure:^(NSError *error) {
+
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -39,19 +59,32 @@
 */
 
 
-- (void)edit {
+- (void)changeGender:(UISegmentedControl *)sender {
     
+    if (sender.selectedSegmentIndex == 0){
+        sexy = 1;
+        
+    } else {
+        sexy = 2;
+    }
 }
+
 
 
 - (IBAction)rightAction:(UIBarButtonItem *)sender {
     
-    if (count%2 == 0) {
-
-        count ++;
-
-    }else{
-
-    }
+    
 }
+
+- (IBAction)returnAction:(UIBarButtonItem *)sender {
+}
+
+- (IBAction)birthdayAction:(UITextField *)sender forEvent:(UIEvent *)event {
+    NSDate *select = [_datePicker date];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateAndTime =  [dateFormatter stringFromDate:select];
+    _birthday.text = dateAndTime;
+}
+
 @end
