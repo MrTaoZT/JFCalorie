@@ -19,6 +19,7 @@
 #import "SportTypeTableViewController.h"
 #import "ClubDetailViewController.h"
 #import "SearchViewController.h"
+#import "CityTableViewController.h"
 
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
@@ -122,7 +123,7 @@
                                   @"deviceId":[Utilities uniqueVendor]};
             
             [RequestAPI postURL:@"/login" withParameters:dic success:^(id responseObject) {
-                NSLog(@"obj =======  %@",responseObject);
+                //NSLog(@"obj =======  %@",responseObject);
                 if ([responseObject[@"resultFlag"] integerValue] == 8001) {
                     NSLog(@"自动登录成功");
                     NSDictionary *result = responseObject[@"result"];
@@ -235,7 +236,7 @@
         ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
         if (sportOver) {
             NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 1][@"id"];
-            NSLog(@"id%@",clubKeyId);
+            //NSLog(@"id%@",clubKeyId);
             clubDetailView.clubKeyId = clubKeyId;
             self.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:clubDetailView animated:YES];
@@ -467,7 +468,7 @@
             NSDictionary *result = responseObject[@"result"];
             //数据解析得到name
             _sportTypeArray = result[@"models"];
-            NSLog(@"%@",_sportTypeArray);
+            //NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
             [weakSelf.tableView reloadData];
         }else{
@@ -480,7 +481,7 @@
 
 //获取热门俱乐部
 - (void)getHotClub{
-    NSLog(@"刷新？%d",_refresh.isRefreshing);
+    //NSLog(@"刷新？%d",_refresh.isRefreshing);
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
         [Utilities popUpAlertViewWithMsg:@"您没有给与位置权限" andTitle:@"" onView:self];
         if (_refresh.isRefreshing) {
@@ -557,7 +558,7 @@
                 hotClubOver = YES;
                 loadingOver = YES;
                 weakSelf.totalPage = [pagingInfo[@"totalPage"] integerValue];
-                NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
+                //NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
                 [weakSelf.tableView reloadData];
             }else{
                 if ([responseObject[@"resultFlag"] integerValue] == 8020) {
@@ -711,8 +712,10 @@
 #pragma mark - titleAction
 
 - (IBAction)chooseLocationAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    
-
+    CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
+    [self presentViewController:cityView animated:YES completion:^{
+        
+    }];
 }
 
 - (IBAction)searchAction:(UIBarButtonItem *)sender {
@@ -757,7 +760,7 @@
                           };
     
     [RequestAPI getURL:@"/login/getKey" withParameters:dic success:^(id responseObject) {
-        NSLog(@"responseObject : %@",responseObject);
+        //NSLog(@"responseObject : %@",responseObject);
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             NSDictionary *resultDict = responseObject[@"result"];
             NSString *exponent = resultDict[@"exponent"];

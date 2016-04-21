@@ -14,20 +14,19 @@
 
 @interface SearchViewController (){
     BOOL loadOver;
-    BOOL cityLoadOver;
+    BOOL isLoading;
 }
 
+//设置搜索参数
 @property(nonatomic)NSInteger page;
 @property(nonatomic)NSInteger perPage;
-@property(nonatomic,strong)NSString *city;
 @property(nonatomic)NSInteger typeInt;
 @property(nonatomic, strong)NSString *keyword;
-
+//选择的城市信息
+//@property(nonatomic, strong)NSString *cityName;
+@property(nonatomic, strong)NSNumber *postalCode;
+//接受参数的数组
 @property(nonatomic, strong)NSMutableArray *dataArray;
-
-@property(nonatomic, strong)NSMutableArray *cityArray;
-@property(nonatomic, strong)NSArray *hotArray;
-@property(nonatomic, strong)NSArray *upgradedArray;
 
 @end
 
@@ -36,49 +35,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //各种初始化
     loadOver = NO;
-    cityLoadOver = NO;
+    isLoading = NO;
     _page = 1;
     _perPage = 5;
     //默认按距离排序
     _typeInt = 0;
     
+    //数组初始化
     _dataArray = [NSMutableArray new];
-    _hotArray = [NSMutableArray new];
-    _upgradedArray = [NSMutableArray new];
     
+    //初始化
     _keyword = _searchTextField.text;
     
+    //协议
     _tableView.delegate = self;
     _tableView.dataSource = self;
     
-    // Do any additional setup after loading the view.
+    //默认无锡
+    _postalCode = @(0510);
 }
-//
-//- (void)getCity{
-//    __weak SearchViewController *weakSelf = self;
-//
-//    NSString *netUrl = @"/city/hotAndUpgradedList";
-//    
-//    [RequestAPI getURL:netUrl withParameters:nil success:^(id responseObject) {
-//        //NSLog(@"responseObject..%@",responseObject);
-//        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-//            NSDictionary *result = responseObject[@"result"];
-//            weakSelf.hotArray = result[@"hot"];
-//            weakSelf.upgradedArray = result[@"upgraded"];
-//            cityLoadOver = YES;
-//            [weakSelf.cityTableView reloadData];
-//        }else{
-//            [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
-//            //返回
-//            //[self.navigationController popViewControllerAnimated:YES];
-//        }
-//    } failure:^(NSError *error) {
-//        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
-//    }];
-//}
 
 - (void)requestData{
+    isLoading = YES;
     __weak SearchViewController *weakSelf = self;
     //搜索API
     NSString *netUrl = @"/clubController/nearSearchClub";
@@ -97,10 +77,8 @@
      可选keyword：需要查询的关键字
      */
     
-    _city = @"0510";
-    
     NSDictionary *parameters = @{
-                                  @"city":_city,
+                                  @"city":[NSString stringWithFormat:@"%@",_postalCode],
                                   @"jing":@(_jing),
                                   @"wei":@(_wei),
                                   @"page":@(_page),
@@ -110,6 +88,7 @@
                                   };
     
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        isLoading = NO;
         if ([responseObject[@"resultFlag"]integerValue] == 8001) {
             //NSLog(@".,.,.>>>>>%@",responseObject);
             NSDictionary *result = responseObject[@"result"];
@@ -118,12 +97,10 @@
             loadOver = YES;
             [weakSelf.tableView reloadData];
         }else{
-            [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
-             //[self.navigationController popViewControllerAnimated:YES];
+            [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
         }
     } failure:^(NSError *error) {
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
-         //[self.navigationController popViewControllerAnimated:YES];
     }];
 }
 
@@ -135,57 +112,52 @@
 #pragma mark - UItableViewDelegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    if (tableView == _tableView) {
-        return _dataArray.count;
-    }
-    return _cityArray.count;
+    return _dataArray.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == _tableView) {
-        SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-        if (loadOver) {
-            cell.nameLabel.text = _dataArray[indexPath.row][@"clubName"];
-            cell.addressLabel.text = _dataArray[indexPath.row][@"clubAddressB"];
-            cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",_dataArray[indexPath.row][@"distance"]];
-            [cell.image sd_setImageWithURL:_dataArray[indexPath.row][@"clubLogo"]];
+    SearchTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    if (loadOver) {
+        if(_dataArray.count == 0){
+            [Utilities popUpAlertViewWithMsg:@"没有结果" andTitle:@"" onView:self];
             return cell;
         }
-    }else{
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CityCell"];
-        if (cityLoadOver) {
-            cell.textLabel.text = _hotArray[indexPath.row];
-        }
-        cell.textLabel.text = @"加载中";
-        return cell;
+        cell.nameLabel.text = _dataArray[indexPath.row][@"clubName"];
+        cell.addressLabel.text = _dataArray[indexPath.row][@"clubAddressB"];
+        cell.distanceLabel.text = [NSString stringWithFormat:@"%@米",_dataArray[indexPath.row][@"distance"]];
+        [cell.image sd_setImageWithURL:_dataArray[indexPath.row][@"clubLogo"]];
     }
-    return nil;
+    return cell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    NSLog(@"13");
+    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (tableView == _tableView) {
-        return 220;
-    }
-    return 30;
+    return 220;
 }
 
 #pragma mark - private
 
 - (IBAction)searchButton:(UIButton *)sender forEvent:(UIEvent *)event {
     _keyword = _searchTextField.text;
-    
-    [self requestData];
+    if (!isLoading) {
+        [self requestData];
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"请求正在进行，请稍后操作" andTitle:@"" onView:self];
+    }
 }
 - (IBAction)cityButtonAction:(UIButton *)sender forEvent:(UIEvent *)event {
+    __weak SearchViewController *weakSelf  = self;
     CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
     [self.navigationController pushViewController:cityView animated:YES];
     
     cityView.cityBlock = ^(NSString *city, NSNumber *postalCode){
-        NSLog(@"%@,%@",city,postalCode);
+        //_cityName = city;
+        _postalCode = postalCode;
+        [sender setTitle:city forState:UIControlStateNormal];
+        [weakSelf requestData];
     };
 }
 
@@ -196,6 +168,12 @@
     }else{
         _typeInt = 1;
         [sender setTitle:@"按人气" forState:UIControlStateNormal];
+    }
+    //防止重复发送网络请求
+    if (!isLoading) {
+        [self requestData];
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"请求正在进行，请稍后操作" andTitle:@"" onView:self];
     }
 }
 
@@ -229,4 +207,5 @@
     int val;
     return[scan scanInt:&val] && [scan isAtEnd];
 }
+
 @end

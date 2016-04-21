@@ -8,10 +8,17 @@
 
 #import "CityTableViewController.h"
 
-@interface CityTableViewController ()
+@interface CityTableViewController (){
+    BOOL cityLoadOver;
+}
 
 @property(nonatomic, strong)NSMutableDictionary *citys;
 @property(nonatomic, strong)NSMutableArray *keys;
+
+//接收数据
+//@property(nonatomic, strong)NSMutableArray *cityArray;
+@property(nonatomic, strong)NSArray *hotArray;
+@property(nonatomic, strong)NSArray *upgradedArray;
 
 @end
 
@@ -19,9 +26,53 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    cityLoadOver = NO;
+    
     self.navigationItem.title = @"选择城市";
     
     [self dataPreparation];
+    [self getCity];
+}
+
+//- (void)getCityName{
+//    [self getCity];
+//    
+//}
+
+- (void)getCity{
+    __weak CityTableViewController *weakSelf = self;
+
+    NSString *netUrl = @"/city/hotAndUpgradedList";
+
+    [RequestAPI getURL:netUrl withParameters:nil success:^(id responseObject) {
+        //NSLog(@"responseObject..%@",responseObject);
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *result = responseObject[@"result"];
+            weakSelf.hotArray = result[@"hot"];
+            weakSelf.upgradedArray = result[@"upgraded"];
+            cityLoadOver = YES;
+            //[weakSelf.cityTableView reloadData];
+            for (int key = 0; key < _keys.count; key ++) {
+                for (NSNumber *postlCode in _citys[_keys[key]][@"id"]) {
+                    for (int i = 0; i < _hotArray.count; i++) {
+                        if (postlCode == _hotArray[i]) {
+                            NSDictionary *dict = @{
+                                                   @"city":_citys[@"name"],
+                                                   @"id":_citys[@"id"]
+                                                   };
+                            NSLog(@"11%@",dict);
+                        }
+                    }
+                }
+            }
+
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"请稍后重试" andTitle:@"" onView:self];
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+    }];
 }
 
 -(void)dataPreparation{
@@ -102,7 +153,7 @@
     
     NSString *city = dataDict[@"name"];
     NSNumber *postalCode = dataDict[@"id"];
-//    NSLog(@"%@",dataDict[@"id"]);
+    //NSLog(@"%@",dataDict[@"id"]);
     _cityBlock(city, postalCode);
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -110,49 +161,5 @@
 -(NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView{
     return _keys;
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
