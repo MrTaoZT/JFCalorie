@@ -38,6 +38,7 @@
     //下拉刷新
     UIRefreshControl *rc = [[UIRefreshControl alloc]init];
     _tableView.tableFooterView = [[UIView alloc]init];
+    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     rc.tag = 1001;
     rc.tintColor = [UIColor orangeColor];
     [rc addTarget:self action:@selector(getpermission) forControlEvents:UIControlEventValueChanged];
@@ -226,11 +227,7 @@
     // 这里真实需要处理交互的地方
     // 获取通知所带的数据
     NSString *notMess = [notification.userInfo objectForKey:@"key"];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"本地通知"
-                                                    message:notMess
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"本地通知"message:notMess delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil];
     [alert show];
     
     // 更新显示的徽章个数
