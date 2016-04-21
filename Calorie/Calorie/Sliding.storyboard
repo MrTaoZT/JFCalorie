@@ -238,7 +238,7 @@
             </objects>
             <point key="canvasLocation" x="1851.5" y="313.5"/>
         </scene>
-        <!--My Collect View Controller-->
+        <!--收藏列表-->
         <scene sceneID="CWl-OG-471">
             <objects>
                 <viewController storyboardIdentifier="MyCollectVc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="AyV-UP-Fcv" customClass="MyCollectViewController" sceneMemberID="viewController">
@@ -334,7 +334,12 @@
                             <constraint firstItem="iiI-LV-idk" firstAttribute="top" secondItem="MzT-vs-43R" secondAttribute="top" id="jr6-cE-XYB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="5zH-zx-ANb">
+                    <navigationItem key="navigationItem" title="收藏列表" id="5zH-zx-ANb">
+                        <barButtonItem key="leftBarButtonItem" title="返回" id="rKc-NJ-mBG">
+                            <connections>
+                                <action selector="leftButton:" destination="AyV-UP-Fcv" id="BOY-jD-ezf"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="编辑" id="kiC-fC-ZeO">
                             <connections>
                                 <action selector="rightBtnAction:" destination="AyV-UP-Fcv" id="iks-t2-6mi"/>

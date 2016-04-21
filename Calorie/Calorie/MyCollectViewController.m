@@ -11,6 +11,9 @@
 #import "CollectSubpageTableViewCell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 #import "ClubDetailViewController.h"
+#import "HomeNavViewController.h"
+#import "LeftViewController.h"
+#import "TabBarViewController.h"
 @interface MyCollectViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate>{
     CGFloat jing;
     CGFloat wei;
@@ -26,6 +29,7 @@
 @property(strong,nonatomic) NSMutableArray *array;
 //@property(strong,nonatomic) NSMutableArray *clubIds;
 @property(strong,nonatomic) NSDictionary *dict;
+@property (strong,nonatomic) ECSlidingViewController *slidingVc;
 @end
 
 @implementation MyCollectViewController
@@ -33,9 +37,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.navigationItem.title = @"收藏列表";
+    
      // 设置tableView在编辑模式下可以多选，并且只需设置一次
     self.tableView.allowsMultipleSelectionDuringEditing = YES;
-//    [self getUserCoolect];
     
     done = NO;
     count = 2;
@@ -105,20 +110,20 @@
         clubDVc.clubKeyId = dic[@"clubId"];
         [self.navigationController pushViewController:clubDVc animated:YES];
     }
-    if ([_rightButton.title isEqualToString:@"确定"]) {
+    if ([_rightButton.title isEqualToString:@"完成"]) {
         //选中时  从_deleteBooks 中添加这个indexPath
         [_deleteBooks addObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
-
     }
+    NSLog(@"-----_deleteBooks = %ld",_deleteBooks.count);
 }
 
 //取消选中时  从_deleteBooks 中移除掉这个indexPath
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath  {
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     
     [_deleteBooks removeObject:[NSString stringWithFormat:@"%ld",indexPath.row]];
 
 }
-
+//返回每个cell  高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 300;
 }
@@ -240,19 +245,34 @@
     NSLog(@"-------count = %ld",count);
     if (count%2 == 0) {
         [_tableView setEditing:YES animated:YES];
-        [_rightButton setTitle:@"确定"];
+        self.navigationItem.title = @"取消收藏";
+        [_rightButton setTitle:@"完成"];
         count ++;
         [_tableView reloadData];
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"您可以开始取消您的收藏" preferredStyle:UIAlertControllerStyleActionSheet];
+//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//            [_rightButton setTitle:@"编辑"];
+//            [_tableView setEditing:NO animated:YES];
+//            count --;
+//        }];
+//        [alert addAction:action];
+//        [self presentViewController:alert animated:YES completion:nil];
     }else{
-        [_tableView setEditing:NO animated:YES];
-        [_rightButton setTitle:@"编辑"];
+        if(_deleteBooks.count == 0){
+            NSLog(@"1");
+            [_tableView setEditing:NO animated:YES];
+            self.navigationItem.title = @"收藏列表";
+            [_rightButton setTitle:@"编辑"];
+            count ++;
+            return;
+        }
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"您确定要取消这些收藏吗" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *leftBtn = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [_tableView setEditing:NO animated:YES];
-            [_tableView setEditing:NO animated:YES];
+            self.navigationItem.title = @"收藏列表";
             [_rightButton setTitle:@"编辑"];
             [_deleteBooks removeAllObjects];
-            [_tableView reloadData];
+            count ++;
             return ;
         }];
         UIAlertAction *rightBtn = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -273,7 +293,10 @@
             [RequestAPI getURL:@"/mySelfController/delMyCollection" withParameters:dic success:^(id responseObject) {
                 NSLog(@"qxsc --- %@",responseObject);
                 if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                    [_tableView setEditing:NO animated:YES];
                     [self getUserCoolect];
+                    self.navigationItem.title = @"收藏列表";
+                    [_rightButton setTitle:@"编辑"];
                 }
             } failure:^(NSError *error) {
                 NSLog(@"error = %@",[error userInfo]);
@@ -289,6 +312,37 @@
         count ++;
     }
     [_tableView reloadData];
+}
+
+- (IBAction)leftButton:(UIBarButtonItem *)sender {
+    if ([_rightButton.title isEqualToString:@"完成"]) {
+        [_tableView setEditing:NO animated:YES];
+        [_rightButton setTitle:@"编辑"];
+        count ++;
+        return;
+    }
+    //这里跳转到首页
+    LeftViewController * leftVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"LeftVc"];
+    TabBarViewController * tabView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"TabView"];
+    //----------------------侧滑开始 center----------------------
+    //初始化侧滑框架,并且设置中间显示的页面
+    _slidingVc = [ECSlidingViewController slidingWithTopViewController:tabView];
+    //设置侧滑 的  耗时
+    _slidingVc.defaultTransitionDuration = 0.25f;
+    //设置 控制侧滑的手势   (这里同时对触摸 和 拖拽相应)
+    _slidingVc.topViewAnchoredGesture = ECSlidingViewControllerAnchoredGesturePanning | ECSlidingViewControllerAnchoredGestureTapping;
+    //设置上述手势的识别范围
+    [tabView.view addGestureRecognizer:_slidingVc.panGesture];
+    //----------------------侧滑开始 left----------------------
+    _slidingVc.underLeftViewController = leftVc;
+    //设置侧滑的开闭程度   (peek都是设置中间的页面出现的宽度 )
+    _slidingVc.anchorRightPeekAmount = UI_SCREEN_W / 4;
+    
+    HomeNavViewController *homeNav = [[HomeNavViewController alloc]initWithRootViewController:_slidingVc];
+    _slidingVc.navigationController.navigationBar.hidden = YES;
+    
+    [self presentViewController:homeNav animated:YES completion:nil];
+
 }
 
 @end

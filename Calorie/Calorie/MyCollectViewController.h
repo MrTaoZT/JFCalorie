@@ -13,4 +13,5 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;
 - (IBAction)rightBtnAction:(UIBarButtonItem *)sender;
 
+- (IBAction)leftButton:(UIBarButtonItem *)sender;
 @end
