@@ -281,7 +281,7 @@
 
 - (void)btnAction{
     for (int i = 1001; i <= 1008 ; i++) {
-        UIButton *button = [self.tableView viewWithTag:1001];
+        UIButton *button = [self.tableView viewWithTag:i];
         [button addTarget:self action:@selector(sportAction:) forControlEvents:UIControlEventTouchUpInside];
     }
 }
@@ -488,9 +488,6 @@
             _sportTypeArray = result[@"models"];
             //NSLog(@"%@",_sportTypeArray);
             sportOver = YES;
-            
-            //初始化按钮事件
-            [self btnAction];
             [weakSelf.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请保持网络畅通,稍后试试吧%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
@@ -537,6 +534,8 @@
     //网络请求
     [RequestAPI getURL:nerUrl withParameters:parameters success:^(id responseObject) {
         hotClubOver = YES;
+        //初始化按钮事件
+        [self btnAction];
         if (weakSelf.refresh.isRefreshing) {
             [weakSelf.refresh endRefreshing];
         }

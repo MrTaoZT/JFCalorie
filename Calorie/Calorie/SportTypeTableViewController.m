@@ -91,18 +91,14 @@
     
     //根据条件，获取会所列表
     NSString *netUrl = @"/clubController/nearSearchClub";
-    //默认
-    /*
-     ++++++++++++++++++++++++++++++++
-     */
-    //暂时取消
+    
     NSString *city = _city;
     NSInteger perPage = 10;
     NSInteger type = 0;
     NSString *featureId = _sportType;
     
     NSDictionary *parameters = @{
-                                 @"city":@"0510",
+                                 @"city":city,
                                  @"jing":@(_setJing),
                                  @"wei":@(_setWei),
                                  @"page":@(_clubPage),
@@ -123,7 +119,7 @@
             NSArray *info = dict[@"models"];
             NSDictionary *pageinfo = dict[@"pagingInfo"];
             weakSelf.totalPage =  [pageinfo[@"totalPage"] integerValue];
-            NSLog(@"total%ld",_totalPage);
+            //NSLog(@"total%ld",_totalPage);
             //封装数据
             for (int i = 0; i < info.count; i++) {
                 NSString *name = info[i][@"clubName"];
