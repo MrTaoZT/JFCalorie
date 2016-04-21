@@ -37,6 +37,7 @@
 		3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787C1CC496B400FEE5B5 /* WorkTableViewCell.m */; };
 		387878801CC496C700FEE5B5 /* CollectTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787F1CC496C700FEE5B5 /* CollectTableViewCell.m */; };
 		6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9967E4C9082FD02452937B4 /* libPods.a */; };
+		7B3A91651CC950050061ECC1 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B3A91641CC950050061ECC1 /* HealthKit.framework */; };
 		9D761AF51CC7929200B43D7C /* citydict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9D761AF41CC7929200B43D7C /* citydict.plist */; };
 		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA151CC3565500864F24 /* TabBarViewController.m */; };
@@ -137,6 +138,8 @@
 		3878787F1CC496C700FEE5B5 /* CollectTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectTableViewCell.m; sourceTree = "<group>"; };
 		4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		6260441FBD95FC3557187556 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		7B3A91641CC950050061ECC1 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		7B3A91661CC950050061ECC1 /* Calorie.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Calorie.entitlements; sourceTree = "<group>"; };
 		9D761AF41CC7929200B43D7C /* citydict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = citydict.plist; sourceTree = SOURCE_ROOT; };
 		B808BA0D1CC3242C00864F24 /* SportTypeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportTypeTableViewCell.h; sourceTree = "<group>"; };
 		B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewCell.m; sourceTree = "<group>"; };
@@ -185,6 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B3A91651CC950050061ECC1 /* HealthKit.framework in Frameworks */,
 				1844777E1CC21ABA003B2354 /* Openssl.framework in Frameworks */,
 				6780EED5A8F2C22F41703B21 /* libPods.a in Frameworks */,
 			);
@@ -312,6 +316,7 @@
 		187725D21CC20F5B003F8BD8 /* Calorie */ = {
 			isa = PBXGroup;
 			children = (
+				7B3A91661CC950050061ECC1 /* Calorie.entitlements */,
 				1844777F1CC21B36003B2354 /* 3rd */,
 				184477751CC219CC003B2354 /* Utilities */,
 				184477741CC21991003B2354 /* Constants */,
@@ -411,6 +416,7 @@
 		72A11EC5860291EC437DB3E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7B3A91641CC950050061ECC1 /* HealthKit.framework */,
 				1844777D1CC21ABA003B2354 /* Openssl.framework */,
 				C9967E4C9082FD02452937B4 /* libPods.a */,
 			);
@@ -567,6 +573,12 @@
 				TargetAttributes = {
 					187725CF1CC20F5B003F8BD8 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = Z58H9482B5;
+						SystemCapabilities = {
+							com.apple.HealthKit = {
+								enabled = 1;
+							};
+						};
 					};
 					187725EB1CC20F5B003F8BD8 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -861,6 +873,7 @@
 			baseConfigurationReference = 6260441FBD95FC3557187556 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Calorie/Calorie.entitlements;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -880,6 +893,7 @@
 			baseConfigurationReference = 4C464DA49D4587D7925E3699 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Calorie/Calorie.entitlements;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
