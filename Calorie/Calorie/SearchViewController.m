@@ -156,6 +156,7 @@
     cityView.cityBlock = ^(NSString *city, NSNumber *postalCode){
         //_cityName = city;
         _postalCode = postalCode;
+        NSLog(@"--->%@,%@",city,postalCode);
         [sender setTitle:city forState:UIControlStateNormal];
         [weakSelf requestData];
     };
@@ -179,27 +180,26 @@
 
 //行数按钮，用于显示用户输入行数
 - (IBAction)perPageAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    _bgView.hidden = NO;
-    _perPageTextField.hidden = NO;
-    _choosePerPage.hidden = NO;
-    _perPageTextField.text = @"";
-    _perPageTextField.alpha = 1;
+//    _bgView.hidden = NO;
+//    _perPageTextField.hidden = NO;
+//    _choosePerPage.hidden = NO;
+//    _perPageTextField.text = @"";
 }
 - (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event {
-    NSString *perPageStr = _perPageTextField.text;
+    //NSString *perPageStr = _perPageTextField.text;
     //判断其是整数且是空
-    if (perPageStr.length != 0 && [self isPureInt:perPageStr]) {
-        //赋值给入参
-        _perPage = [perPageStr integerValue];
-        [_perPageBtn setTitle:perPageStr forState:UIControlStateNormal];
-        //重载请求数据
-        [self requestData];
-    }else{
-        [_perPageBtn setTitle:@"默认" forState:UIControlStateNormal];
-    }
-    _choosePerPage.hidden = YES;
-    _perPageTextField.hidden = YES;
-    _bgView.hidden = YES;
+//    if (perPageStr.length != 0 && [self isPureInt:perPageStr]) {
+//        //赋值给入参
+//        _perPage = [perPageStr integerValue];
+//        [_perPageBtn setTitle:perPageStr forState:UIControlStateNormal];
+//        //重载请求数据
+//        [self requestData];
+//    }else{
+//        [_perPageBtn setTitle:@"默认" forState:UIControlStateNormal];
+//    }
+//    _choosePerPage.hidden = YES;
+//    _perPageTextField.hidden = YES;
+//    _bgView.hidden = YES;
 }
 
 - (BOOL)isPureInt:(NSString*)string{

@@ -24,11 +24,11 @@
 @property(nonatomic)CGFloat jing;
 @property(nonatomic)CGFloat wei;
 
-@property (weak, nonatomic) IBOutlet UIView *bgView;
-@property (weak, nonatomic) IBOutlet UITextField *perPageTextField;
-
-- (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event;
-@property (weak, nonatomic) IBOutlet UIButton *choosePerPage;
+//@property (weak, nonatomic) IBOutlet UIView *bgView;
+//@property (weak, nonatomic) IBOutlet UITextField *perPageTextField;
+//
+//- (IBAction)choosePerPage:(UIButton *)sender forEvent:(UIEvent *)event;
+//@property (weak, nonatomic) IBOutlet UIButton *choosePerPage;
 
 
 @end
