@@ -64,8 +64,11 @@
 #pragma mark - Action
 
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event {
-    //调试
-//    [self setMD5RSA];
+    if ([[StorageMgr singletonStorageMgr] objectForKey:@"exponent"] == NULL || [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"] == NULL) {
+        [self setMD5RSA];
+        [Utilities popUpAlertViewWithMsg:@"请保持网络通畅哦" andTitle:nil  onView:self];
+        return;
+    }
     NSString *exponent = [[StorageMgr singletonStorageMgr] objectForKey:@"exponent"];
     NSString *modulus = [[StorageMgr singletonStorageMgr] objectForKey:@"modulus"];
     //MD5将原始密码进行MD5加密
@@ -108,6 +111,12 @@
             _slidingVc.underLeftViewController = leftVc;
             //设置侧滑的开闭程度   (peek都是设置中间的页面出现的宽度 )
             _slidingVc.anchorRightPeekAmount = UI_SCREEN_W / 4;
+            
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(menuSwitchAction) name:@"MenuSwitch" object:nil];
+            
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(EnableGestureAction) name:@"EnableGesture" object:nil];
+            
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(DisableGestureAction) name:@"DisableGesture" object:nil];
             
             //删除防止重名
             [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
@@ -212,5 +221,29 @@
         NSLog(@"%@",error);
     }];
 
+}
+
+#pragma mark - NSNotificationCenter
+
+- (void) menuSwitchAction{
+    NSLog(@"menu");
+    //如果中间那扇门在在右侧，说明  已经被侧滑  因此需要关闭
+    if (_slidingVc.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredRight) {
+        //中间  页面向左滑
+        [_slidingVc resetTopViewAnimated:YES];
+    }else {
+        //中间  页面向右滑
+        [_slidingVc anchorTopViewToRightAnimated:YES];
+    }
+}
+//激活 侧滑手势
+- (void)EnableGestureAction{
+    _slidingVc.panGesture.enabled = YES;
+    NSLog(@"1");
+}
+//关闭 侧滑手势
+- (void)DisableGestureAction{
+    _slidingVc.panGesture.enabled = NO;
+    NSLog(@"2");
 }
 @end

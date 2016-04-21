@@ -18,4 +18,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *chooseLocationButton;
 
+- (IBAction)leftButton:(UIBarButtonItem *)sender;
+
 @end

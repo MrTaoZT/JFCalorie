@@ -40,6 +40,12 @@
     //设置侧滑的开闭程度   (peek都是设置中间的页面出现的宽度 )
     _slidingVc.anchorRightPeekAmount = UI_SCREEN_W / 4;
     
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(menuSwitchAction) name:@"MenuSwitch" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(EnableGestureAction) name:@"EnableGesture" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(DisableGestureAction) name:@"DisableGesture" object:nil];
+    
     //删除防止重名
     [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
     //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
@@ -48,6 +54,28 @@
     self.window.rootViewController = _slidingVc;
     return YES;
 
+}
+
+- (void) menuSwitchAction{
+    NSLog(@"menu");
+    //如果中间那扇门在在右侧，说明  已经被侧滑  因此需要关闭
+    if (_slidingVc.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredRight) {
+        //中间  页面向左滑
+        [_slidingVc resetTopViewAnimated:YES];
+    }else {
+        //中间  页面向右滑
+        [_slidingVc anchorTopViewToRightAnimated:YES];
+    }
+}
+//激活 侧滑手势
+- (void)EnableGestureAction{
+    _slidingVc.panGesture.enabled = YES;
+    NSLog(@"1");
+}
+//关闭 侧滑手势
+- (void)DisableGestureAction{
+    _slidingVc.panGesture.enabled = NO;
+    NSLog(@"2");
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {

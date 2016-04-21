@@ -192,7 +192,11 @@
                     </tableView>
                     <navigationItem key="navigationItem" id="MBm-kq-HG3">
                         <nil key="title"/>
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="HcM-hS-czi"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="HcM-hS-czi">
+                            <connections>
+                                <action selector="leftButton:" destination="2sF-UE-rRz" id="Y8z-Gc-w2b"/>
+                            </connections>
+                        </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wZb-U9-Rtq">
                             <rect key="frame" x="113" y="7" width="150" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>

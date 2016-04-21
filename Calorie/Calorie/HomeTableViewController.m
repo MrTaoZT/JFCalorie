@@ -22,6 +22,7 @@
 #import "CityTableViewController.h"
 
 #import "UIScrollView+JElasticPullToRefresh.h"
+#import "NavigationViewController.h"
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
@@ -52,6 +53,19 @@
 @end
 
 @implementation HomeTableViewController
+
+//每次页面出现
+- (void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"EnableGesture" object:nil];
+    
+}
+//每次页面消失
+- (void)viewDidDisappear:(BOOL)animated{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"DisableGesture" object:nil];
+    
+}
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -141,9 +155,13 @@
                     [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
                 }else{
                     [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
+                    NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
+                    [self presentViewController:navView animated:YES completion:nil];
                 }
             } failure:^(NSError *error) {
                 [Utilities popUpAlertViewWithMsg:@"系统繁忙,请重新登录" andTitle:nil onView:self];
+                NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
+                [self presentViewController:navView animated:YES completion:nil];
             }];
     }
 }
@@ -795,5 +813,8 @@
         NSLog(@"%@",error);
     }];
     
+}
+- (IBAction)leftButton:(UIBarButtonItem *)sender {
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"MenuSwitch" object:nil];
 }
 @end
