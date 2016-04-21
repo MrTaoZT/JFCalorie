@@ -14,6 +14,7 @@
 #import <UIImageView+WebCache.h>
 #import <SDWebImageDownloader.h>
 
+#import "ExperienceViewController.h"
 @interface ClubDetailViewController (){
     BOOL loadOver;
     NSInteger scrollViewTag;
@@ -213,7 +214,13 @@
                 //俱乐部图片
                 [cell.clubImage sd_setImageWithURL:_clubDict[@"clubLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
                 //俱乐部名字
-                cell.name.text = _clubDict[@"clubName"];
+                cell.name.text = [NSString stringWithFormat:@"%@(点击查询该店体验券详情)",_clubDict[@"clubName"]];
+                
+                cell.name.userInteractionEnabled = YES;
+                
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpExperience)];
+                [cell.name addGestureRecognizer:tap];
+
                 //收藏情况
                 cell.collection.tag = collectionBtnTag;
                 [self collectionBtn];
@@ -275,4 +282,13 @@
     }
 }
 
+- (void)jumpExperience{
+    NSLog(@"1");
+    ExperienceViewController *experienceVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"experienceVc"];
+    NSArray *arr = _clubDict[@"experienceInfos"];
+    NSDictionary *dic = arr[0];
+    NSString *eId = dic[@"eId"];
+    experienceVc.experienceInfos = eId;
+    [self.navigationController pushViewController:experienceVc animated:YES];
+}
 @end

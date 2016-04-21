@@ -32,6 +32,7 @@
 		382815C31CC3AAAB0016A1A5 /* NavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 382815C21CC3AAAB0016A1A5 /* NavigationViewController.m */; };
 		385300D11CC2BC4E00F20B26 /* SignUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D01CC2BC4E00F20B26 /* SignUpViewController.m */; };
 		385300D41CC2BC6800F20B26 /* forgetPwViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385300D31CC2BC6800F20B26 /* forgetPwViewController.m */; };
+		385880411CC976A800A918E1 /* ExperienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 385880401CC976A800A918E1 /* ExperienceViewController.m */; };
 		386DB3E51CC5B6F9007B2C95 /* HomeNavViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 386DB3E41CC5B6F9007B2C95 /* HomeNavViewController.m */; };
 		3878787A1CC496A500FEE5B5 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 387878791CC496A500FEE5B5 /* MessageTableViewCell.m */; };
 		3878787D1CC496B400FEE5B5 /* WorkTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3878787C1CC496B400FEE5B5 /* WorkTableViewCell.m */; };
@@ -132,6 +133,8 @@
 		385300D01CC2BC4E00F20B26 /* SignUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignUpViewController.m; sourceTree = "<group>"; };
 		385300D21CC2BC6800F20B26 /* forgetPwViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = forgetPwViewController.h; sourceTree = "<group>"; };
 		385300D31CC2BC6800F20B26 /* forgetPwViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = forgetPwViewController.m; sourceTree = "<group>"; };
+		3858803F1CC976A800A918E1 /* ExperienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExperienceViewController.h; sourceTree = "<group>"; };
+		385880401CC976A800A918E1 /* ExperienceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExperienceViewController.m; sourceTree = "<group>"; };
 		386DB3E31CC5B6F9007B2C95 /* HomeNavViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeNavViewController.h; sourceTree = "<group>"; };
 		386DB3E41CC5B6F9007B2C95 /* HomeNavViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeNavViewController.m; sourceTree = "<group>"; };
 		387878781CC496A500FEE5B5 /* MessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
@@ -513,6 +516,8 @@
 		B8D900DB1CC2711400641C06 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				3858803F1CC976A800A918E1 /* ExperienceViewController.h */,
+				385880401CC976A800A918E1 /* ExperienceViewController.m */,
 				B808BA141CC3565500864F24 /* TabBarViewController.h */,
 				B808BA151CC3565500864F24 /* TabBarViewController.m */,
 				B8D900D81CC2710900641C06 /* HomeTableViewController.h */,
@@ -727,6 +732,7 @@
 				1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */,
 				B8D87FEA1CC618A000F7CBEF /* SearchViewController.m in Sources */,
 				B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */,
+				385880411CC976A800A918E1 /* ExperienceViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */,

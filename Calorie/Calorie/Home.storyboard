@@ -1302,6 +1302,25 @@
             </objects>
             <point key="canvasLocation" x="3149.5" y="1258.5"/>
         </scene>
+        <!--体验券详情-->
+        <scene sceneID="B6E-b3-qFd">
+            <objects>
+                <viewController storyboardIdentifier="experienceVc" useStoryboardIdentifierAsRestorationIdentifier="YES" id="p77-bU-WXF" customClass="ExperienceViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ymu-nY-WLy"/>
+                        <viewControllerLayoutGuide type="bottom" id="haS-QE-lJ5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="DZD-NN-q4N">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="体验券详情" id="Qdv-VS-M6i"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ebt-g7-ugD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3707.5" y="1967.5"/>
+        </scene>
         <!--City Table View Controller-->
         <scene sceneID="qys-mj-UAC">
             <objects>
@@ -1349,6 +1368,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FBw-TD-rbm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="734.5" y="1250.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="zJg-Mv-h3h">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="YgS-SV-Z0I" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="1xG-jA-TLs">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="p77-bU-WXF" kind="relationship" relationship="rootViewController" id="OsP-qd-ssl"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="m66-zw-tml" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3149.5" y="1972.5"/>
         </scene>
     </scenes>
     <resources>
