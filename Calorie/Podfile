@@ -12,3 +12,5 @@ pod 'ECSlidingViewController', '~> 2.0.3'
 pod 'SVProgressHUD'
 
 pod 'pop', '~> 1.0'
+
+pod "JElasticPullToRefresh"
