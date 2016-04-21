@@ -14,6 +14,7 @@
 #import "HomeNavViewController.h"
 #import "LeftViewController.h"
 #import "TabBarViewController.h"
+#import "UIScrollView+JElasticPullToRefresh.h"
 @interface MyCollectViewController ()<CLLocationManagerDelegate,UITableViewDataSource,UITableViewDelegate>{
     CGFloat jing;
     CGFloat wei;
@@ -67,6 +68,8 @@
         //设置定位的精准度，一般精准度越高，越耗电（这里设置为精准度最高的，适用于导航应用）
         _locMgr.desiredAccuracy=kCLLocationAccuracyBestForNavigation;
         }
+    
+    [self initRefresh];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -241,6 +244,9 @@
             break;
     }
 }
+
+#pragma mark-Action
+
 - (IBAction)rightBtnAction:(UIBarButtonItem *)sender {
     NSLog(@"-------count = %ld",count);
     if (count%2 == 0) {
@@ -249,14 +255,7 @@
         [_rightButton setTitle:@"完成"];
         count ++;
         [_tableView reloadData];
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"您可以开始取消您的收藏" preferredStyle:UIAlertControllerStyleActionSheet];
-//        UIAlertAction *action = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [_rightButton setTitle:@"编辑"];
-//            [_tableView setEditing:NO animated:YES];
-//            count --;
-//        }];
-//        [alert addAction:action];
-//        [self presentViewController:alert animated:YES completion:nil];
+
     }else{
         if(_deleteBooks.count == 0){
             NSLog(@"1");
@@ -345,4 +344,22 @@
 
 }
 
+#pragma mark- initRefresh
+
+- (void)initRefresh{
+    JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
+    loadingViewCircle.tintColor = [UIColor whiteColor];
+    
+    __weak __typeof(self)weakSelf = self;
+    [self.tableView addJElasticPullToRefreshViewWithActionHandler:^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf.tableView stopLoading];
+            [weakSelf.self getUserCoolect];
+        });
+    } LoadingView:loadingViewCircle];
+    //波浪颜色 透明度
+    [self.tableView setJElasticPullToRefreshFillColor:[UIColor colorWithRed:0.0431 green:0.7569 blue:0.9412 alpha:1]];
+    //空白地方颜色
+    [self.tableView setJElasticPullToRefreshBackgroundColor:[UIColor whiteColor]];
+}
 @end

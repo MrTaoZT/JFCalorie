@@ -21,6 +21,7 @@
 #import "SearchViewController.h"
 #import "CityTableViewController.h"
 
+#import "UIScrollView+JElasticPullToRefresh.h"
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
@@ -79,8 +80,6 @@
     
     //user
     [self setMD5RSA];
-    //判断用户上一次是否登录,且有没有退出登录
-//    [self lastOrLogin];
     
 }
 
@@ -311,23 +310,38 @@
 
 //初始化刷新器
 - (void)initRefresh{
-    _refresh = [[UIRefreshControl alloc]init];
+//    _refresh = [[UIRefreshControl alloc]init];
+//    
+//    NSString *title = [NSString stringWithFormat:@"刷新ing..."];
+//    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
+//    [style setAlignment:NSTextAlignmentCenter];
+//    [style setLineBreakMode:NSLineBreakByTruncatingTail];
+//    NSDictionary *attrsDictionary = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
+//                                      NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody],
+//                                      NSParagraphStyleAttributeName:style,
+//                                      NSForegroundColorAttributeName:[UIColor magentaColor]};
+//    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
+//    _refresh.attributedTitle = attributedTitle;
+//    
+//    _refresh.tintColor = [UIColor orangeColor];
+//    _refresh.backgroundColor = [UIColor whiteColor];
+//    [_refresh addTarget:self action:@selector(conRefresh) forControlEvents:UIControlEventValueChanged];
+//    [self.tableView addSubview:_refresh];
     
-    NSString *title = [NSString stringWithFormat:@"刷新ing..."];
-    NSMutableParagraphStyle *style = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-    [style setAlignment:NSTextAlignmentCenter];
-    [style setLineBreakMode:NSLineBreakByTruncatingTail];
-    NSDictionary *attrsDictionary = @{NSUnderlineStyleAttributeName:@(NSUnderlineStyleNone),
-                                      NSFontAttributeName:[UIFont preferredFontForTextStyle:UIFontTextStyleBody],
-                                      NSParagraphStyleAttributeName:style,
-                                      NSForegroundColorAttributeName:[UIColor magentaColor]};
-    NSAttributedString *attributedTitle = [[NSAttributedString alloc] initWithString:title attributes:attrsDictionary];
-    _refresh.attributedTitle = attributedTitle;
+    JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
+    loadingViewCircle.tintColor = [UIColor whiteColor];
     
-    _refresh.tintColor = [UIColor orangeColor];
-    _refresh.backgroundColor = [UIColor whiteColor];
-    [_refresh addTarget:self action:@selector(conRefresh) forControlEvents:UIControlEventValueChanged];
-    [self.tableView addSubview:_refresh];
+    __weak __typeof(self)weakSelf = self;
+    [self.tableView addJElasticPullToRefreshViewWithActionHandler:^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [weakSelf.tableView stopLoading];
+            [weakSelf.self conRefresh];
+        });
+    } LoadingView:loadingViewCircle];
+    //波浪颜色 透明度
+    [self.tableView setJElasticPullToRefreshFillColor:[UIColor colorWithRed:0.0431 green:0.7569 blue:0.9412 alpha:1]];
+    //空白地方颜色
+    [self.tableView setJElasticPullToRefreshBackgroundColor:[UIColor orangeColor]];
 }
 
 //当第一次加载app完后才能刷新
