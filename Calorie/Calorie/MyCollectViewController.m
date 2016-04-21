@@ -38,6 +38,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //取消tableview下划线
+    //    self.tableView.tableFooterView = [[UIView alloc]init];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //去掉tableView的滚动条
+    self.tableView.showsVerticalScrollIndicator = NO;
+    
     self.navigationItem.title = @"收藏列表";
     
      // 设置tableView在编辑模式下可以多选，并且只需设置一次

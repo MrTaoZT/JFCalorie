@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>JElasticPullToRefresh.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -37,12 +42,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>2ED920C322B990F9817F2453CDDDAB49</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>71416DAC9873C765729768D15976480C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>814928D465FE8E69DF3C50D6428F68FF</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>928353533005A4198EBDA5B700D37B64</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>94C83CF45269AE444E7BE5789F241211</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -57,7 +77,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>D2EC47677598E0653EE5E916C0085F9C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>F76410FDFC2A4474883F8BD8F7125128</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FE82E0AB7225E210AE0E7A607FD4B3CD</key>
 		<dict>
 			<key>primary</key>
 			<true/>

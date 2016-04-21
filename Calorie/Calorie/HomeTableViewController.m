@@ -81,6 +81,7 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     
     
+    
     [self initailAllControl];
     
     //初始化CLLocation

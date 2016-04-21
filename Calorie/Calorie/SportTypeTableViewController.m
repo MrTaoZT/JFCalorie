@@ -32,6 +32,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //取消tableview下划线
+    //    self.tableView.tableFooterView = [[UIView alloc]init];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //去掉tableView的滚动条
+    self.tableView.showsVerticalScrollIndicator = NO;
+    
     requestOver = NO;
     loadingOver = NO;
     
