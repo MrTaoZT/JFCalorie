@@ -49,7 +49,7 @@
     _tableView.delegate = self;
     _tableView.dataSource = self;
 //
-//    [self weatherShow];
+    [self weatherShow];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -173,19 +173,24 @@
     }
 }
 
-//- (void)weatherShow{
-//    NSString *city = @"无锡";
-//    NSString *urlStr = @"http://api.openweathermap.org/data/2.5/weather?q=无锡,cn&appid=529615526ff3a9a5dca577698b0be231";
-//    
-//    NSDictionary *dic = @{@"name":city};
-//    
-//    AFHTTPSessionManager *sessionManager = [[AFHTTPSessionManager alloc]init];
-//    [sessionManager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-//        
-//    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-//        NSLog(@"obj = %@",responseObject);
-//    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-//        NSLog(@"error = %@",[error userInfo]);
-//    }];
-//}
+- (void)weatherShow{
+    NSString *city = @"无锡,cn";
+    NSString *appID = @"529615526ff3a9a5dca577698b0be231";
+    NSString *urlStr = @"http://api.openweathermap.org/data/2.5/weather";
+    //city   小泽  传参数进去
+    NSDictionary *dic = @{@"q":city, @"appid":appID};
+    
+    [[AppAPIClient sharedClient] GET:urlStr parameters:dic progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSLog(@"obj = %@",responseObject);
+        NSDictionary *mainDic = responseObject[@"main"];
+        NSString *weatherStr = mainDic[@"temp_max"];
+        NSInteger num = [weatherStr integerValue];
+        NSString *weatherStrLast = [NSString stringWithFormat:@"%ld°C",(num - 273)];
+        _weather.text = weatherStrLast;
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"error = %@",[error userInfo]);
+    }];
+}
 @end
