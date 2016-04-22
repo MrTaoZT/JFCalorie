@@ -10,4 +10,5 @@
 
 @interface ExperienceViewController : UIViewController
 @property (strong,nonatomic)NSString *experienceInfos;
+@property (weak, nonatomic) IBOutlet UITableView *TableView;
 @end
