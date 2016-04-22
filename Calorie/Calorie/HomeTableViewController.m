@@ -23,12 +23,14 @@
 
 #import "UIScrollView+JElasticPullToRefresh.h"
 #import "NavigationViewController.h"
+
 @interface HomeTableViewController () <CLLocationManagerDelegate>{
     BOOL sportOver;
     BOOL hotClubOver;
     BOOL locationError;
     //防止刷新后没有网络上拉翻页页数增加
     BOOL loadingOver;
+    BOOL isRefresh;
 }
 
 @property(nonatomic)CGFloat jing;
@@ -258,6 +260,7 @@
     sportOver = NO;
     locationError = NO;
     loadingOver = NO;
+    isRefresh = NO;
     hotClubOver = YES;
     _sportTypeArray = [NSMutableArray new];
     _hotClubInfoArray = [NSMutableArray new];
@@ -332,13 +335,14 @@
     JElasticPullToRefreshLoadingViewCircle *loadingViewCircle = [[JElasticPullToRefreshLoadingViewCircle alloc] init];
     loadingViewCircle.tintColor = [UIColor whiteColor];
     
+    
     __weak __typeof(self)weakSelf = self;
     [self.tableView addJElasticPullToRefreshViewWithActionHandler:^{
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [weakSelf.tableView stopLoading];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [weakSelf.self conRefresh];
         });
     } LoadingView:loadingViewCircle];
+    
     //波浪颜色 透明度
     [self.tableView setJElasticPullToRefreshFillColor:[UIColor colorWithRed:0.0431 green:0.7569 blue:0.9412 alpha:1]];
     //空白地方颜色
@@ -352,12 +356,13 @@
         [self getSportType];
     }
     //获得热门俱乐部
+    _hotClubPage = 1;
+    isRefresh  =YES;
     [self getHotClub];
 }
 
 //定位请求错误提示
 -(void)checkError:(NSError *)error{
-    locationError = YES;
     switch (error.code) {
         case kCLErrorNetwork:{
             NSLog(@"没有网络连接");
@@ -372,7 +377,6 @@
         case kCLErrorLocationUnknown:{
             NSLog(@"获取位置失败");
             //[Utilities popUpAlertViewWithMsg:@"获取位置失败" andTitle:@"" onView:self];
-            locationError = YES;
         }
             break;
         default:{
@@ -502,9 +506,6 @@
     //NSLog(@"刷新？%d",_refresh.isRefreshing);
     if ([CLLocationManager authorizationStatus] != kCLAuthorizationStatusAuthorizedWhenInUse) {
         [Utilities popUpAlertViewWithMsg:@"您没有给与位置权限" andTitle:@"" onView:self];
-        if (_refresh.isRefreshing) {
-            [_refresh endRefreshing];
-        }
         return;
     }
     
@@ -516,9 +517,6 @@
     
     __weak HomeTableViewController *weakSelf = self;
     [weakSelf loadDataEnd];
-    if (weakSelf.refresh.isRefreshing) {
-        _hotClubPage = 1;
-    }
     NSInteger perPage = 5;
     
     NSDictionary *parameters = @{
@@ -536,8 +534,9 @@
         hotClubOver = YES;
         //初始化按钮事件
         [self btnAction];
-        if (weakSelf.refresh.isRefreshing) {
-            [weakSelf.refresh endRefreshing];
+        if (isRefresh) {
+            [weakSelf.tableView stopLoading];
+            isRefresh = NO;
         }
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             //NSLog(@"%@",responseObject);
@@ -581,8 +580,9 @@
             [Utilities popUpAlertViewWithMsg: [NSString stringWithFormat:@"保持网络畅通，稍后再试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:weakSelf];
         }
     } failure:^(NSError *error) {
-        if (weakSelf.refresh.isRefreshing) {
-            [weakSelf.refresh endRefreshing];
+        if (isRefresh) {
+            [weakSelf.tableView stopLoading];
+            isRefresh = NO;
         }
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:weakSelf];
     }];
@@ -608,9 +608,18 @@
 //定位失败
 - (void)locationManager:(CLLocationManager *)manager
        didFailWithError:(NSError *)error{
+    locationError = YES;
     [self checkError:error];
-    //定位获取失败，让用户自己选城市
-    [self chooseCity];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"位置获取失败请手动选择" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        //定位获取失败，让用户自己选城市
+        [self chooseCity];
+    }];
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+    [alert addAction:confirm];
+    [alert addAction:cancel];
+    [self presentViewController:alert animated:YES completion:nil];
+    
 }
 
 /** 定位服务状态改变时调用*/
@@ -744,9 +753,9 @@
 
 - (void)chooseCity{
     CityTableViewController *cityView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"CityView"];
-    if (loadingOver) {
-        [self.navigationController pushViewController:cityView animated:YES];
-    }
+    //if (loadingOver) {
+    [self.navigationController pushViewController:cityView animated:YES];
+    //}
     cityView.cityBlock = ^(NSString *city, NSString *postalCode){
         [_chooseLocationButton setTitle:city forState:UIControlStateNormal];
         _city = postalCode;
