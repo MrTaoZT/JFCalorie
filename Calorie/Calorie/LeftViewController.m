@@ -20,7 +20,7 @@
 #import "CollectTableViewCell.h"
 
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>{
-    NSString *city;
+    NSString *setCity;
 }
 
 @end
@@ -180,7 +180,7 @@
     NSString *appID = @"529615526ff3a9a5dca577698b0be231";
     NSString *urlStr = @"http://api.openweathermap.org/data/2.5/weather";
 
-    NSDictionary *dic = @{@"q":city, @"appid":appID};
+    NSDictionary *dic = @{@"q":setCity, @"appid":appID};
     
     [[AppAPIClient sharedClient] GET:urlStr parameters:dic progress:^(NSProgress * _Nonnull downloadProgress) {
         
@@ -190,7 +190,7 @@
         NSInteger num = [weatherStr integerValue];
         NSString *weatherStrLast = [NSString stringWithFormat:@"%ld°C",(num - 273)];
         _weather.text = weatherStrLast;
-        _city.text = city;
+        _city.text = setCity;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error = %@",[error userInfo]);
     }];
