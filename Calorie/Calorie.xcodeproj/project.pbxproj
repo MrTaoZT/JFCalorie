@@ -47,6 +47,10 @@
 		B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA0E1CC3242D00864F24 /* SportTypeTableViewCell.m */; };
 		B808BA161CC3565500864F24 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B808BA151CC3565500864F24 /* TabBarViewController.m */; };
 		B82AB4751CC51DDB005FADEA /* Sliding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B82AB4741CC51DDB005FADEA /* Sliding.storyboard */; };
+		B84D0EDE1CC9C93900CA620D /* PedometerDetailsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D0EDD1CC9C93900CA620D /* PedometerDetailsTableViewController.m */; };
+		B84D0EE21CC9CA5300CA620D /* PedometerDetailsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D0EE11CC9CA5300CA620D /* PedometerDetailsTableViewCell.m */; };
+		B84D0EE51CCA150900CA620D /* FirstExperienceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D0EE41CCA150900CA620D /* FirstExperienceTableViewCell.m */; };
+		B84D0EE81CCA152A00CA620D /* SecondExperienceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D0EE71CCA152A00CA620D /* SecondExperienceTableViewCell.m */; };
 		B853863A1CC8DEC200242AEA /* PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B85386391CC8DEC200242AEA /* PedometerViewController.m */; };
 		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
@@ -159,6 +163,14 @@
 		B808BA141CC3565500864F24 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
 		B808BA151CC3565500864F24 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
 		B82AB4741CC51DDB005FADEA /* Sliding.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Sliding.storyboard; sourceTree = "<group>"; };
+		B84D0EDC1CC9C93900CA620D /* PedometerDetailsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PedometerDetailsTableViewController.h; sourceTree = "<group>"; };
+		B84D0EDD1CC9C93900CA620D /* PedometerDetailsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PedometerDetailsTableViewController.m; sourceTree = "<group>"; };
+		B84D0EE01CC9CA5300CA620D /* PedometerDetailsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PedometerDetailsTableViewCell.h; sourceTree = "<group>"; };
+		B84D0EE11CC9CA5300CA620D /* PedometerDetailsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PedometerDetailsTableViewCell.m; sourceTree = "<group>"; };
+		B84D0EE31CCA150900CA620D /* FirstExperienceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstExperienceTableViewCell.h; sourceTree = "<group>"; };
+		B84D0EE41CCA150900CA620D /* FirstExperienceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstExperienceTableViewCell.m; sourceTree = "<group>"; };
+		B84D0EE61CCA152A00CA620D /* SecondExperienceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondExperienceTableViewCell.h; sourceTree = "<group>"; };
+		B84D0EE71CCA152A00CA620D /* SecondExperienceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondExperienceTableViewCell.m; sourceTree = "<group>"; };
 		B85386381CC8DEC200242AEA /* PedometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PedometerViewController.h; sourceTree = "<group>"; };
 		B85386391CC8DEC200242AEA /* PedometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PedometerViewController.m; sourceTree = "<group>"; };
 		B8783B5E1CC4D34400F01B4B /* FirstTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTableViewCell.h; sourceTree = "<group>"; };
@@ -237,6 +249,7 @@
 		184477721CC21982003B2354 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B84D0EDF1CC9C9A300CA620D /* PedometerCell */,
 				B8D87FDD1CC5C13F00F7CBEF /* SlidingSubpageCell */,
 				B8783B5D1CC4D2F700F01B4B /* ClubDetailCell */,
 				387878771CC4966E00FEE5B5 /* SlidingCell */,
@@ -467,11 +480,22 @@
 			name = HomeCell;
 			sourceTree = "<group>";
 		};
+		B84D0EDF1CC9C9A300CA620D /* PedometerCell */ = {
+			isa = PBXGroup;
+			children = (
+				B84D0EE01CC9CA5300CA620D /* PedometerDetailsTableViewCell.h */,
+				B84D0EE11CC9CA5300CA620D /* PedometerDetailsTableViewCell.m */,
+			);
+			name = PedometerCell;
+			sourceTree = "<group>";
+		};
 		B85386371CC8DE7800242AEA /* Pedometer */ = {
 			isa = PBXGroup;
 			children = (
 				B85386381CC8DEC200242AEA /* PedometerViewController.h */,
 				B85386391CC8DEC200242AEA /* PedometerViewController.m */,
+				B84D0EDC1CC9C93900CA620D /* PedometerDetailsTableViewController.h */,
+				B84D0EDD1CC9C93900CA620D /* PedometerDetailsTableViewController.m */,
 			);
 			name = Pedometer;
 			sourceTree = "<group>";
@@ -494,6 +518,10 @@
 			children = (
 				B8D87FDE1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.h */,
 				B8D87FDF1CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m */,
+				B84D0EE31CCA150900CA620D /* FirstExperienceTableViewCell.h */,
+				B84D0EE41CCA150900CA620D /* FirstExperienceTableViewCell.m */,
+				B84D0EE61CCA152A00CA620D /* SecondExperienceTableViewCell.h */,
+				B84D0EE71CCA152A00CA620D /* SecondExperienceTableViewCell.m */,
 			);
 			name = SlidingSubpageCell;
 			sourceTree = "<group>";
@@ -735,17 +763,21 @@
 				385880411CC976A800A918E1 /* ExperienceViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
+				B84D0EE51CCA150900CA620D /* FirstExperienceTableViewCell.m in Sources */,
 				B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */,
 				B8D87FED1CC61DA000F7CBEF /* SearchTableViewCell.m in Sources */,
 				B8D900DE1CC2716900641C06 /* TitleTableViewCell.m in Sources */,
 				B8D900DA1CC2710900641C06 /* HomeTableViewController.m in Sources */,
 				B853863A1CC8DEC200242AEA /* PedometerViewController.m in Sources */,
+				B84D0EE81CCA152A00CA620D /* SecondExperienceTableViewCell.m in Sources */,
 				B8F6B0551CC46EE700D5C7F1 /* CollectNavViewController.m in Sources */,
 				B8D900D71CC2554C00641C06 /* SignInViewController.m in Sources */,
 				187725D81CC20F5B003F8BD8 /* AppDelegate.m in Sources */,
 				B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */,
+				B84D0EE21CC9CA5300CA620D /* PedometerDetailsTableViewCell.m in Sources */,
 				1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */,
 				B8F6B04F1CC46D9100D5C7F1 /* MessageNavViewController.m in Sources */,
+				B84D0EDE1CC9C93900CA620D /* PedometerDetailsTableViewController.m in Sources */,
 				7B3A916A1CC9510E0061ECC1 /* ARLabel.m in Sources */,
 				B808BA0F1CC3242D00864F24 /* SportTypeTableViewCell.m in Sources */,
 				187725D51CC20F5B003F8BD8 /* main.m in Sources */,

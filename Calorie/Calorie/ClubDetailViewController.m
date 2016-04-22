@@ -24,6 +24,7 @@
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
 @property(nonatomic, strong)NSMutableDictionary *clubDict;
+@property(nonatomic, strong)UITapGestureRecognizer *tap;
 
 //用户id
 @property(nonatomic, strong)NSString *memberId;
@@ -40,6 +41,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //去掉tableView的滚动条
     self.tableView.showsVerticalScrollIndicator = NO;
+    _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpExperience)];
     
     scrollViewTag = 1001;
     collectionBtnTag = 1002;
@@ -190,7 +192,7 @@
         [self presentViewController:alert animated:YES completion:nil];
     }else{
         NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phoneAllArray[0]]];
-         [[UIApplication sharedApplication] openURL:url];
+        [[UIApplication sharedApplication] openURL:url];
     }
     //NSLog(@"%@",phoneAllArray);
 }
@@ -214,13 +216,12 @@
                 //俱乐部图片
                 [cell.clubImage sd_setImageWithURL:_clubDict[@"clubLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
                 //俱乐部名字
-                cell.name.text = [NSString stringWithFormat:@"%@(点击查询该店体验券详情)",_clubDict[@"clubName"]];
+                cell.name.text = [NSString stringWithFormat:@"%@",_clubDict[@"clubName"]];
                 
                 cell.name.userInteractionEnabled = YES;
                 
-                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpExperience)];
-                [cell.name addGestureRecognizer:tap];
-
+                [cell.name addGestureRecognizer:_tap];
+                
                 //收藏情况
                 cell.collection.tag = collectionBtnTag;
                 [self collectionBtn];
@@ -277,7 +278,7 @@
         case 1:
             return 165;
         default:
-            return 210;
+            return 300;
             break;
     }
 }
