@@ -57,7 +57,7 @@
 }
 
 - (void) menuSwitchAction{
-    NSLog(@"menu");
+    NSLog(@"menu1");
     //如果中间那扇门在在右侧，说明  已经被侧滑  因此需要关闭
     if (_slidingVc.currentTopViewPosition == ECSlidingViewControllerTopViewPositionAnchoredRight) {
         //中间  页面向左滑

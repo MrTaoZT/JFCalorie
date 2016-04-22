@@ -782,6 +782,7 @@
                         <outlet property="headImg" destination="84z-KO-6I2" id="eUh-YN-fZd"/>
                         <outlet property="nickName" destination="c5L-mm-8EK" id="9wB-xJ-fBA"/>
                         <outlet property="tableView" destination="bS1-RK-NE8" id="1Sv-Va-e6u"/>
+                        <outlet property="weather" destination="R5W-lS-7hd" id="b6N-o8-gbb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="shC-uG-ub6" userLabel="First Responder" sceneMemberID="firstResponder"/>
