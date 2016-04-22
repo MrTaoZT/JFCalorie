@@ -186,7 +186,7 @@
 - (void)registerLocalNotification:(NSInteger)alertTime {
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     // 设置触发通知的时间
-    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:alertTime];
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:23];
     NSLog(@"fireDate=%@",fireDate);
     
     notification.fireDate = fireDate;
@@ -272,7 +272,7 @@
     anchorComponents.day -= offset;
     //设置从几点开始计时
     anchorComponents.hour = 23;
-    [self registerLocalNotification:23];
+    [self registerLocalNotification:4];
     interval.day = 1;
     NSDate *anchorDate = [calendar dateFromComponents:anchorComponents];
     
