@@ -31,5 +31,7 @@
     } failure:^(NSError *error) {
         NSLog(@"error = %@", [error userInfo]);
     }];
+    
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 @end

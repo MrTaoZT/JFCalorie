@@ -42,7 +42,7 @@
             [[StorageMgr singletonStorageMgr] addKey:@"exponent" andValue:exponent];
             [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
         }else{
-            NSLog(@"resultFailed");
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
         
     } failure:^(NSError *error) {
@@ -98,8 +98,7 @@
             SignInViewController *signIn = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
             [self.navigationController pushViewController:signIn animated:YES];
         }else{
-            //这还要修改
-            [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试" andTitle:nil onView:self];
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
     } failure:^(NSError *error) {
         NSLog(@"error = %@",[error userInfo]);

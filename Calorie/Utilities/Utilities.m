@@ -104,4 +104,41 @@
     return imageDownloaded;
 }
 
++ (void) errorShow:(NSString *)resultFlag onView:(UIViewController *)vc{
+    switch ([resultFlag integerValue]) {
+        case 8011:
+            [Utilities popUpAlertViewWithMsg:@"验证码错误" andTitle:nil onView:vc];
+            break;
+        case 8013:
+            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:nil onView:vc];
+            break;
+        case 8015:
+            [Utilities popUpAlertViewWithMsg:@"注册码获取超出次数,请明天再获取" andTitle:nil onView:vc];
+            break;
+        case 8016:
+            [Utilities popUpAlertViewWithMsg:@"该号已注册" andTitle:nil onView:vc];
+            break;
+        case 8017:
+            [Utilities popUpAlertViewWithMsg:@"该号码不存在，请先注册" andTitle:nil onView:vc];
+            break;
+        case 8022:
+            [Utilities popUpAlertViewWithMsg:@"该会员卡不存在" andTitle:nil onView:vc];
+            break;
+        case 8025:
+            [Utilities popUpAlertViewWithMsg:@"暂无优惠券" andTitle:nil onView:vc];
+            break;
+        case 8028:
+            [Utilities popUpAlertViewWithMsg:@"该号码不存在" andTitle:nil onView:vc];
+            break;
+        case 8029:
+            [Utilities popUpAlertViewWithMsg:@"密码错误" andTitle:nil onView:vc];
+            break;
+        case 8030:
+            [Utilities popUpAlertViewWithMsg:@"该手机未获得验证码" andTitle:nil onView:vc];
+            break;
+        default:
+            [Utilities popUpAlertViewWithMsg:@"服务器暂忙，请稍后再试" andTitle:nil onView:vc];
+            break;
+    }
+}
 @end
