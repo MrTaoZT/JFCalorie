@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchTableViewCell.h"
 #import "CityTableViewController.h"
+#import "ClubDetailViewController.h"
 
 #import <UIImageView+WebCache.h>
 
@@ -139,7 +140,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    ClubDetailViewController *clubDetail = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
+    //
+    clubDetail.clubKeyId = _dataArray[indexPath.row][@"clubId"];
+    [self.navigationController pushViewController:clubDetail animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
