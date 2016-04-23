@@ -99,11 +99,15 @@
         }else{
             if ([responseObject[@"resultFlag"] integerValue] == 8020) {
                 [Utilities popUpAlertViewWithMsg:@"暂无数据" andTitle:@"" onView:self];
+                _postalCode = @"0510";
+                [weakSelf requestData];
+                [_cityBtn setTitle:@"无锡" forState:UIControlStateNormal];
             }else{
                 [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
             }
         }
     } failure:^(NSError *error) {
+        isLoading = NO;
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
     }];
 }

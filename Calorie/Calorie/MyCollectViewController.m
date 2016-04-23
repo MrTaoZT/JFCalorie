@@ -37,7 +37,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+
     //取消tableview下划线
     //    self.tableView.tableFooterView = [[UIView alloc]init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -170,7 +170,14 @@
             _favorites = result[@"favorites"];
             done = YES;
         }else {
-            NSLog(@"错误码   修改！");
+            if ([responseObject[@"resultFlag"] integerValue] == 8024) {
+                NSDictionary *result = responseObject[@"result"];
+                _favorites = result[@"favorites"];
+                done = YES;
+                flag = YES;
+                return ;
+            }
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
         [_tableView reloadData];
     } failure:^(NSError *error) {
@@ -255,12 +262,15 @@
 
 - (IBAction)rightBtnAction:(UIBarButtonItem *)sender {
     NSLog(@"-------count = %ld",count);
+    if (flag) {
+        return;
+    }
     if (count%2 == 0) {
         [_tableView setEditing:YES animated:YES];
         self.navigationItem.title = @"取消收藏";
         [_rightButton setTitle:@"完成"];
         count ++;
-        [_tableView reloadData];
+        //[_tableView reloadData];
 
     }else{
         if(_deleteBooks.count == 0){
@@ -302,6 +312,8 @@
                     [self getUserCoolect];
                     self.navigationItem.title = @"收藏列表";
                     [_rightButton setTitle:@"编辑"];
+                }else {
+                    [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
                 }
             } failure:^(NSError *error) {
                 NSLog(@"error = %@",[error userInfo]);

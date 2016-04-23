@@ -52,9 +52,7 @@
                 //定时器
                 [self setTime];
             }else{
-                //这还要修改
-                [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试！" andTitle:nil onView:self];
- 
+                [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
             }
         } failure:^(NSError *error) {
             NSLog(@"error = %@",[error userInfo]);
@@ -82,7 +80,7 @@
             forgetPwViewController *forgetVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"ForgetPwVc"];
             [self.navigationController pushViewController:forgetVc animated:YES];
         }else{
-            [Utilities popUpAlertViewWithMsg:@"验证码错误" andTitle:nil onView:self];
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
     } failure:^(NSError *error) {
         NSLog(@"error = %@",[error userInfo]);
