@@ -112,7 +112,7 @@
                                     <outlet property="sportTypeBtn8" destination="QQQ-LT-O64" id="em7-8j-XIX"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellLabel" textLabel="fxY-iB-f6s" rowHeight="30" style="IBUITableViewCellStyleDefault" id="PHv-xR-Hlg">
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cellLabel" textLabel="fxY-iB-f6s" rowHeight="30" style="IBUITableViewCellStyleDefault" id="PHv-xR-Hlg">
                                 <rect key="frame" x="0.0" y="362" width="375" height="30"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PHv-xR-Hlg" id="VlI-nD-bNt">
@@ -634,7 +634,6 @@
                             </view>
                             <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="84z-KO-6I2">
                                 <rect key="frame" x="5" y="69" width="90" height="90"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="84z-KO-6I2" secondAttribute="height" multiplier="1:1" id="PyT-gN-Wd5"/>
                                 </constraints>

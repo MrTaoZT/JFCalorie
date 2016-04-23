@@ -47,7 +47,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="quc-Z2-G6I">
-                                <rect key="frame" x="30" y="496" width="315" height="30"/>
+                                <rect key="frame" x="30" y="493" width="315" height="30"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" title="登录"/>
                                 <userDefinedRuntimeAttributes>
@@ -60,8 +60,8 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CGv-Q5-ZAG">
-                                <rect key="frame" x="265" y="424" width="80" height="32"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <rect key="frame" x="275" y="424" width="70" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="忘记密码？"/>
                                 <connections>
                                     <action selector="forgetPwAction:forEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vUu-9i-3hb"/>
@@ -78,7 +78,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C5W-iv-0ce">
-                                <rect key="frame" x="261" y="566" width="84" height="29"/>
+                                <rect key="frame" x="261" y="563" width="84" height="29"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="创建新用户！"/>
                                 <connections>
@@ -86,17 +86,28 @@
                                     <segue destination="HhG-9V-gXu" kind="show" id="aXs-Yu-asH"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TuD-bf-6Oc">
+                                <rect key="frame" x="30" y="622" width="315" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="不想登录，先进去看看！"/>
+                                <connections>
+                                    <action selector="touristsLogin:forEvent:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vm2-1Q-p8X"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstItem="TuD-bf-6Oc" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="2M8-0o-tPE"/>
                             <constraint firstItem="rWU-xm-071" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8l2-lR-ylO"/>
                             <constraint firstItem="CGv-Q5-ZAG" firstAttribute="top" secondItem="Qa9-JX-zUX" secondAttribute="bottom" constant="40" id="9jz-qv-h5N"/>
+                            <constraint firstItem="TuD-bf-6Oc" firstAttribute="top" secondItem="C5W-iv-0ce" secondAttribute="bottom" constant="30" id="CB3-kt-Cbu"/>
                             <constraint firstItem="C5W-iv-0ce" firstAttribute="top" secondItem="quc-Z2-G6I" secondAttribute="bottom" constant="40" id="Fa2-dj-w0n"/>
                             <constraint firstAttribute="trailing" secondItem="C5W-iv-0ce" secondAttribute="trailing" constant="30" id="NfX-D1-Lcd"/>
                             <constraint firstItem="Z9J-Wa-V6q" firstAttribute="top" secondItem="rWU-xm-071" secondAttribute="bottom" constant="50" id="Ovu-jk-3qd"/>
                             <constraint firstItem="quc-Z2-G6I" firstAttribute="top" secondItem="CGv-Q5-ZAG" secondAttribute="bottom" constant="40" id="QCi-SK-lmy"/>
                             <constraint firstItem="Qa9-JX-zUX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="bdl-U7-DA4"/>
                             <constraint firstAttribute="trailing" secondItem="Qa9-JX-zUX" secondAttribute="trailing" constant="30" id="dHT-8l-JL7"/>
+                            <constraint firstAttribute="trailing" secondItem="TuD-bf-6Oc" secondAttribute="trailing" constant="30" id="dPI-7G-Rqz"/>
                             <constraint firstAttribute="trailing" secondItem="Z9J-Wa-V6q" secondAttribute="trailing" constant="30" id="el1-zU-xT8"/>
                             <constraint firstItem="Z9J-Wa-V6q" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="ghf-Re-wxI"/>
                             <constraint firstItem="quc-Z2-G6I" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="ioO-Nd-GsH"/>

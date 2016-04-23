@@ -151,7 +151,7 @@
             int value = (arc4random() % 999999999) + 1;
             NSString *email = [NSString stringWithFormat:@"%d@qq.com",value];
             NSString *username = [NSString stringWithFormat:@"x%@",memberId];
-            
+            //判断用户名是否存在 存在就别保存 username
             PFUser *user = [PFUser user];
             user.username = username;
             user.email = email;
@@ -192,6 +192,29 @@
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event {
      SignUpViewController *signUpVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"SignUpVc"];
     [self.navigationController pushViewController:signUpVc animated:YES];
+}
+
+- (IBAction)touristsLogin:(UIButton *)sender forEvent:(UIEvent *)event {
+    
+    LeftViewController * leftVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"LeftVc"];
+    TabBarViewController * tabView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"TabView"];
+    //----------------------侧滑开始 center----------------------
+    //初始化侧滑框架,并且设置中间显示的页面
+    _slidingVc = [ECSlidingViewController slidingWithTopViewController:tabView];
+    //设置侧滑 的  耗时
+    _slidingVc.defaultTransitionDuration = 0.25f;
+    //设置 控制侧滑的手势   (这里同时对触摸 和 拖拽相应)
+    _slidingVc.topViewAnchoredGesture = ECSlidingViewControllerAnchoredGesturePanning | ECSlidingViewControllerAnchoredGestureTapping;
+    //设置上述手势的识别范围
+    [tabView.view addGestureRecognizer:_slidingVc.panGesture];
+    //----------------------侧滑开始 left----------------------
+    _slidingVc.underLeftViewController = leftVc;
+    //设置侧滑的开闭程度   (peek都是设置中间的页面出现的宽度 )
+    _slidingVc.anchorRightPeekAmount = UI_SCREEN_W / 4;
+
+    HomeNavViewController *homeNav = [[HomeNavViewController alloc]initWithRootViewController:_slidingVc];
+    _slidingVc.navigationController.navigationBar.hidden = YES;
+    [self presentViewController:homeNav animated:YES completion:nil];
 }
 
 #pragma mark - TextField
