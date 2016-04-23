@@ -218,7 +218,7 @@
         //设置cell按下无效果
         //cell.clubImageView.contentMode = UIViewContentModeScaleAspectFill;
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (hotClubOver) {
+        if (hotClubOver && _hotClubInfoArray[indexPath.row - 2]) {
             //接下当前行对应的字典
             NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 2];
             //接受字典中的数组
