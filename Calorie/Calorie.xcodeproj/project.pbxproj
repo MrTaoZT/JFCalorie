@@ -61,6 +61,8 @@
 		B84D0EE51CCA150900CA620D /* FirstExperienceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D0EE41CCA150900CA620D /* FirstExperienceTableViewCell.m */; };
 		B84D0EE81CCA152A00CA620D /* SecondExperienceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B84D0EE71CCA152A00CA620D /* SecondExperienceTableViewCell.m */; };
 		B853863A1CC8DEC200242AEA /* PedometerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B85386391CC8DEC200242AEA /* PedometerViewController.m */; };
+		B86670971CCB75FC00253B69 /* ShopTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B86670961CCB75FC00253B69 /* ShopTableViewCell.m */; };
+		B866709B1CCB778500253B69 /* ShopTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B866709A1CCB778500253B69 /* ShopTableViewController.m */; };
 		B8783B601CC4D34400F01B4B /* FirstTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */; };
 		B8783B631CC4D36200F01B4B /* SecontTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B621CC4D36200F01B4B /* SecontTableViewCell.m */; };
 		B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B8783B651CC4D37500F01B4B /* ThiredTableViewCell.m */; };
@@ -191,6 +193,10 @@
 		B84D0EE71CCA152A00CA620D /* SecondExperienceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondExperienceTableViewCell.m; sourceTree = "<group>"; };
 		B85386381CC8DEC200242AEA /* PedometerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PedometerViewController.h; sourceTree = "<group>"; };
 		B85386391CC8DEC200242AEA /* PedometerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PedometerViewController.m; sourceTree = "<group>"; };
+		B86670951CCB75FC00253B69 /* ShopTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTableViewCell.h; sourceTree = "<group>"; };
+		B86670961CCB75FC00253B69 /* ShopTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTableViewCell.m; sourceTree = "<group>"; };
+		B86670991CCB778500253B69 /* ShopTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTableViewController.h; sourceTree = "<group>"; };
+		B866709A1CCB778500253B69 /* ShopTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTableViewController.m; sourceTree = "<group>"; };
 		B8783B5E1CC4D34400F01B4B /* FirstTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FirstTableViewCell.h; sourceTree = "<group>"; };
 		B8783B5F1CC4D34400F01B4B /* FirstTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstTableViewCell.m; sourceTree = "<group>"; };
 		B8783B611CC4D36200F01B4B /* SecontTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecontTableViewCell.h; sourceTree = "<group>"; };
@@ -276,6 +282,7 @@
 		184477721CC21982003B2354 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				B86670941CCB75BA00253B69 /* Shop */,
 				B84D0EDF1CC9C9A300CA620D /* PedometerCell */,
 				B8D87FDD1CC5C13F00F7CBEF /* SlidingSubpageCell */,
 				B8783B5D1CC4D2F700F01B4B /* ClubDetailCell */,
@@ -293,6 +300,7 @@
 		184477731CC21987003B2354 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B86670981CCB774600253B69 /* Shop */,
 				B85386371CC8DE7800242AEA /* Pedometer */,
 				3863BC371CC4674800E0D8AC /* Nav */,
 				382815B71CC381AE0016A1A5 /* SlidingView */,
@@ -534,6 +542,24 @@
 				B84D0EDD1CC9C93900CA620D /* PedometerDetailsTableViewController.m */,
 			);
 			name = Pedometer;
+			sourceTree = "<group>";
+		};
+		B86670941CCB75BA00253B69 /* Shop */ = {
+			isa = PBXGroup;
+			children = (
+				B86670951CCB75FC00253B69 /* ShopTableViewCell.h */,
+				B86670961CCB75FC00253B69 /* ShopTableViewCell.m */,
+			);
+			name = Shop;
+			sourceTree = "<group>";
+		};
+		B86670981CCB774600253B69 /* Shop */ = {
+			isa = PBXGroup;
+			children = (
+				B86670991CCB778500253B69 /* ShopTableViewController.h */,
+				B866709A1CCB778500253B69 /* ShopTableViewController.m */,
+			);
+			name = Shop;
 			sourceTree = "<group>";
 		};
 		B8783B5D1CC4D2F700F01B4B /* ClubDetailCell */ = {
@@ -795,9 +821,11 @@
 				B8D87FE01CC5C1C600F7CBEF /* CollectSubpageTableViewCell.m in Sources */,
 				1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */,
 				B8D87FEA1CC618A000F7CBEF /* SearchViewController.m in Sources */,
+				B866709B1CCB778500253B69 /* ShopTableViewController.m in Sources */,
 				B8F6B0521CC46EC800D5C7F1 /* WorkNavViewController.m in Sources */,
 				385880411CC976A800A918E1 /* ExperienceViewController.m in Sources */,
 				382815731CC314E00016A1A5 /* CodeViewController.m in Sources */,
+				B86670971CCB75FC00253B69 /* ShopTableViewCell.m in Sources */,
 				1844778E1CC21B62003B2354 /* NSString+Crypt.m in Sources */,
 				B84D0EE51CCA150900CA620D /* FirstExperienceTableViewCell.m in Sources */,
 				B8783B661CC4D37500F01B4B /* ThiredTableViewCell.m in Sources */,
