@@ -250,7 +250,7 @@
     if (indexPath.row != 0) {
         ClubDetailViewController *clubDetailView = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
         if (sportOver) {
-            NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 1][@"id"];
+            NSString *clubKeyId = _hotClubInfoArray[indexPath.row - 2][@"id"];
             //NSLog(@"id%@",clubKeyId);
             clubDetailView.clubKeyId = clubKeyId;
             self.hidesBottomBarWhenPushed = YES;
