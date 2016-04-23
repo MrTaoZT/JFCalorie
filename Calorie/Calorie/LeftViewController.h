@@ -15,5 +15,5 @@
 - (IBAction)signOut:(UIButton *)sender forEvent:(UIEvent *)event;
 @property (weak, nonatomic) IBOutlet UILabel *weather;
 @property (weak, nonatomic) IBOutlet UILabel *city;
-
+//@property (nonatomic,strong) NSString *cityName;
 @end
