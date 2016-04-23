@@ -56,6 +56,7 @@
             [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
         }else{
             NSLog(@"resultFailed");
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
         
     } failure:^(NSError *error) {
@@ -150,6 +151,8 @@
             [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
             
             [self.navigationController popToRootViewControllerAnimated:YES];
+        }else{
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
     } failure:^(NSError *error) {
         NSLog(@"error = %@",[error userInfo]);
@@ -170,8 +173,7 @@
                 //定时器
                 [self setTime];
             }else{
-                //这还要修改
-                [Utilities popUpAlertViewWithMsg:@"服务器繁忙，请稍后再试！" andTitle:nil onView:self];
+                [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
             }
         } failure:^(NSError *error) {
             NSLog(@"error = %@",[error userInfo]);

@@ -10,7 +10,7 @@
 #import "CircularView.h"
 #import <HealthKit/HealthKit.h>
 #import "ARLabel.h"
-
+#import "PedometerDetailsTableViewController.h"
 @interface PedometerViewController ()<UITableViewDelegate,UITableViewDataSource>
 {
     
@@ -28,6 +28,7 @@
 
 @implementation PedometerViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     _objectForShow = [NSMutableArray new];
@@ -38,23 +39,31 @@
     //下拉刷新
     UIRefreshControl *rc = [[UIRefreshControl alloc]init];
     _tableView.tableFooterView = [[UIView alloc]init];
-    [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
     rc.tag = 1001;
     rc.tintColor = [UIColor orangeColor];
     [rc addTarget:self action:@selector(getpermission) forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:rc];
+    
     // Do any additional setup after loading the view, typically from a nib.
     
     [self getpermission];
+    NSDate *date1= [NSDate date];
+    NSDateFormatter *dateformatter=[[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"HH"];
+    NSString *formatDate = [dateformatter stringFromDate:date1];
+    if ([formatDate isEqualToString:@"23"]) {
+        [self registerLocalNotification:4];
+        
+        _walklale.text = @"";
+    }
     
 }
 -(void)interfaceView{
     //进度条的背景
     CircularView *circularView = [[CircularView alloc]initWithFrame:CGRectMake(50, 70, self.view.frame.size.width -100, self.view.frame.size.height/2)];
     circularView.backgroundColor = [UIColor clearColor];
-    //    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:circularView action:@selector(detailHerlth)];
-    //  [tap setNumberOfTapsRequired:1];
-    //  [tap setNumberOfTouchesRequired:1];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(detailHerlth)];
+    [circularView addGestureRecognizer:tap];
     [self.view addSubview:circularView];
     
     
@@ -65,7 +74,7 @@
     NSString *formatDate = [dateformatter stringFromDate:date];
     CGRect lableFram = CGRectMake(circularView.frame.size.width/2 - 50, circularView.frame.size.height/4, 100, 30);
     ARLabel *lable =[[ARLabel alloc]initWithFrame:lableFram];
-    [lable setText:[NSString stringWithFormat:@"截止%@已走",formatDate]];
+    [lable setText:[NSString stringWithFormat:@"截止%@已走(新)",formatDate]];
     lable.textColor = [UIColor lightGrayColor];
     lable.font = [UIFont systemFontOfSize:12];
     [circularView addSubview:lable];
@@ -97,7 +106,13 @@
     [self.view addSubview:_tableView];
     
 }
-
+-(void)detailHerlth{
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Home" bundle:nil];
+    PedometerDetailsTableViewController *pedDetail = [storyboard instantiateViewControllerWithIdentifier:@"PedDetail"];
+    [self.navigationController pushViewController:pedDetail animated:YES];
+    
+}
 
 -(void)getpermission{
     //查看healthKit在设备上是否可用，ipad不支持HealthKit
@@ -151,10 +166,11 @@
      HKSample类所以对应的查询类就是HKSampleQuery。
      下面的limit参数传1表示查询最近一条数据,查询多条数据只要设置limit的参数值就可以了
      */
-    HKSampleQuery *sampleQuery = [[HKSampleQuery alloc] initWithSampleType:sampleType predicate:nil limit:0 sortDescriptors:@[start,end] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
+    HKSampleQuery *sampleQuery = [[HKSampleQuery alloc] initWithSampleType:sampleType predicate:nil limit:1 sortDescriptors:@[start,end] resultsHandler:^(HKSampleQuery * _Nonnull query, NSArray<__kindof HKSample *> * _Nullable results, NSError * _Nullable error) {
         //打印查询结果
         NSLog(@"resultCount = %ld result = %@",results.count,results);
-        
+        UIRefreshControl *rc = (UIRefreshControl *)[_tableView viewWithTag:1001];
+        [rc endRefreshing];
         if (!error) {
             if (results.count > 0) {
                 
@@ -166,8 +182,7 @@
                 double value = [quantity doubleValueForUnit:[HKUnit countUnit]];
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                    
-                    _walklale.text = [NSString stringWithFormat:@" %d",(int)value ];
+                    _walklale.text = [NSString stringWithFormat:@" %d",(int)value];
                     
                     //查询是在多线程中进行的，如果要对UI进行刷新，要回到主线程中
                     NSLog(@"最新步数：%f",value);
@@ -181,12 +196,81 @@
     //执行查询
     [self.healthStore executeQuery:sampleQuery];
 }
-
+-(void)saveStepCount{
+    //
+    //     HKHealthStore *healthStore = [[HKHealthStore alloc]init];
+    [_objectForShow removeAllObjects];
+    
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSDateComponents *interval = [[NSDateComponents alloc]init];
+    interval.day = 365;
+    //设置一个计算的时间点
+    
+    NSDateComponents *anchorComponents = [calendar components:NSCalendarUnitDay | NSCalendarUnitMonth |NSCalendarUnitYear | NSCalendarUnitWeekday  fromDate:[NSDate date]];
+    NSInteger offset =  (365 + anchorComponents.weekday)%7 ;
+    anchorComponents.day -= offset;
+    
+    //设置从几点开始计时
+    anchorComponents.hour = 23;
+    interval.day = 1;
+    NSDate *anchorDate = [calendar dateFromComponents:anchorComponents];
+    
+    HKQuantityType *qiantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
+    
+    //创建查询   intervalcomponents:按照多少时间间隔查询
+    HKStatisticsCollectionQuery *query = [[HKStatisticsCollectionQuery alloc]initWithQuantityType:qiantityType quantitySamplePredicate:nil options:HKStatisticsOptionCumulativeSum anchorDate:anchorDate intervalComponents:interval];
+    
+    
+    //查询结果
+    query.initialResultsHandler = ^(HKStatisticsCollectionQuery *query,HKStatisticsCollection *results,NSError *error){
+        if (error) {
+            NSLog(@"error = %@",error.description);
+        }else{
+            
+            NSDate *endDate = [NSDate date];
+            
+            /*value 这个参数很重要  －7：表示从今天开始逐步查询后面7天的步数
+             NSCalendarUnitDay  表示按照什么类型输出
+             */
+            NSDate *startDate = [calendar dateByAddingUnit:NSCalendarUnitWeekday value:-7 toDate:endDate options:0];
+            
+            [results enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics * _Nonnull result, BOOL * _Nonnull stop) {
+                HKQuantity *quantity = result.sumQuantity;
+                
+                if (quantity) {
+                    NSDate *date1 = result.startDate;
+                    
+                    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
+                    //设置时区
+                    [outputFormatter setLocale:[NSLocale currentLocale]];
+                    [outputFormatter setDateFormat:@"MM月dd日"];
+                    NSString *str = [outputFormatter stringFromDate:date1];
+                    
+                    double value = [quantity doubleValueForUnit:[HKUnit countUnit]];
+                    NSLog(@"____________>>>>时间：= %@, 步行： = %f\n",str,value);
+                    
+                    NSString *string  = [NSString stringWithFormat:@" 时间：%@               步行：%d",str,(int)value];
+                    NSLog(@"------+++----->>>>%@",string);
+                    [_objectForShow addObject:string];
+                    NSLog(@"------------>>>>%@",_objectForShow);
+                    [_tableView reloadData];
+                    //            dispatch_async(dispatch_get_main_queue(), ^{
+                    //
+                    //                NSLog(@"------------>>>>%@",arr);
+                    //            });
+                }
+            }];
+        }
+    };
+    
+    [_healthStore executeQuery:query];
+    
+}
 // 设置本地通知
 - (void)registerLocalNotification:(NSInteger)alertTime {
     UILocalNotification *notification = [[UILocalNotification alloc] init];
     // 设置触发通知的时间
-    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:23];
+    NSDate *fireDate = [NSDate dateWithTimeIntervalSinceNow:3];
     NSLog(@"fireDate=%@",fireDate);
     
     notification.fireDate = fireDate;
@@ -227,7 +311,11 @@
     // 这里真实需要处理交互的地方
     // 获取通知所带的数据
     NSString *notMess = [notification.userInfo objectForKey:@"key"];
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"本地通知"message:notMess delegate:nil cancelButtonTitle:@"OK"otherButtonTitles:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"本地通知(前台)"
+                                                    message:notMess
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
     [alert show];
     
     // 更新显示的徽章个数
@@ -257,80 +345,11 @@
             }
         }
     }
-}
--(void)saveStepCount{
-    //
-    //     HKHealthStore *healthStore = [[HKHealthStore alloc]init];
-    [_objectForShow removeAllObjects];
-    
-    NSCalendar *calendar = [NSCalendar currentCalendar];
-    NSDateComponents *interval = [[NSDateComponents alloc]init];
-    interval.day = 7;
-    //设置一个计算的时间点
-    NSDateComponents *anchorComponents = [calendar components:NSCalendarUnitDay | NSCalendarUnitMonth |NSCalendarUnitYear | NSCalendarUnitWeekday  fromDate:[NSDate date]];
-    NSInteger offset = (7 + anchorComponents.weekday )%7;
-    anchorComponents.day -= offset;
-    //设置从几点开始计时
-    anchorComponents.hour = 23;
-    [self registerLocalNotification:4];
-    interval.day = 1;
-    NSDate *anchorDate = [calendar dateFromComponents:anchorComponents];
-    
-    HKQuantityType *qiantityType = [HKObjectType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
-    
-    //创建查询   intervalcomponents:按照多少时间间隔查询
-    HKStatisticsCollectionQuery *query = [[HKStatisticsCollectionQuery alloc]initWithQuantityType:qiantityType quantitySamplePredicate:nil options:HKStatisticsOptionCumulativeSum anchorDate:anchorDate intervalComponents:interval];
-    
-    
-    //查询结果
-    query.initialResultsHandler = ^(HKStatisticsCollectionQuery *query,HKStatisticsCollection *results,NSError *error){
-        if (error) {
-            NSLog(@"error = %@",error.description);
-        }else{
-            
-            NSDate *endDate = [NSDate date];
-            
-            /*value 这个参数很重要  －7：表示从今天开始逐步查询后面7天的步数
-             NSCalendarUnitDay  表示按照什么类型输出
-             */
-            NSDate *startDate = [calendar dateByAddingUnit:NSCalendarUnitWeekday value:-7 toDate:endDate options:0];
-            
-            [results enumerateStatisticsFromDate:startDate toDate:endDate withBlock:^(HKStatistics * _Nonnull result, BOOL * _Nonnull stop) {
-                HKQuantity *quantity = result.sumQuantity;
-                UIRefreshControl *rc = (UIRefreshControl *)[_tableView viewWithTag:1001];
-                [rc endRefreshing];
-                if (quantity) {
-                    NSDate *date = result.startDate;
-                    
-                    NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
-                    //设置时区
-                    [outputFormatter setLocale:[NSLocale currentLocale]];
-                    [outputFormatter setDateFormat:@"MM月dd日"];
-                    NSString *str = [outputFormatter stringFromDate:date];
-                    
-                    double value = [quantity doubleValueForUnit:[HKUnit countUnit]];
-                    NSLog(@"____________>>>>时间：= %@, 步行： = %f\n",str,value);
-                    NSString *string  = [NSString stringWithFormat:@" 时间：%@               ",str];
-                    NSString *string2 = [NSString stringWithFormat:@"步行：%d",(int)value];
-                    NSArray *arr = [NSArray arrayWithObjects:string,string2, nil];
-                    NSLog(@"------+++----->>>>%@",string);
-                    [_objectForShow addObjectsFromArray:arr];
-                    NSLog(@"------------>>>>%@",_objectForShow);
-                    [_tableView reloadData];
-                    //            dispatch_async(dispatch_get_main_queue(), ^{
-                    //
-                    //                NSLog(@"------------>>>>%@",arr);
-                    //            });
-                }
-            }];
-        }
-    };
-    
-    [_healthStore executeQuery:query];
     
 }
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section  {
-    return _objectForShow.count;
+    return _objectForShow.count -1;
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath  {
     
@@ -351,8 +370,11 @@
             [(UIView*)[cell.contentView.subviews lastObject]removeFromSuperview];
         }
     }
-    cell.textLabel.text = _objectForShow[indexPath.row];
-    NSLog(@"************>>>>>%@",_objectForShow);
+    if (indexPath.row != _objectForShow.count - 1) {
+        cell.textLabel.text = _objectForShow[indexPath.row];
+        NSLog(@"************>>>>>%@",_objectForShow);
+    }
+    
     //取消选中颜色
     UIView *cellClickVc = [[UIView alloc]initWithFrame:cell.frame];
     cell.selectedBackgroundView = cellClickVc;
@@ -375,9 +397,10 @@
         //取消选中项
         [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
         
+        
     }
+    
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

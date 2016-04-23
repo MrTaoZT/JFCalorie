@@ -153,7 +153,7 @@
         }else{
             [aiv stopAnimating];
             //这还要修改
-            [Utilities popUpAlertViewWithMsg:@"用户名或密码错误" andTitle:nil onView:self];
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
             _passwordTF.text = @"";
             [self setMD5RSA];
         }
@@ -215,6 +215,7 @@
             [[StorageMgr singletonStorageMgr] addKey:@"modulus" andValue:modulus];
         }else{
             NSLog(@"resultFailed");
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
         }
         
     } failure:^(NSError *error) {
