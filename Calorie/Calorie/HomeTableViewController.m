@@ -282,6 +282,22 @@
     
 }
 
+- (void)getCityName{
+    CLGeocoder *geocoder = [CLGeocoder new];
+    CLLocation *annotationLocation = [[CLLocation alloc]initWithLatitude:_wei longitude:_jing];
+    [geocoder reverseGeocodeLocation:annotationLocation completionHandler:^(NSArray<CLPlacemark *> * _Nullable placemarks, NSError * _Nullable error) {
+        if (!error) {
+            NSDictionary *info = [placemarks[0] addressDictionary];
+            NSString *name = info[@"City"];
+            _city = [name substringToIndex:name.length - 1];
+            
+            NSLog(@"%@",_city);
+        }else{
+            NSLog(@"城市获取失败");
+        }
+    }];
+}
+
 - (void)btnAction{
     for (int i = 1001; i <= 1008 ; i++) {
         UIButton *button = [self.tableView viewWithTag:i];
