@@ -290,6 +290,9 @@
             NSDictionary *info = [placemarks[0] addressDictionary];
             NSString *name = info[@"City"];
             _city = [name substringToIndex:name.length - 1];
+            [[StorageMgr singletonStorageMgr] addKey:@"jing" andValue:@(_jing)];
+            [[StorageMgr singletonStorageMgr]addKey:@"wei" andValue:@(_wei)];
+            [[StorageMgr singletonStorageMgr] addKey:@"cityName" andValue:_city];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"setCity" object:nil userInfo:@{@"city":_city}];
             [self getHotClub];
             NSLog(@"%@",_city);
