@@ -9,6 +9,7 @@
 #import "SearchViewController.h"
 #import "SearchTableViewCell.h"
 #import "CityTableViewController.h"
+#import "ClubDetailViewController.h"
 
 #import <UIImageView+WebCache.h>
 
@@ -99,11 +100,15 @@
         }else{
             if ([responseObject[@"resultFlag"] integerValue] == 8020) {
                 [Utilities popUpAlertViewWithMsg:@"暂无数据" andTitle:@"" onView:self];
+                _postalCode = @"0510";
+                [weakSelf requestData];
+                [_cityBtn setTitle:@"无锡" forState:UIControlStateNormal];
             }else{
                 [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
             }
         }
     } failure:^(NSError *error) {
+        isLoading = NO;
         [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
     }];
 }
@@ -135,7 +140,10 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    ClubDetailViewController *clubDetail = [Utilities getStoryboard:@"Home" instanceByIdentity:@"ClubDetailView"];
+    //
+    clubDetail.clubKeyId = _dataArray[indexPath.row][@"clubId"];
+    [self.navigationController pushViewController:clubDetail animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{

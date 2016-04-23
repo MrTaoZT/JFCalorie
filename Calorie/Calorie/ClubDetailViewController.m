@@ -284,11 +284,10 @@
 }
 
 - (void)jumpExperience{
-    NSLog(@"1");
     ExperienceViewController *experienceVc = [Utilities getStoryboard:@"Home" instanceByIdentity:@"experienceVc"];
-    NSArray *arr = _clubDict[@"experienceInfos"];
-    NSDictionary *dic = arr[0];
-    NSString *eId = dic[@"eId"];
+    NSArray *experienceInfo = _clubDict[@"experienceInfos"];
+    NSDictionary *experienceInfoDict = experienceInfo.firstObject;
+    NSString *eId = experienceInfoDict[@"eId"];
     experienceVc.experienceInfos = eId;
     [self.navigationController pushViewController:experienceVc animated:YES];
 }
