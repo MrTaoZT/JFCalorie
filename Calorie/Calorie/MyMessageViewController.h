@@ -19,7 +19,9 @@
 
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *rightButton;//编辑
+
 - (IBAction)rightAction:(UIBarButtonItem *)sender;
+
 - (IBAction)returnAction:(UIBarButtonItem *)sender;//返回
 
 - (IBAction)birthdayAction:(UITextField *)sender forEvent:(UIEvent *)event;//生日事件
