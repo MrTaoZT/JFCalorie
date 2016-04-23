@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		181D75321CCB51CD0057D314 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D75301CCB51CD0057D314 /* Bolts.framework */; };
+		181D75331CCB51CD0057D314 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D75311CCB51CD0057D314 /* Parse.framework */; };
+		181D75351CCB51D70057D314 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D75341CCB51D70057D314 /* SystemConfiguration.framework */; };
+		181D75371CCB51DF0057D314 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D75361CCB51DF0057D314 /* AudioToolbox.framework */; };
+		181D75391CCB51EB0057D314 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D75381CCB51EB0057D314 /* Social.framework */; };
+		181D753B1CCB51F30057D314 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D753A1CCB51F30057D314 /* Accounts.framework */; };
+		181D753D1CCB51FD0057D314 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D753C1CCB51FD0057D314 /* CoreLocation.framework */; };
+		181D753F1CCB52050057D314 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D753E1CCB52050057D314 /* StoreKit.framework */; };
+		181D75411CCB52260057D314 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 181D75401CCB52260057D314 /* libsqlite3.tbd */; };
 		1820D3261CC3231F0010A405 /* SportTypeTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1820D3251CC3231F0010A405 /* SportTypeTableViewController.m */; };
 		1820D3291CC3233D0010A405 /* ClubDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1820D3281CC3233D0010A405 /* ClubDetailViewController.m */; };
 		1844777A1CC21A47003B2354 /* StorageMgr.m in Sources */ = {isa = PBXBuildFile; fileRef = 184477771CC21A47003B2354 /* StorageMgr.m */; };
@@ -88,6 +97,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		181D75301CCB51CD0057D314 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		181D75311CCB51CD0057D314 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		181D75341CCB51D70057D314 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		181D75361CCB51DF0057D314 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		181D75381CCB51EB0057D314 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		181D753A1CCB51F30057D314 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		181D753C1CCB51FD0057D314 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		181D753E1CCB52050057D314 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		181D75401CCB52260057D314 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		1820D3241CC3231F0010A405 /* SportTypeTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SportTypeTableViewController.h; sourceTree = "<group>"; };
 		1820D3251CC3231F0010A405 /* SportTypeTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SportTypeTableViewController.m; sourceTree = "<group>"; };
 		1820D3271CC3233D0010A405 /* ClubDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClubDetailViewController.h; sourceTree = "<group>"; };
@@ -213,6 +231,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				181D75411CCB52260057D314 /* libsqlite3.tbd in Frameworks */,
+				181D753F1CCB52050057D314 /* StoreKit.framework in Frameworks */,
+				181D753D1CCB51FD0057D314 /* CoreLocation.framework in Frameworks */,
+				181D753B1CCB51F30057D314 /* Accounts.framework in Frameworks */,
+				181D75391CCB51EB0057D314 /* Social.framework in Frameworks */,
+				181D75371CCB51DF0057D314 /* AudioToolbox.framework in Frameworks */,
+				181D75351CCB51D70057D314 /* SystemConfiguration.framework in Frameworks */,
+				181D75321CCB51CD0057D314 /* Bolts.framework in Frameworks */,
+				181D75331CCB51CD0057D314 /* Parse.framework in Frameworks */,
 				7B3A91711CC952130061ECC1 /* CoreGraphics.framework in Frameworks */,
 				7B3A916F1CC951B60061ECC1 /* QuartzCore.framework in Frameworks */,
 				7B3A91651CC950050061ECC1 /* HealthKit.framework in Frameworks */,
@@ -445,6 +472,15 @@
 		72A11EC5860291EC437DB3E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				181D75401CCB52260057D314 /* libsqlite3.tbd */,
+				181D753E1CCB52050057D314 /* StoreKit.framework */,
+				181D753C1CCB51FD0057D314 /* CoreLocation.framework */,
+				181D753A1CCB51F30057D314 /* Accounts.framework */,
+				181D75381CCB51EB0057D314 /* Social.framework */,
+				181D75361CCB51DF0057D314 /* AudioToolbox.framework */,
+				181D75341CCB51D70057D314 /* SystemConfiguration.framework */,
+				181D75301CCB51CD0057D314 /* Bolts.framework */,
+				181D75311CCB51CD0057D314 /* Parse.framework */,
 				7B3A91701CC952130061ECC1 /* CoreGraphics.framework */,
 				7B3A916E1CC951B60061ECC1 /* QuartzCore.framework */,
 				7B3A91641CC950050061ECC1 /* HealthKit.framework */,
@@ -947,7 +983,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Calorie/PrefixHeader.pch;
 				INFOPLIST_FILE = Calorie/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JF.Calorie;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -967,7 +1003,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Calorie/PrefixHeader.pch;
 				INFOPLIST_FILE = Calorie/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JF.Calorie;
 				PRODUCT_NAME = "$(TARGET_NAME)";

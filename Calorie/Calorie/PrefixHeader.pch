@@ -22,4 +22,6 @@
 #import <ECSlidingViewController/ECSlidingViewController.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import "Constants.h"
+#import <Parse/Parse.h>
+
 #endif /* PrefixHeader_pch */
