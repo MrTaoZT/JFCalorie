@@ -275,7 +275,7 @@
     //初始化经纬度
     _jing = 0;
     _wei = 0;
-    _city = @"0510";
+    _city = @"无锡";
     [_chooseLocationButton setTitle:@"无锡" forState:UIControlStateNormal];
     
     //初始化开始页面
@@ -296,13 +296,17 @@
         if (!error) {
             NSDictionary *info = [placemarks[0] addressDictionary];
             NSString *name = info[@"City"];
-            _city = [name substringToIndex:name.length - 1];
-            [[StorageMgr singletonStorageMgr] addKey:@"jing" andValue:@(_jing)];
-            [[StorageMgr singletonStorageMgr]addKey:@"wei" andValue:@(_wei)];
-            [[StorageMgr singletonStorageMgr] addKey:@"cityName" andValue:_city];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"setCity" object:nil userInfo:@{@"city":_city}];
-            [self getHotClub];
-            NSLog(@"%@",_city);
+            if (name != nil) {
+                _city = [name substringToIndex:name.length - 1];
+                [[StorageMgr singletonStorageMgr] addKey:@"jing" andValue:@(_jing)];
+                [[StorageMgr singletonStorageMgr]addKey:@"wei" andValue:@(_wei)];
+                [[StorageMgr singletonStorageMgr] addKey:@"cityName" andValue:_city];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"setCity" object:nil userInfo:@{@"city":_city}];
+                [self getHotClub];
+                NSLog(@"%@",_city);
+            }else{
+                [Utilities popUpAlertViewWithMsg:@"位置异常,默认无锡" andTitle:@"" onView:self];
+            }
         }else{
             NSLog(@"城市获取失败");
         }
