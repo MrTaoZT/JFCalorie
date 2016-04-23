@@ -134,7 +134,7 @@
 }
 //返回每个cell  高度
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 300;
+    return 200;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -171,10 +171,11 @@
             done = YES;
         }else {
             if ([responseObject[@"resultFlag"] integerValue] == 8024) {
-                NSDictionary *result = responseObject[@"result"];
-                _favorites = result[@"favorites"];
+                _favorites = nil;
+                _favorites = [NSMutableArray new];
                 done = YES;
                 flag = YES;
+                [_tableView reloadData];
                 return ;
             }
             [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
