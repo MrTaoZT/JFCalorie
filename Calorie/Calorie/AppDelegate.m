@@ -11,6 +11,7 @@
 #import "LeftViewController.h"
 #import "TabBarViewController.h"
 #import "NavigationViewController.h"
+//#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
@@ -20,6 +21,12 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+//    //链接Parse数据库 （根据Parse数据库中的Client和Application对接）
+//    [Parse setApplicationId:@"arNW5QTzZRqQJXApszOMTryoBFFZ2kYhcOBGgBpO" clientKey:@"lhC7UnGNMm4C8txZXFGazlJqyH2tdhXDZlkHAlMY"];
+//    //激活parse数据库的大数据分析整合功能
+//    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
     //初始化app窗口,将窗口设置为全屏
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     //将上述窗口设置为该app唯一的主窗口，并且直接显示出来
