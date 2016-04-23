@@ -19,10 +19,7 @@
 #import "WorkTableViewCell.h"
 #import "CollectTableViewCell.h"
 
-@interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>{
-    NSString *setCity;
-}
-
+@interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
 @end
 
 @implementation LeftViewController
@@ -50,8 +47,8 @@
    
     _tableView.delegate = self;
     _tableView.dataSource = self;
-//
-    [self weatherShow];
+
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(weatherShow:) name:@"setCity" object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -170,17 +167,19 @@
         [Utilities setUserDefaults:@"Username" content:_nickName.text];
         [self presentViewController:navView animated:YES completion:nil];
     }else{
-        
         [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
     }
 }
 
-- (void)weatherShow{
-    
+- (void)weatherShow:(NSNotification *)city{
+    NSString *cityName = city.userInfo[@"city"];
     NSString *appID = @"529615526ff3a9a5dca577698b0be231";
     NSString *urlStr = @"http://api.openweathermap.org/data/2.5/weather";
-
-    NSDictionary *dic = @{@"q":setCity, @"appid":appID};
+    if (cityName.length == 0) {
+        _weather.text = @"";
+        _city.text = @"";
+    }
+    NSDictionary *dic = @{@"q":cityName, @"appid":appID};
     
     [[AppAPIClient sharedClient] GET:urlStr parameters:dic progress:^(NSProgress * _Nonnull downloadProgress) {
         
@@ -190,7 +189,7 @@
         NSInteger num = [weatherStr integerValue];
         NSString *weatherStrLast = [NSString stringWithFormat:@"%ld°C",(num - 273)];
         _weather.text = weatherStrLast;
-        _city.text = setCity;
+        _city.text = cityName;
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"error = %@",[error userInfo]);
     }];
