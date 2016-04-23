@@ -177,9 +177,9 @@
 //行数
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (hotClubOver) {
-        return _hotClubInfoArray.count + 1;
+        return _hotClubInfoArray.count + 2;
     }else{
-        return 1;
+        return 2;
     }
 }
 
@@ -208,14 +208,18 @@
             cell.sportTypeBtn8.tag = 1008;
         }
         return cell;
+    }if (indexPath.row == 1) {
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cellLabel" forIndexPath:indexPath];
+        return cell;
     }else{
         HotClubTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"clubCell" forIndexPath:indexPath];
+        
         //设置cell按下无效果
         //cell.clubImageView.contentMode = UIViewContentModeScaleAspectFill;
         //cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (hotClubOver) {
             //接下当前行对应的字典
-            NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 1];
+            NSDictionary *tempDict = _hotClubInfoArray[indexPath.row - 2];
             //接受字典中的数组
             //NSArray *experienceArray = tempDict[@"experience"];
             //NSLog(@"cellShow");
@@ -234,6 +238,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     if (indexPath.row == 0) {
         return 190;
+    }else if(indexPath.row == 1){
+        return 30;
     }
     return 220;
 }
