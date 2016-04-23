@@ -148,6 +148,23 @@
             [[StorageMgr singletonStorageMgr]removeObjectForKey:@"memberId"];
             [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
             
+            int value = (arc4random() % 999999999) + 1;
+            NSString *email = [NSString stringWithFormat:@"%d@qq.com",value];
+            NSString *username = [NSString stringWithFormat:@"x%@",memberId];
+            
+            PFUser *user = [PFUser user];
+            user.username = username;
+            user.email = email;
+            user.password = @"123456";
+            
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"username"];
+            [[StorageMgr singletonStorageMgr]addKey:@"username" andValue:username];
+            [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError * _Nullable error) {
+                if (!error) {
+                    NSLog(@"parse注册成功");
+                }
+            }];
+            
             [self presentViewController:homeNav animated:YES completion:nil];
             
         }else{

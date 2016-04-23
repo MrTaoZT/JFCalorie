@@ -18,8 +18,13 @@
 #import "MessageTableViewCell.h"
 #import "WorkTableViewCell.h"
 #import "CollectTableViewCell.h"
+#import <UIImageView+WebCache.h>
 
 @interface LeftViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property (strong,nonatomic)NSMutableArray *objectForShow;
+@property (strong, nonatomic)NSURL *url;
+
 @end
 
 @implementation LeftViewController
@@ -38,7 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    _objectForShow = [NSMutableArray new];
     //取消tableview下划线
     //    self.tableView.tableFooterView = [[UIView alloc]init];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -56,9 +61,31 @@
 }
 
 - (void)signInOrSignUp{
+    [_objectForShow removeAllObjects];
     //值如果是YES  则是登录了  else  NO则是未登录
     if([[[StorageMgr singletonStorageMgr]objectForKey:@"inOrUp"] boolValue]){
-        _headImg.image = [UIImage imageNamed:@"headImgBG"];
+        
+        PFQuery *query = [PFUser query];
+        NSString *str = [Utilities getUserDefaults:@"imgURL"];
+        if (str.length != 0) {
+            NSLog(@"1");
+            NSURL *url = [NSURL URLWithString:str];
+            _url = url;
+            [_headImg sd_setImageWithURL:_url];
+        }else{
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            if (!error) {
+                NSLog(@"2");
+                _objectForShow = [NSMutableArray arrayWithArray:objects];
+               PFFile *file = _objectForShow.firstObject[@"userImage"];
+                NSLog(@"____________查询成功objectForShow = %@",file.url);
+                _url = [NSURL URLWithString:file.url];
+                [_headImg sd_setImageWithURL:_url];
+                [Utilities removeUserDefaults:@"imgURL"];
+                [Utilities setUserDefaults:@"imgURL" content:file.url];
+            }
+        }];
+        }
         _nickName.text = [Utilities getUserDefaults:@"Username"];
     }else{
         _headImg.image = [UIImage imageNamed:@"headImgBG"];
