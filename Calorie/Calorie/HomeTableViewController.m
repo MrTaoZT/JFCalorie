@@ -290,7 +290,8 @@
             NSDictionary *info = [placemarks[0] addressDictionary];
             NSString *name = info[@"City"];
             _city = [name substringToIndex:name.length - 1];
-            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"setCity" object:nil userInfo:@{@"city":_city}];
+            [self getHotClub];
             NSLog(@"%@",_city);
         }else{
             NSLog(@"城市获取失败");
@@ -527,7 +528,7 @@
     
     //没有位置不能获得经纬度
     if (locationError) {
-        [_refresh endRefreshing];
+        [self.tableView stopLoading];
         return;
     }
     
@@ -615,8 +616,7 @@
         locationError = NO;
         _jing = newLocation.coordinate.longitude;
         _wei = newLocation.coordinate.latitude;
-        //没有网络加载报错
-        [self getHotClub];
+        [self getCityName];
         [manager stopUpdatingLocation];
     }
 }
