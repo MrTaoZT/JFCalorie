@@ -79,9 +79,10 @@
             cell.currentPrice.text =[NSString stringWithFormat:@"现价:%@",_objectForShow[@"currentPrice"]];
             cell.saleCount.text = [NSString stringWithFormat:@"销售数量:%@",_objectForShow[@"saleCount"]];
             cell.endDate.text = [NSString stringWithFormat:@"有效期结束时间:%@",_objectForShow[@"endDate"]];
-            
+            cell.endDate.adjustsFontSizeToFitWidth = YES;
             cell.useDate.text = [NSString stringWithFormat:@"可用时间段:%@",_objectForShow[@"useDate"]];
             cell.beginDate.text = [NSString stringWithFormat:@"有效期开始时间:%@",_objectForShow[@"beginDate"]];
+            cell.beginDate.adjustsFontSizeToFitWidth = YES;
             cell.relus.text = [NSString stringWithFormat:@"使用规则:%@",_objectForShow[@"rules"]];
             //取消选中颜色
             UIView *cellClickVc = [[UIView alloc]initWithFrame:cell.frame];
