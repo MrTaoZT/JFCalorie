@@ -341,7 +341,11 @@
     NSArray *experienceInfo = _clubDict[@"experienceInfos"];
     NSDictionary *experienceInfoDict = experienceInfo.firstObject;
     NSString *eId = experienceInfoDict[@"eId"];
-    experienceVc.experienceInfos = eId;
-    [self.navigationController pushViewController:experienceVc animated:YES];
+    if (eId) {
+        experienceVc.experienceInfos = eId;
+        [self.navigationController pushViewController:experienceVc animated:YES];
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"体验券已被抢完哦，下次乘早吧亲!" andTitle:@"" onView:self];
+    }
 }
 @end

@@ -16,6 +16,7 @@
 }
 
 @property(nonatomic, strong)NSMutableArray *goodsArray;
+@property(nonatomic)NSInteger coin;
 
 @end
 
@@ -27,11 +28,13 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     loadingOver = NO;
+    self.tableView.userInteractionEnabled = NO;
     
     [self getCoin];
     [self requestData];
 }
 
+//获得积分
 - (void)getCoin{
     NSString *netUrl = @"/score/memberScore";
     NSString *userId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
@@ -39,6 +42,8 @@
         [RequestAPI getURL:netUrl withParameters:@{@"memberId":userId} success:^(id responseObject) {
             NSLog(@"%@",responseObject);
             if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                _coin = [responseObject[@"result"] integerValue];
+                self.tableView.userInteractionEnabled = YES;
                 self.navigationItem.title = [NSString stringWithFormat:@"当前积分为:%@",responseObject[@"result"]];
             }else{
                 self.navigationItem.title = @"未登录";
@@ -52,6 +57,7 @@
     
 }
 
+//获得商品列表
 - (void)requestData{
     NSString *netUrl = @"/goods/list";
     NSDictionary *parameters = @{
@@ -64,6 +70,7 @@
             NSDictionary *result = responseObject[@"result"];
             _goodsArray = result[@"models"];
             loadingOver = YES;
+            self.tableView.userInteractionEnabled = YES;
             [self.tableView reloadData];
         }else{
             [Utilities popUpAlertViewWithMsg:@"请保持网络畅通,稍后试试" andTitle:@"" onView:self];
@@ -101,24 +108,50 @@
     return cell;
 }
 
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if ([[StorageMgr singletonStorageMgr] objectForKey:@"memberId"]) {
+        NSDictionary *dict = _goodsArray[indexPath.row];
+        NSString *name = dict[@"goodsName"];
+        NSString *score = dict[@"goodsScore"];
+        if (_coin > [score integerValue]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"兑换提示" message:[NSString stringWithFormat:@"您当前正在兑换%@\n+将消耗您%@积分+\n确定兑换吗?",name,score] preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //确认兑换
+                [self confirmShop:dict];
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            [alert addAction:action];
+            [alert addAction:cancel];
+            [self presentViewController:alert animated:YES completion:nil];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"您的积分不够哦" andTitle:@"" onView:self];
+        }
+    }else{
+        [Utilities popUpAlertViewWithMsg:@"您没有登录,先去登录吧" andTitle:@"" onView:self];
+    }
+}
 
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- } else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
+//购买的网络请求
+- (void)confirmShop:(NSDictionary *)dict{
+    NSString *netUrl = @"/goods/exchangeGoods";
+    NSString *userId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
+    NSString *goodsId = dict[@"goodsId"];
+    
+    NSDictionary *parameters = @{
+                                 @"memberId":userId,
+                                 @"goodsId":goodsId
+                                 };
+    [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSLog(@"%@",responseObject);
+        }else{
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
+        }
+    } failure:^(NSError *error) {
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+        NSLog(@"Error%@",error.userInfo);
+    }];
+}
 
 @end
