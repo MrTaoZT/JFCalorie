@@ -15,5 +15,6 @@
 - (IBAction)signInAction:(UIButton *)sender forEvent:(UIEvent *)event;
 - (IBAction)forgetPwAction:(UIButton *)sender forEvent:(UIEvent *)event;
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event;
+- (IBAction)touristsLogin:(UIButton *)sender forEvent:(UIEvent *)event;
 
 @end

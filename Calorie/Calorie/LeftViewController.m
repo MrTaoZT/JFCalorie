@@ -71,6 +71,7 @@
             NSLog(@"1");
             NSURL *url = [NSURL URLWithString:str];
             _url = url;
+            NSLog(@"imgURL = %@",_url);
             [_headImg sd_setImageWithURL:_url];
         }else{
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
