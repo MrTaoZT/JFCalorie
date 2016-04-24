@@ -12,7 +12,7 @@
 #import "ThiredTableViewCell.h"
 
 #import <UIImageView+WebCache.h>
-#import <SDWebImageDownloader.h>
+#import <UIButton+WebCache.h>
 
 #import "ExperienceViewController.h"
 @interface ClubDetailViewController (){
@@ -112,12 +112,56 @@
     
     for (NSDictionary *dict in clubPic) {
         //NSLog(@"%@",dict);
-        UIImageView *view = [[UIImageView alloc] initWithFrame:CGRectMake(widthGap * orginVariable, 0, widthGap, scrollView.frame.size.height)];
-        view.contentMode = UIViewContentModeScaleAspectFill;
+        UIButton *view;
+        view = [[UIButton alloc] initWithFrame:CGRectMake(widthGap * orginVariable + 2 * orginVariable, 0, widthGap, scrollView.frame.size.height)];
+        view.tag = orginVariable;
+        [view addTarget:self action:@selector(imageViewAction:) forControlEvents:UIControlEventTouchUpInside];
+        view.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        //取消按钮高亮
+        view.adjustsImageWhenHighlighted = NO;
         orginVariable ++;
-        [view sd_setImageWithURL:dict[@"imgUrl"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
+        [view sd_setImageWithURL:dict[@"imgUrl"] forState:UIControlStateNormal];
         [scrollView addSubview:view];
     }
+}
+
+- (void)imageViewAction:(UIButton *)sender{
+    if (loadOver) {
+        //设置初始位置
+        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(0, -self.tabBarController.tabBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
+        image.tag = 100;
+        image.backgroundColor = [UIColor blackColor];
+        image.contentMode = UIViewContentModeScaleAspectFit;
+        image.image = sender.imageView.image;
+        image.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(closePic:)];
+        [image addGestureRecognizer:tap];
+        [self.view addSubview:image];
+        
+        //一个animation
+        POPBasicAnimation *zommDowmAnimation = [POPBasicAnimation animation];
+        zommDowmAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+        zommDowmAnimation.duration = 0.25f;
+        zommDowmAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.2, 1.2)];
+        [image pop_addAnimation:zommDowmAnimation forKey:@"zommDowmAnimation"];
+        
+        zommDowmAnimation.completionBlock = ^(POPAnimation *animation, BOOL finshed){
+            POPBasicAnimation *basicAnimation = [POPBasicAnimation animation];
+            basicAnimation.property = [POPAnimatableProperty propertyWithName:kPOPViewScaleXY];
+            basicAnimation.duration = 0.25f;
+            basicAnimation.toValue = [NSValue valueWithCGSize:CGSizeMake(1.0f, 1.0f)];
+            [image pop_addAnimation:basicAnimation forKey:@"basicAnimation"];
+        };
+        
+        //当图片出现让tableView不能滚
+        self.tableView.scrollEnabled = NO;
+    }
+}
+
+- (void)closePic:(UITapGestureRecognizer *)gesture{
+    UIImageView *image = [self.tableView viewWithTag:100];
+    self.tableView.scrollEnabled = YES;
+    [image removeFromSuperview];
 }
 
 - (void)collectionBtn{
@@ -214,10 +258,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    switch (indexPath.row) {
-        case 0:{
-            FirstTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1" forIndexPath:indexPath];
-            if (loadOver) {
+    if (loadOver) {
+        switch (indexPath.row) {
+            case 0:{
+                FirstTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1" forIndexPath:indexPath];
                 //俱乐部图片
                 [cell.clubImage sd_setImageWithURL:_clubDict[@"clubLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
                 //俱乐部名字
@@ -243,35 +287,39 @@
                 cell.call.tag = callTag;
                 [self callAction];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                
+                return cell;
+                break;
             }
-            return cell;
-            break;
+            case 1:{
+                SecontTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2" forIndexPath:indexPath];
+                
+                //滚动视图
+                cell.scrollView.tag = scrollViewTag;
+                [self addPic];
+                //营业时间（UI搞反了）
+                cell.openTime.text = _clubDict[@"clubTime"];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+                break;
+            }
+            default:{
+                ThiredTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell3" forIndexPath:indexPath];
+                
+                cell.clubTime.text = [NSString stringWithFormat:@"开业时间：%@",_clubDict[@"openTime"]];
+                cell.storeNums.text = [NSString stringWithFormat:@"拥有分店数量：%@",_clubDict[@"storeNums"]] ;
+                cell.clubPerson.text = [NSString stringWithFormat:@"教练数量：%@",_clubDict[@"clubPerson"]];
+                cell.clubIntroduce.text = _clubDict[@"clubIntroduce"];
+                
+                cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                return cell;
+                break;
+            }
         }
-        case 1:{
-            SecontTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell2" forIndexPath:indexPath];
-            
-            //滚动视图
-            cell.scrollView.tag = scrollViewTag;
-            [self addPic];
-            //营业时间（UI搞反了）
-            cell.openTime.text = _clubDict[@"clubTime"];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
-            break;
-        }
-        default:{
-            ThiredTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell3" forIndexPath:indexPath];
-            
-            cell.clubTime.text = [NSString stringWithFormat:@"开业时间：%@",_clubDict[@"openTime"]];
-            cell.storeNums.text = [NSString stringWithFormat:@"拥有分店数量：%@",_clubDict[@"storeNums"]] ;
-            cell.clubPerson.text = [NSString stringWithFormat:@"教练数量：%@",_clubDict[@"clubPerson"]];
-            cell.clubIntroduce.text = _clubDict[@"clubIntroduce"];
-            
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            return cell;
-            break;
-        }
+    }else{
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell1"];
+        return cell;
     }
 }
 

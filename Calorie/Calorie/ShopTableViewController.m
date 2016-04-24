@@ -28,6 +28,31 @@
     
     loadingOver = NO;
     
+    [self getCoin];
+    [self requestData];
+}
+
+- (void)getCoin{
+    NSString *netUrl = @"/score/memberScore";
+    NSString *userId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
+    if (userId) {
+        [RequestAPI getURL:netUrl withParameters:@{@"memberId":userId} success:^(id responseObject) {
+            NSLog(@"%@",responseObject);
+            if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+                self.navigationItem.title = [NSString stringWithFormat:@"当前积分为:%@",responseObject[@"result"]];
+            }else{
+                self.navigationItem.title = @"未登录";
+                [Utilities popUpAlertViewWithMsg:@"请保持网络畅通,稍后试试" andTitle:@"" onView:self];
+            }
+        } failure:^(NSError *error) {
+            self.navigationItem.title = @"未登录";
+            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
+        }];
+    }
+    
+}
+
+- (void)requestData{
     NSString *netUrl = @"/goods/list";
     NSDictionary *parameters = @{
                                  @"type":@(2),
@@ -35,24 +60,21 @@
                                  @"perPage":@(100)
                                  };
     [RequestAPI getURL:netUrl withParameters:parameters success:^(id responseObject) {
-        NSDictionary *result = responseObject[@"result"];
-        _goodsArray = result[@"models"];
-        loadingOver = YES;
-        [self.tableView reloadData];
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            NSDictionary *result = responseObject[@"result"];
+            _goodsArray = result[@"models"];
+            loadingOver = YES;
+            [self.tableView reloadData];
+        }else{
+            [Utilities popUpAlertViewWithMsg:@"请保持网络畅通,稍后试试" andTitle:@"" onView:self];
+        }
     } failure:^(NSError *error) {
-        
+        [Utilities popUpAlertViewWithMsg:@"请保持网络畅通" andTitle:@"" onView:self];
     }];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
@@ -96,30 +118,6 @@
  } else if (editingStyle == UITableViewCellEditingStyleInsert) {
  // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
  }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
  }
  */
 
