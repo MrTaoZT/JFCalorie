@@ -13,10 +13,12 @@
 #import <ECSlidingViewController/ECSlidingViewController.h>
 #import "LeftViewController.h"
 #import "HomeNavViewController.h"
+#import <UIImageView+WebCache.h>
 
 @interface SignInViewController ()<UITextFieldDelegate>
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
-
+@property (strong,nonatomic) NSMutableArray *objectForShow;
+@property (strong,nonatomic) NSURL *url;
 @end
 
 @implementation SignInViewController
@@ -50,8 +52,31 @@
     
     //默认获取 textfield 焦点
     [_usernameTF becomeFirstResponder];
-    
-    _headImg.image = [UIImage imageNamed:@"headImgBG"];
+  
+    PFQuery *query = [PFUser query];
+    NSString *str = [Utilities getUserDefaults:@"imgURL"];
+    if (str.length != 0) {
+        NSLog(@"1");
+        NSURL *url = [NSURL URLWithString:str];
+        _url = url;
+        NSLog(@"imgURL = %@",_url);
+        [_headImg sd_setImageWithURL:_url];
+    }else{
+        [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
+            if (!error) {
+                NSLog(@"2");
+                _objectForShow = [NSMutableArray arrayWithArray:objects];
+                PFFile *file = _objectForShow.firstObject[@"userImage"];
+                NSLog(@"____________查询成功objectForShow = %@",file.url);
+                _url = [NSURL URLWithString:file.url];
+                [_headImg sd_setImageWithURL:_url];
+                [Utilities removeUserDefaults:@"imgURL"];
+                [Utilities setUserDefaults:@"imgURL" content:file.url];
+                return ;
+            }
+        }];
+        _headImg.image = [UIImage imageNamed:@"headImgBG"];
+    }
     
     [self setMD5RSA];
 

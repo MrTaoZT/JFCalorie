@@ -7,31 +7,104 @@
 //
 
 #import "ExperienceViewController.h"
-
-@interface ExperienceViewController ()
-
+#import "FirstExperienceTableViewCell.h"
+#import "SecondExperienceTableViewCell.h"
+#import <UIImageView+WebCache.h>
+@interface ExperienceViewController ()<UITableViewDelegate,UITableViewDataSource>
+@property (strong,nonatomic)NSMutableDictionary *objectForShow;
 @end
 
 @implementation ExperienceViewController
 
+
+
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self showExperience];
+    _TableView.delegate = self;
+    _TableView.dataSource = self ;
+    
+    _objectForShow = [NSMutableDictionary new];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (void)showExperience{
+    [_objectForShow removeAllObjects];
     NSDictionary *dic = @{@"experienceId":_experienceInfos,};
     
     [RequestAPI getURL:@"/clubController/experienceDetail" withParameters:dic success:^(id responseObject) {
         NSLog(@"obj = %@",responseObject);
+        _objectForShow = [NSMutableDictionary dictionaryWithDictionary:responseObject[@"result"]];
+        [_TableView reloadData];
     } failure:^(NSError *error) {
         NSLog(@"error = %@", [error userInfo]);
     }];
     
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section  {
+    return 2;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    switch (indexPath.row) {
+        case 0:{
+            FirstExperienceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell1" forIndexPath:indexPath];
+            [ cell.eLogoImageView sd_setImageWithURL:_objectForShow[@"eLogo"] placeholderImage:[UIImage imageNamed:@"hotClubDefaultImage"]];
+            cell.eName.text = [NSString stringWithFormat:@"%@",_objectForShow[@"eName"]];
+            cell.eClubName.adjustsFontSizeToFitWidth = YES;
+            cell.eClubName.text = [NSString stringWithFormat:@"%@",_objectForShow[@"eClubName"]];
+            cell.eAddress.text = [NSString stringWithFormat:@"%@",_objectForShow[@"eAddress"]];
+            //取消边框线
+            //            [cell setBackgroundView:[[UIView alloc] init]];
+            //            cell.backgroundColor = [UIColor clearColor];
+            return cell;
+            break;
+        }
+            
+        default:{
+            SecondExperienceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell2" forIndexPath:indexPath];
+            
+            cell.orginPrice.text = [NSString stringWithFormat:@"原价:%@",_objectForShow[@"orginPrice"]];
+            cell.currentPrice.text =[NSString stringWithFormat:@"现价:%@",_objectForShow[@"currentPrice"]];
+            cell.saleCount.text = [NSString stringWithFormat:@"销售数量:%@",_objectForShow[@"saleCount"]];
+            cell.endDate.text = [NSString stringWithFormat:@"有效期结束时间:%@",_objectForShow[@"endDate"]];
+            
+            cell.useDate.text = [NSString stringWithFormat:@"可用时间段:%@",_objectForShow[@"useDate"]];
+            cell.beginDate.text = [NSString stringWithFormat:@"有效期开始时间:%@",_objectForShow[@"beginDate"]];
+            cell.rules.text = [NSString stringWithFormat:@"使用规则:%@",_objectForShow[@"rules"]];
+            //取消选中颜色
+            UIView *cellClickVc = [[UIView alloc]initWithFrame:cell.frame];
+            cell.selectedBackgroundView = cellClickVc;
+            cell.selectedBackgroundView.backgroundColor = [UIColor clearColor];
+            cell.userInteractionEnabled = NO;
+            //            //取消边框线
+            //            [cell setBackgroundView:[[UIView alloc] init]];
+            //            cell.backgroundColor = [UIColor clearColor];
+            return cell;
+            break;
+        }
+            
+            
+            
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.row) {
+        case 0:
+            return 256;
+            break;
+        default:
+            return 380;
+            break;
+    }
+}
+
 @end
