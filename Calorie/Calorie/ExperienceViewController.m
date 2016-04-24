@@ -18,7 +18,10 @@
 
 
 
-
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    self.tabBarController.tabBar.hidden = YES;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -107,6 +110,35 @@
     }
 }
 
-- (IBAction)clubTel:(UIButton *)sender forEvent:(UIEvent *)event {
-}
+//- (IBAction)clubTel:(UIButton *)sender forEvent:(UIEvent *)event {
+//    NSLog(@"zaicidianji");
+//    NSArray *phone  =[_objectForShow[@"clubTel"] componentsSeparatedByString:@","];
+//    if (phone.count == 0) {
+//        
+//    }
+//    if (phone.count > 1) {
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"选择您要拨打的会所电话" preferredStyle:UIAlertControllerStyleAlert];
+//        //有几个电话弹窗有几个选项
+//        for (int i = 0; i < phone.count; i++) {
+//            UIAlertAction *action = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",phone[i]] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phone[i]]];
+//                [[UIApplication sharedApplication] openURL:url];
+//                
+//            }];
+//            [alert addAction:action];
+//        }
+//        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+//            
+//        }];
+//        [alert addAction:cancel];
+//        [self presentViewController:alert animated:YES completion:nil];
+//        
+//    }else{
+//        NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phone]];
+//        [[UIApplication sharedApplication]openURL:url];
+//        
+//    }
+//    
+//    
+//}
 @end
