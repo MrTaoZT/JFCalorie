@@ -331,7 +331,7 @@
         case 1:
             return 165;
         default:
-            return 300;
+            return 210;
             break;
     }
 }

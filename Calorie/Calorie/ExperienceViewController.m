@@ -25,6 +25,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //取消tableview下划线
+    //    self.tableView.tableFooterView = [[UIView alloc]init];
+    self.TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    //去掉tableView的滚动条
+    self.TableView.showsVerticalScrollIndicator = NO;
+    
+    
     [self showExperience];
     _TableView.delegate = self;
     _TableView.dataSource = self ;
@@ -106,7 +114,7 @@
             return 256;
             break;
         default:
-            return 300;
+            return 330;
             break;
     }
 }
