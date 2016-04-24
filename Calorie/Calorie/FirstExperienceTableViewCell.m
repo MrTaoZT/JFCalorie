@@ -20,6 +20,5 @@
     // Configure the view for the selected state
 }
 
-- (IBAction)clubTel:(UIButton *)sender forEvent:(UIEvent *)event {
-}
+
 @end

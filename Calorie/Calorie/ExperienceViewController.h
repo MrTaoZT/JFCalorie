@@ -11,4 +11,5 @@
 @interface ExperienceViewController : UIViewController
 @property (strong,nonatomic)NSString *experienceInfos;
 @property (weak, nonatomic) IBOutlet UITableView *TableView;
+- (IBAction)clubTel:(UIButton *)sender forEvent:(UIEvent *)event;
 @end

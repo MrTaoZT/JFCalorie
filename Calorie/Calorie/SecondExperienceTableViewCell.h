@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *endDate;
 @property (weak, nonatomic) IBOutlet UILabel *useDate;
 @property (weak, nonatomic) IBOutlet UILabel *beginDate;
-@property (weak, nonatomic) IBOutlet UILabel *rules;
+@property (weak, nonatomic) IBOutlet UITextView *relus;
+
 
 @end
