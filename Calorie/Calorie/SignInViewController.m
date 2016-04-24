@@ -64,18 +64,22 @@
     }else{
         [query findObjectsInBackgroundWithBlock:^(NSArray * _Nullable objects, NSError * _Nullable error) {
             if (!error) {
-                NSLog(@"2");
+                
                 _objectForShow = [NSMutableArray arrayWithArray:objects];
                 PFFile *file = _objectForShow.firstObject[@"userImage"];
-                NSLog(@"____________查询成功objectForShow = %@",file.url);
-                _url = [NSURL URLWithString:file.url];
-                [_headImg sd_setImageWithURL:_url];
-                [Utilities removeUserDefaults:@"imgURL"];
-                [Utilities setUserDefaults:@"imgURL" content:file.url];
-                return ;
+                if (file) {
+                    NSLog(@"2");
+                     _url = [NSURL URLWithString:file.url];
+                    NSLog(@"____________查询成功objectForShow = %@",file.url);
+                    
+                    [_headImg sd_setImageWithURL:_url];
+                    [Utilities removeUserDefaults:@"imgURL"];
+                    [Utilities setUserDefaults:@"imgURL" content:file.url];
+                }else{
+                    _headImg.image = [UIImage imageNamed:@"headImgBG"];
+                }
             }
         }];
-        _headImg.image = [UIImage imageNamed:@"headImgBG"];
     }
     
     [self setMD5RSA];
@@ -194,7 +198,6 @@
             
         }else{
             [aiv stopAnimating];
-            //这还要修改
             [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
             _passwordTF.text = @"";
             [self setMD5RSA];
