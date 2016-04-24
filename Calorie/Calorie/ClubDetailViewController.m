@@ -105,7 +105,7 @@
     //位置变量
     int orginVariable = 0;
     UIScrollView *scrollView = (UIScrollView *)[self.tableView viewWithTag:scrollViewTag];
-    scrollView.contentSize = CGSizeMake(widthGap * clubPic.count, 90);
+    scrollView.contentSize = CGSizeMake(widthGap * clubPic.count + (clubPic.count - 1) * 2, 90);
     scrollView.alwaysBounceHorizontal = YES;
     scrollView.bounces = YES;
     scrollView.userInteractionEnabled = YES;
