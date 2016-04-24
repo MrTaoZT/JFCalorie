@@ -14,5 +14,4 @@
 @property (weak, nonatomic) IBOutlet UILabel *eClubName;
 @property (weak, nonatomic) IBOutlet UILabel *eAddress;
 
-- (IBAction)clubTel:(UIButton *)sender forEvent:(UIEvent *)event;
 @end

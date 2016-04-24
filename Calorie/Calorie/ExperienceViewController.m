@@ -79,7 +79,7 @@
             
             cell.useDate.text = [NSString stringWithFormat:@"可用时间段:%@",_objectForShow[@"useDate"]];
             cell.beginDate.text = [NSString stringWithFormat:@"有效期开始时间:%@",_objectForShow[@"beginDate"]];
-            cell.rules.text = [NSString stringWithFormat:@"使用规则:%@",_objectForShow[@"rules"]];
+            cell.relus.text = [NSString stringWithFormat:@"使用规则:%@",_objectForShow[@"rules"]];
             //取消选中颜色
             UIView *cellClickVc = [[UIView alloc]initWithFrame:cell.frame];
             cell.selectedBackgroundView = cellClickVc;
@@ -102,9 +102,11 @@
             return 256;
             break;
         default:
-            return 380;
+            return 300;
             break;
     }
 }
 
+- (IBAction)clubTel:(UIButton *)sender forEvent:(UIEvent *)event {
+}
 @end
