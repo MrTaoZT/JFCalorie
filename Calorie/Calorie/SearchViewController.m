@@ -58,6 +58,7 @@
     //协议
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    _searchTextField.delegate = self;
     
     //默认无锡
     _postalCode = @"0510";
@@ -224,6 +225,11 @@
     NSScanner* scan = [NSScanner scannerWithString:string];
     int val;
     return[scan scanInt:&val] && [scan isAtEnd];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
 }
 
 @end

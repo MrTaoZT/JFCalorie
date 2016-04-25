@@ -157,12 +157,14 @@
         
         //当图片出现让tableView不能滚
         self.tableView.scrollEnabled = NO;
+        self.navigationController.navigationBar.userInteractionEnabled = NO;
     }
 }
 
 - (void)closePic:(UITapGestureRecognizer *)gesture{
     UIImageView *image = [self.tableView viewWithTag:100];
     self.tableView.scrollEnabled = YES;
+    self.navigationController.navigationBar.userInteractionEnabled = YES;
     [image removeFromSuperview];
 }
 
@@ -234,12 +236,14 @@
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"选择您要拨打的会所电话" preferredStyle:UIAlertControllerStyleAlert];
         //有几个电话弹窗有几个选项
         for (int i = 0; i < phoneAllArray.count; i++) {
-            UIAlertAction *action = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",phoneAllArray[i]] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phoneAllArray[i]]];
-                [[UIApplication sharedApplication] openURL:url];
-                //NSLog(@"phoneAllArray%@",phoneAllArray[i]);
-            }];
-            [alert addAction:action];
+            if(![phoneAllArray[i] isEqualToString:@"  "]){
+                UIAlertAction *action = [UIAlertAction actionWithTitle:[NSString stringWithFormat:@"%@",phoneAllArray[i]] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@",phoneAllArray[i]]];
+                    [[UIApplication sharedApplication] openURL:url];
+                    NSLog(@"phoneAllArray%@",phoneAllArray[i]);
+                }];
+                [alert addAction:action];
+            }
         }
         UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
             
