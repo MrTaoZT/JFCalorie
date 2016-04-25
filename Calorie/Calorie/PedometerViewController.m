@@ -31,6 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.title = @"计步器";
     _objectForShow = [NSMutableArray new];
     [self interfaceView];
     self.tableView.tableFooterView = [[UIView alloc]init];
@@ -374,7 +375,7 @@
         cell.textLabel.text = _objectForShow[indexPath.row];
         NSLog(@"************>>>>>%@",_objectForShow);
     }
-    
+    cell.userInteractionEnabled = NO;
     //取消选中颜色
     UIView *cellClickVc = [[UIView alloc]initWithFrame:cell.frame];
     cell.selectedBackgroundView = cellClickVc;
