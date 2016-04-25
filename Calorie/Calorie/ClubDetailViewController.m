@@ -25,6 +25,7 @@
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
 @property(nonatomic, strong)NSMutableDictionary *clubDict;
 @property(nonatomic, strong)UITapGestureRecognizer *tap;
+@property(nonatomic)CGFloat offectSet;
 
 //用户id
 @property(nonatomic, strong)NSString *memberId;
@@ -52,10 +53,11 @@
     collectionBtnTag = 1002;
     callTag = 1003;
     loadOver = NO;
+    _offectSet = -64;
     
     _clubDict = [NSMutableDictionary new];
     
-    self.title = @"会所详情";
+    self.navigationItem.title = @"会所详情";
     
     //得到用户ID
     _memberId = [[StorageMgr singletonStorageMgr] objectForKey:@"memberId"];
@@ -128,7 +130,7 @@
 - (void)imageViewAction:(UIButton *)sender{
     if (loadOver) {
         //设置初始位置
-        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(0, -self.tabBarController.tabBar.frame.size.height, self.view.frame.size.width, self.view.frame.size.height)];
+        UIImageView *image = [[UIImageView alloc]initWithFrame:CGRectMake(0, _offectSet, self.view.frame.size.width, self.view.frame.size.height)];
         image.tag = 100;
         image.backgroundColor = [UIColor blackColor];
         image.contentMode = UIViewContentModeScaleAspectFit;
@@ -162,6 +164,11 @@
     UIImageView *image = [self.tableView viewWithTag:100];
     self.tableView.scrollEnabled = YES;
     [image removeFromSuperview];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+    _offectSet = scrollView.contentOffset.y;
+    NSLog(@"%f",_offectSet);
 }
 
 - (void)collectionBtn{
