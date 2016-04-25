@@ -41,6 +41,8 @@
 
 @property(nonatomic, strong)NSString *city;
 
+@property(nonatomic, strong)NSDictionary *adDict;
+
 //运动类型
 @property(nonatomic, strong)NSMutableArray *sportTypeArray;
 //热门俱乐部数据
@@ -284,9 +286,6 @@
     //初始化刷新器
     [self initRefresh];
     
-    //初始化广告
-    [self initAD];
-    
 }
 
 - (void)getCityName{
@@ -308,6 +307,7 @@
                 [Utilities popUpAlertViewWithMsg:@"位置异常,默认无锡" andTitle:@"" onView:self];
             }
         }else{
+            [self chooseCity];
             NSLog(@"城市获取失败");
         }
     }];
@@ -321,23 +321,23 @@
 }
 
 - (void)initAD{
-    //广告
     _ADScrollView.delegate = self;
-    UIView *view1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, UI_SCREEN_W, 80)];
-    UIView *view2 = [[UIView alloc] initWithFrame:CGRectMake(UI_SCREEN_W, 0, UI_SCREEN_W, 80)];
-    UIView *view3 = [[UIView alloc] initWithFrame:CGRectMake(UI_SCREEN_W * 2, 0, UI_SCREEN_W, 80)];
-    view1.backgroundColor = [UIColor orangeColor];
-    view2.backgroundColor = [UIColor blueColor];
-    view3.backgroundColor = [UIColor blackColor];
+    if (loadingOver) {
+        UIImageView *image = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, UI_SCREEN_W, 110)];
+        image.contentMode = UIViewContentModeScaleAspectFill;
+        [image sd_setImageWithURL:_adDict[@"imgurl"]];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(AdAction)];
+        [_ADScrollView addGestureRecognizer:tap];
+        [_ADScrollView addSubview:image];
+        _ADScrollView.showsHorizontalScrollIndicator = NO;
+        _ADScrollView.contentSize = CGSizeMake(UI_SCREEN_W + 2, 110);
+        //_ADScrollView.alwaysBounceHorizontal =YES;
+        _ADScrollView.pagingEnabled = YES;
+    }
+}
+
+- (void)AdAction{
     
-    [_ADScrollView addSubview:view1];
-    [_ADScrollView addSubview:view2];
-    [_ADScrollView addSubview:view3];
-    
-    _ADScrollView.showsHorizontalScrollIndicator = NO;
-    _ADScrollView.contentSize = CGSizeMake(UI_SCREEN_W * 3, 80);
-    _ADScrollView.alwaysBounceHorizontal = YES;
-    _ADScrollView.pagingEnabled = YES;
 }
 
 - (void)initailCLLocation{
@@ -571,7 +571,7 @@
             isRefresh = NO;
         }
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            //NSLog(@"%@",responseObject);
+            NSLog(@"%@",responseObject);
             
             //等于1表示是下拉刷新或者刚进入页面
             if (weakSelf.hotClubPage == 1) {
@@ -582,6 +582,9 @@
             NSDictionary *result = responseObject[@"result"];
             NSArray *info = result[@"models"];
             NSDictionary *pagingInfo = result[@"pagingInfo"];
+            //广告
+            NSArray *array = responseObject[@"advertisement"];
+            _adDict = array.firstObject;
             //封装数据
             for (int i = 0; i < info.count; i++) {
                 NSString *name = info[i][@"name"];
@@ -603,6 +606,8 @@
             loadingOver = YES;
             weakSelf.totalPage = [pagingInfo[@"totalPage"] integerValue];
             //NSLog(@"totalPage:%ld",[pagingInfo[@"totalPage"] integerValue]);
+            //初始化广告
+            [self initAD];
             [weakSelf.tableView reloadData];
         }else{
             if ([responseObject[@"resultFlag"] integerValue] == 8020) {
