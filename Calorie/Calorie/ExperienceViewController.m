@@ -25,7 +25,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+     [self.TableView setScrollEnabled:NO];
     //取消tableview下划线
     //    self.tableView.tableFooterView = [[UIView alloc]init];
     self.TableView.separatorStyle = UITableViewCellSeparatorStyleNone;
