@@ -182,6 +182,16 @@
             int value = (arc4random() % 999999999) + 1;
             NSString *email = [NSString stringWithFormat:@"%d@qq.com",value];
             NSString *username = [NSString stringWithFormat:@"x%@",memberId];
+            
+            NSDictionary *dict = @{@"memberId":result[@"memberId"],
+                                   @"memberSex":result[@"memberSex"],
+                                   @"memberName":result[@"memberName"],
+                                   @"birthday":result[@"birthday"],
+                                   @"identificationcard":result[@"identificationcard"]
+                                   };
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"dict"];
+            [[StorageMgr singletonStorageMgr]addKey:@"dict" andValue:dict];
+            
             //判断用户名是否存在 存在就别保存 username
             PFUser *user = [PFUser user];
             user.username = username;
@@ -239,6 +249,7 @@
     [tabView.view addGestureRecognizer:_slidingVc.panGesture];
     //----------------------侧滑开始 left----------------------
     _slidingVc.underLeftViewController = leftVc;
+    
     //设置侧滑的开闭程度   (peek都是设置中间的页面出现的宽度 )
     _slidingVc.anchorRightPeekAmount = UI_SCREEN_W / 4;
 

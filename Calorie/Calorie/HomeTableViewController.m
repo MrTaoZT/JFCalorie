@@ -157,6 +157,15 @@
                 NSString *memberId = result[@"memberId"];
                 [[StorageMgr singletonStorageMgr]removeObjectForKey:@"memberId"];
                 [[StorageMgr singletonStorageMgr]addKey:@"memberId" andValue:memberId];
+                
+                NSDictionary *dict = @{@"memberId":result[@"memberId"],
+                                       @"memberSex":result[@"memberSex"],
+                                       @"memberName":result[@"memberName"],
+                                       @"birthday":result[@"birthday"],
+                                       @"identificationcard":result[@"identificationcard"]
+                                       };
+                [[StorageMgr singletonStorageMgr]removeObjectForKey:@"dict"];
+                [[StorageMgr singletonStorageMgr]addKey:@"dict" andValue:dict];
             }else{
                 [Utilities popUpAlertViewWithMsg:@"登录失败，请保持网络通畅" andTitle:nil onView:self];
                 NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
