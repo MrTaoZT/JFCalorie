@@ -32,7 +32,7 @@
     //去掉tableView的滚动条
     self.TableView.showsVerticalScrollIndicator = NO;
     
-    
+    //[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
     _TableView.delegate = self;
     _TableView.dataSource = self ;
@@ -55,8 +55,6 @@
     } failure:^(NSError *error) {
         NSLog(@"error = %@", [error userInfo]);
     }];
-    
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section  {
