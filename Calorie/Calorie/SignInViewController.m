@@ -19,6 +19,7 @@
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
 @property (strong,nonatomic) NSMutableArray *objectForShow;
 @property (strong,nonatomic) NSURL *url;
+@property (strong,nonatomic) UIImage *images;
 @end
 
 @implementation SignInViewController
@@ -46,6 +47,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationController.navigationBar.hidden = YES;
+    
     //协议
     _usernameTF.delegate = self;
     _passwordTF.delegate = self;
