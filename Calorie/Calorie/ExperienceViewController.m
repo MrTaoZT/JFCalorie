@@ -33,11 +33,12 @@
     self.TableView.showsVerticalScrollIndicator = NO;
     
     
-    [self showExperience];
+    
     _TableView.delegate = self;
     _TableView.dataSource = self ;
     
     _objectForShow = [NSMutableDictionary new];
+    [self showExperience];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

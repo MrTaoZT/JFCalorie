@@ -345,11 +345,13 @@
                     </view>
                     <navigationItem key="navigationItem" title="收藏列表" id="5zH-zx-ANb">
                         <barButtonItem key="leftBarButtonItem" title="返回" id="rKc-NJ-mBG">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="leftButton:" destination="AyV-UP-Fcv" id="BOY-jD-ezf"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="编辑" id="kiC-fC-ZeO">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <connections>
                                 <action selector="rightBtnAction:" destination="AyV-UP-Fcv" id="iks-t2-6mi"/>
                             </connections>
@@ -373,6 +375,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ozF-uc-gwO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -392,6 +395,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="c0g-ZO-kS3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
@@ -411,6 +415,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="vjK-Xf-VjK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
