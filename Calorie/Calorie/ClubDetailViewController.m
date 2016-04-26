@@ -24,7 +24,6 @@
 
 @property(nonatomic, strong)NSMutableArray *clubDetailArray;
 @property(nonatomic, strong)NSMutableDictionary *clubDict;
-@property(nonatomic, strong)UITapGestureRecognizer *tap;
 @property(nonatomic)CGFloat offectSet;
 
 //用户id
@@ -37,6 +36,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.tabBarController.tabBar.hidden = YES;
+    UIBarButtonItem *button = [[UIBarButtonItem alloc]initWithTitle:@"体验券" style:UIBarButtonItemStylePlain target:self action:@selector(jumpExperience)];
+    self.navigationItem.rightBarButtonItem = button;
 }
 
 - (void)viewDidLoad {
@@ -47,7 +48,6 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     //去掉tableView的滚动条
     self.tableView.showsVerticalScrollIndicator = NO;
-    _tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(jumpExperience)];
     
     scrollViewTag = 1001;
     collectionBtnTag = 1002;
@@ -279,8 +279,6 @@
                 cell.name.text = [NSString stringWithFormat:@"%@",_clubDict[@"clubName"]];
                 
                 cell.name.userInteractionEnabled = YES;
-                
-                [cell.name addGestureRecognizer:_tap];
                 
                 //收藏情况
                 cell.collection.tag = collectionBtnTag;
