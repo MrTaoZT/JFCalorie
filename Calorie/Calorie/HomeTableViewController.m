@@ -305,7 +305,11 @@
             NSDictionary *info = [placemarks[0] addressDictionary];
             NSString *name = info[@"City"];
             if (name != nil) {
-                _city = [name substringToIndex:name.length - 1];
+                if([[name substringFromIndex:name.length - 1] isEqualToString:@"市"]){
+                    _city = [name substringToIndex:name.length - 1];
+                }else{
+                    _city = @"无锡";
+                }
                 [[StorageMgr singletonStorageMgr] addKey:@"jing" andValue:@(_jing)];
                 [[StorageMgr singletonStorageMgr]addKey:@"wei" andValue:@(_wei)];
                 [[StorageMgr singletonStorageMgr] addKey:@"cityName" andValue:_city];
@@ -580,7 +584,7 @@
             isRefresh = NO;
         }
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
-            NSLog(@"%@",responseObject);
+            //NSLog(@"%@",responseObject);
             
             //等于1表示是下拉刷新或者刚进入页面
             if (weakSelf.hotClubPage == 1) {
