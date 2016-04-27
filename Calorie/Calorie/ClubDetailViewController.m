@@ -209,10 +209,10 @@
             
             if ([_clubDict[@"isFavicons"] boolValue]) {
                 [Utilities popUpAlertViewWithMsg:@"收藏成功，您可前往我的收藏查看" andTitle:@"" onView:self];
-                [sender setTitle:@"已收藏" forState:UIControlStateNormal];
+                [sender setBackgroundImage:[UIImage imageNamed:@"ooopic_Yes"] forState:UIControlStateNormal];
             }else{
                 [Utilities popUpAlertViewWithMsg:@"取消收藏成功" andTitle:@"" onView:self];
-                [sender setTitle:@"未收藏" forState:UIControlStateNormal];
+                [sender setBackgroundImage:[UIImage imageNamed:@"ooopic_NO"] forState:UIControlStateNormal];
             }
         }else{
             [Utilities popUpAlertViewWithMsg:[NSString stringWithFormat:@"请稍后重试%@",responseObject[@"resultFlag"]] andTitle:@"" onView:self];
@@ -285,9 +285,9 @@
                 [self collectionBtn];
                 //NSLog(@"-->%d",[_clubDict[@"isFavicons"] boolValue]);
                 if ([_clubDict[@"isFavicons"] boolValue]) {
-                    [cell.collection setTitle:@"已收藏" forState:UIControlStateNormal];
+                    [cell.collection setBackgroundImage:[UIImage imageNamed:@"ooopic_Yes"] forState:UIControlStateNormal];
                 }else{
-                    [cell.collection setTitle:@"未收藏" forState:UIControlStateNormal];
+                    [cell.collection setBackgroundImage:[UIImage imageNamed:@"ooopic_NO"] forState:UIControlStateNormal];
                 }
                 //地址
                 cell.address.text = _clubDict[@"clubAddressB"];
