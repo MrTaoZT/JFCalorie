@@ -113,7 +113,7 @@
             return 256;
             break;
         default:
-            return 330;
+            return 441;
             break;
     }
 }
