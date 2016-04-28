@@ -17,4 +17,6 @@
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event;
 - (IBAction)touristsLogin:(UIButton *)sender forEvent:(UIEvent *)event;
 
+@property (weak, nonatomic) IBOutlet UIImageView *bgIamgeView;
+
 @end

@@ -43,6 +43,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     _objectForShow = [NSMutableArray new];
     //取消tableview下划线
     //    self.tableView.tableFooterView = [[UIView alloc]init];
@@ -89,7 +90,7 @@
         }
         _nickName.text = [Utilities getUserDefaults:@"Username"];
     }else{
-        _headImg.image = [UIImage imageNamed:@"headImgBG"];
+        _headImg.image = [UIImage imageNamed:@"tupian"];
         _nickName.text = @"未登录";
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(signIn)];
         [_headImg addGestureRecognizer:tap];
@@ -185,6 +186,7 @@
         [Utilities setUserDefaults:@"AddUserAndPw" content:@YES];
         
         NavigationViewController *navView = [Utilities getStoryboard:@"Main" instanceByIdentity:@"nav"];
+//        SignInViewController *signInVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
         //这里是当登录退出时  将全局变量SignUpSuccessfully  设置成yes   当调到  登录页面就会运行  viewWillA里的方法
         [[StorageMgr singletonStorageMgr]removeObjectForKey:@"SignUpSuccessfully"];
         [[StorageMgr singletonStorageMgr]addKey:@"SignUpSuccessfully" andValue:@YES];
@@ -193,7 +195,7 @@
         //缓存到 键为Username的值   homeTabVc  中能用到
         [Utilities removeUserDefaults:@"Username"];
         [Utilities setUserDefaults:@"Username" content:_nickName.text];
-        [self presentViewController:navView animated:YES completion:nil];
+        [self.navigationController pushViewController:navView animated:YES];
     }else{
         [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
     }

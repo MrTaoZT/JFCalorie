@@ -46,8 +46,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationController.navigationBar.hidden = YES;
     
+    _bgIamgeView.image = [UIImage imageNamed:@"chehuabg"];
+    
+    self.navigationController.navigationBar.hidden = YES;
+
     //协议
     _usernameTF.delegate = self;
     _passwordTF.delegate = self;
@@ -78,7 +81,7 @@
                     [Utilities removeUserDefaults:@"imgURL"];
                     [Utilities setUserDefaults:@"imgURL" content:file.url];
                 }else{
-                    _headImg.image = [UIImage imageNamed:@"headImgBG"];
+                    _headImg.image = [UIImage imageNamed:@"tupian"];
                 }
             }
         }];
@@ -230,8 +233,8 @@
 }
 
 - (IBAction)signUpAction:(UIButton *)sender forEvent:(UIEvent *)event {
-     SignUpViewController *signUpVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"SignUpVc"];
-    [self.navigationController pushViewController:signUpVc animated:YES];
+//     SignUpViewController *signUpVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"SignUpVc"];
+//    [self.navigationController pushViewController:signUpVc animated:YES];
 }
 
 - (IBAction)touristsLogin:(UIButton *)sender forEvent:(UIEvent *)event {
@@ -255,6 +258,15 @@
 
     HomeNavViewController *homeNav = [[HomeNavViewController alloc]initWithRootViewController:_slidingVc];
     _slidingVc.navigationController.navigationBar.hidden = YES;
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(menuSwitchAction) name:@"MenuSwitch" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(EnableGestureAction) name:@"EnableGesture" object:nil];
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(DisableGestureAction) name:@"DisableGesture" object:nil];
+    
+    [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
+    [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@NO];
     [self presentViewController:homeNav animated:YES completion:nil];
 }
 

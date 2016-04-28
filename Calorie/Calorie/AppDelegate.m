@@ -11,6 +11,7 @@
 #import "LeftViewController.h"
 #import "TabBarViewController.h"
 #import "NavigationViewController.h"
+#import "SignInViewController.h"
 
 @interface AppDelegate ()
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
@@ -56,7 +57,7 @@
     [[StorageMgr singletonStorageMgr]removeObjectForKey:@"inOrUp"];
     //添加 此键  放进全局变量   ，之后来判断用户是否登录进入的侧滑
     [[StorageMgr singletonStorageMgr]addKey:@"inOrUp" andValue:@NO];
-    
+//    SignInViewController *signVc = [Utilities getStoryboard:@"Main" instanceByIdentity:@"signInVc"];
     self.window.rootViewController = _slidingVc;
     return YES;
 
