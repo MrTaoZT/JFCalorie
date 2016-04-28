@@ -320,8 +320,16 @@
                 [Utilities popUpAlertViewWithMsg:@"位置异常,默认无锡" andTitle:@"" onView:self];
             }
         }else{
-            [self chooseCity];
             NSLog(@"城市获取失败");
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"" message:@"位置获取失败请手动选择" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *confirm = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //定位获取失败，让用户自己选城市
+                [self chooseCity];
+            }];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:nil];
+            [alert addAction:confirm];
+            [alert addAction:cancel];
+            [self presentViewController:alert animated:YES completion:nil];
         }
     }];
 }

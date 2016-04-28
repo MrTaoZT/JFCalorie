@@ -44,7 +44,7 @@
     rc.tintColor = [UIColor orangeColor];
     [rc addTarget:self action:@selector(getpermission) forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:rc];
-    
+    _walklale.text = @"0";
     // Do any additional setup after loading the view, typically from a nib.
     
     [self getpermission];
@@ -67,9 +67,7 @@
     [circularView addGestureRecognizer:tap];
     [self.view addSubview:circularView];
     
-    if([_walklale.text isEqualToString:@""]){
-        _walklale.text = 0;
-    }
+   
     
     
     //设置lable截止时间
@@ -85,13 +83,12 @@
     [circularView addSubview:lable];
     
     //设置lable步数
-    
-    
     CGRect lableFram2 = CGRectMake(circularView.frame.size.width/2 - 75, circularView.frame.size.height/2 - 75, 150, 150);
     _walklale =[[ARLabel alloc]initWithFrame:lableFram2];
     _walklale.textAlignment = UITextAlignmentCenter;
     _walklale.textColor = [UIColor blueColor];
     _walklale.font = [UIFont systemFontOfSize:15];
+    [_walklale setText:[NSString stringWithFormat:@"%@",_walklale.text]];
     [circularView addSubview:_walklale];
     
     
@@ -187,6 +184,7 @@
                 double value = [quantity doubleValueForUnit:[HKUnit countUnit]];
                 
                 [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                    
                     _walklale.text = [NSString stringWithFormat:@" %d",(int)value];
                     
                     //查询是在多线程中进行的，如果要对UI进行刷新，要回到主线程中
