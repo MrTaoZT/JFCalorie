@@ -195,7 +195,7 @@
         //缓存到 键为Username的值   homeTabVc  中能用到
         [Utilities removeUserDefaults:@"Username"];
         [Utilities setUserDefaults:@"Username" content:_nickName.text];
-        [self.navigationController pushViewController:navView animated:YES];
+        [self presentViewController:navView animated:YES completion:nil];
     }else{
         [Utilities popUpAlertViewWithMsg:@"您当前未登录，请点击头像登录哦！" andTitle:nil onView:self];
     }

@@ -359,10 +359,10 @@
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hotClubDefaultImage" translatesAutoresizingMaskIntoConstraints="NO" id="R1w-f0-y4T">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="224"/>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="飓风健身馆" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJw-pK-e1E">
-                                            <rect key="frame" x="20" y="177" width="335" height="27"/>
-                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="飓风健身馆" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bJw-pK-e1E">
+                                            <rect key="frame" x="0.0" y="191" width="375" height="33"/>
+                                            <color key="backgroundColor" red="0.45118732630000002" green="0.87095069000000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="27"/>
                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -408,14 +408,14 @@
                                         <constraint firstItem="miR-kb-hFg" firstAttribute="width" secondItem="Zp7-VS-M51" secondAttribute="width" id="N88-3J-dlQ"/>
                                         <constraint firstItem="miR-kb-hFg" firstAttribute="leading" secondItem="WU7-lB-eKM" secondAttribute="trailing" constant="1" id="Qmv-Oe-Kop"/>
                                         <constraint firstItem="miR-kb-hFg" firstAttribute="height" secondItem="Zp7-VS-M51" secondAttribute="height" id="VmD-ll-Ccv"/>
-                                        <constraint firstItem="Zp7-VS-M51" firstAttribute="top" secondItem="bJw-pK-e1E" secondAttribute="bottom" constant="20" id="Yj1-cL-GrR"/>
+                                        <constraint firstItem="Zp7-VS-M51" firstAttribute="top" secondItem="bJw-pK-e1E" secondAttribute="bottom" id="Yj1-cL-GrR"/>
                                         <constraint firstItem="WU7-lB-eKM" firstAttribute="top" secondItem="Zp7-VS-M51" secondAttribute="top" id="ZDJ-Y2-Ae2"/>
                                         <constraint firstItem="WU7-lB-eKM" firstAttribute="height" secondItem="Zp7-VS-M51" secondAttribute="height" id="eH0-3R-C8G"/>
                                         <constraint firstItem="Zp7-VS-M51" firstAttribute="leading" secondItem="zvU-5w-Tkg" secondAttribute="leading" constant="4" id="p21-ZM-JM0"/>
                                         <constraint firstAttribute="trailing" secondItem="miR-kb-hFg" secondAttribute="trailing" constant="4" id="qgt-FK-9N6"/>
-                                        <constraint firstItem="bJw-pK-e1E" firstAttribute="leading" secondItem="zvU-5w-Tkg" secondAttribute="leading" constant="20" id="r2D-a7-im1"/>
+                                        <constraint firstItem="bJw-pK-e1E" firstAttribute="leading" secondItem="zvU-5w-Tkg" secondAttribute="leading" id="r2D-a7-im1"/>
                                         <constraint firstAttribute="trailing" secondItem="NMe-Le-hGs" secondAttribute="trailing" constant="20" id="v3K-qc-MnF"/>
-                                        <constraint firstAttribute="trailing" secondItem="bJw-pK-e1E" secondAttribute="trailing" constant="20" id="weL-Gt-axl"/>
+                                        <constraint firstAttribute="trailing" secondItem="bJw-pK-e1E" secondAttribute="trailing" id="weL-Gt-axl"/>
                                         <constraint firstItem="R1w-f0-y4T" firstAttribute="top" secondItem="zvU-5w-Tkg" secondAttribute="top" id="x0Y-Wp-1RI"/>
                                         <constraint firstAttribute="trailing" secondItem="R1w-f0-y4T" secondAttribute="trailing" id="xlc-vn-nTg"/>
                                         <constraint firstItem="R1w-f0-y4T" firstAttribute="leading" secondItem="zvU-5w-Tkg" secondAttribute="leading" id="yHK-uL-9Eu"/>

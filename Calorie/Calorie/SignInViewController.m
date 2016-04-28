@@ -27,6 +27,9 @@
 //视图已经出现时调用
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBar.hidden = YES;
+
     //判断当前登录页面是否是  注册成功  跳转过来的
     if([[[StorageMgr singletonStorageMgr]objectForKey:@"SignUpSuccessfully"] boolValue]){
         //需要把 这个键的  值  重新设置成  no   （！！！！！！！！！！！！）
@@ -49,8 +52,6 @@
     
     _bgIamgeView.image = [UIImage imageNamed:@"chehuabg"];
     
-    self.navigationController.navigationBar.hidden = YES;
-
     //协议
     _usernameTF.delegate = self;
     _passwordTF.delegate = self;
