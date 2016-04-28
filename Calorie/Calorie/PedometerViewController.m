@@ -67,6 +67,10 @@
     [circularView addGestureRecognizer:tap];
     [self.view addSubview:circularView];
     
+    if([_walklale.text isEqualToString:@""]){
+        _walklale.text = 0;
+    }
+    
     
     //设置lable截止时间
     date = [NSDate date];
