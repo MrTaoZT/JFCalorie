@@ -11,7 +11,7 @@
 #import "LeftViewController.h"
 #import "HomeNavViewController.h"
 
-@interface MyMessageViewController ()
+@interface MyMessageViewController ()<UITextFieldDelegate>
 {
     NSInteger sexy;
     NSInteger count;
@@ -28,8 +28,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    [_gender addTarget:self action:@selector(changeGender:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _birthday.delegate = self;
+    
     count = 1;
     
+    _datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, (self.view.frame.size.height - self.view.frame.size.height / 3), self.view.frame.size.width, self.view.frame.size.height / 3)];
+    _datePicker.datePickerMode = UIDatePickerModeDate;
+    [_datePicker setLocale:[NSLocale localeWithLocaleIdentifier:@"zh-CN"]];
+    _datePicker.backgroundColor = [UIColor greenColor];
+
+    _datePicker.hidden = YES;
+    [self.view addSubview:_datePicker];
     [self getMessage];
 }
 
@@ -47,17 +58,17 @@
         memberSex = dic[@"memberSex"];
         sexy = [memberSex integerValue];
     }else{
-        sexy = 1;
+        _gender.selectedSegmentIndex = 0;
     }
     if (![dic[@"birthday"] isEqual: [NSNull null]]) {
         birthday = dic[@"birthday"];
     }else{
-        birthday = @"1";
+        birthday = @"";
     }
     if (![dic[@"identificationcard"] isEqual: [NSNull null]]) {
         identificationcard = dic[@"identificationcard"];
     }else{
-        identificationcard = @"2";
+        identificationcard = @"";
     }
     NSLog(@"id = %@",dic[@"memberId"]);
     NSLog(@"name = %@",dic[@"memberName"]);
@@ -92,18 +103,23 @@
     NSString *memberId = _userID.text;
     NSString *name = _nickName.text;
     
-    [_gender addTarget:self action:@selector(changeGender:) forControlEvents:UIControlEventValueChanged];
-    
     NSDictionary *dic = @{@"memberId":memberId,
                           @"name":name,
                           @"memberSex":@(sexy),
                           @"identitificationcard":identificationcard,
-                          @"birthday":birthday
+                          @"birthday":@"2014-01-05"
                           };
-    [RequestAPI postURL:@"/mySelfController/updateMyselfInfos" withParameters:dic success:^(id responseObject) {
-        
+    [RequestAPI postURL:@"/mySelfController/updateMyselfInfos" withParameters:dic success:^(id responseObject){
+        if ([responseObject[@"resultFlag"] integerValue] == 8001) {
+            [Utilities popUpAlertViewWithMsg:@"保存成功" andTitle:nil onView:self];
+        }else {
+            [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
+            [self getMessage];
+        }
     } failure:^(NSError *error) {
-        
+        NSLog(@"error = %@",error.description);
+        [Utilities popUpAlertViewWithMsg:@"请保持网络通畅" andTitle:nil onView:self];
+        [self getMessage];
     }];
 }
 
@@ -131,19 +147,32 @@
         _birthday.userInteractionEnabled = YES;
         
     }else {
-        [_rightButton setTitle:@"编辑"];
-        count ++;
-        
         identificationcard = _cardID.text;
         birthday = _birthday.text;
         
         if ((_nickName.text.length == 0 || _nickName.text.length > 11)) {
             [Utilities popUpAlertViewWithMsg:@"用户名不能为空，并且需要小于11为" andTitle:nil onView:self];
+            _nickName.text = @"";
+            return;
         }
-        if (identificationcard.length != 0 || identificationcard.length != 18) {
+        if (identificationcard.length == 0 || identificationcard.length == 18) {
+            
+        }else{
             [Utilities popUpAlertViewWithMsg:@"请输入正确的身份证号" andTitle:nil onView:self];
+            _cardID.text = @"";
+            return;
         }
         [self saveMessage];
+        
+        [_rightButton setTitle:@"编辑"];
+        count ++;
+        
+        _headImg.userInteractionEnabled = NO;
+        _userID.userInteractionEnabled = NO;
+        _nickName.userInteractionEnabled = NO;
+        _gender.userInteractionEnabled = NO;
+        _cardID.userInteractionEnabled = NO;
+        _birthday.userInteractionEnabled = NO;
     }
 }
 
@@ -151,6 +180,16 @@
     
     if ([_rightButton.title isEqualToString:@"保存"]) {
         [_rightButton setTitle:@"编辑"];
+        
+        _headImg.userInteractionEnabled = NO;
+        _userID.userInteractionEnabled = NO;
+        _nickName.userInteractionEnabled = NO;
+        _gender.userInteractionEnabled = NO;
+        _cardID.userInteractionEnabled = NO;
+        _birthday.userInteractionEnabled = NO;
+        
+        [self getMessage];
+        
         count ++;
         return;
     }
@@ -213,4 +252,45 @@
     _birthday.text = dateAndTime;
 }
 
+#pragma mark- Textfield
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+
+{
+    
+    NSLog(@"textFieldDidBeginEditing");
+    
+    CGRect frame = textField.frame;
+    
+    CGFloat heights = self.view.frame.size.height;
+    
+    // 当前点击textfield的坐标的Y值 + 当前点击textFiled的高度 - （屏幕高度- 键盘高度 - 键盘上tabbar高度）
+    
+    // 在这一部 就是了一个 当前textfile的的最大Y值 和 键盘的最全高度的差值，用来计算整个view的偏移量
+    
+    int offset = frame.origin.y + 42- ( heights - 216.0-35.0);//键盘高度216
+    
+    NSTimeInterval animationDuration = 0.30f;
+    
+    [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
+    
+    [UIView setAnimationDuration:animationDuration];
+    
+    float width = self.view.frame.size.width;
+    
+    float height = self.view.frame.size.height;
+    
+    if(offset > 0)
+        
+    {
+        
+        CGRect rect = CGRectMake(0.0f, -offset,width,height);
+        
+        self.view.frame = rect;
+        
+    }
+    
+    [UIView commitAnimations];
+    
+}
 @end
