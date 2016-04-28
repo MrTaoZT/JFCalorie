@@ -21,9 +21,15 @@
 }
 @property (strong,nonatomic)UIDatePicker *datePicker;
 @property (strong,nonatomic) ECSlidingViewController *slidingVc;
+@property (strong,nonatomic) NSDictionary *dict;
 @end
 
 @implementation MyMessageViewController
+
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self getMessage];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,8 +47,14 @@
 
     _datePicker.hidden = YES;
     [self.view addSubview:_datePicker];
-    [self getMessage];
+
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 
 - (void)getMessage{
     _headImg.userInteractionEnabled = NO;
@@ -57,8 +69,13 @@
         NSLog(@"dic %@",[dic objectForKey:@"memberSex"]);
         memberSex = dic[@"memberSex"];
         sexy = [memberSex integerValue];
+        if(sexy == 1){
+            _gender.selectedSegmentIndex = 0;
+        }else {
+            _gender.selectedSegmentIndex = 1;
+        }
     }else{
-        _gender.selectedSegmentIndex = 0;
+        _gender.selectedSegmentIndex = 1;
     }
     if (![dic[@"birthday"] isEqual: [NSNull null]]) {
         birthday = dic[@"birthday"];
@@ -70,8 +87,7 @@
     }else{
         identificationcard = @"";
     }
-    NSLog(@"id = %@",dic[@"memberId"]);
-    NSLog(@"name = %@",dic[@"memberName"]);
+
     _nickName.text = [Utilities getUserDefaults:@"Username"];
     _userID.text = [NSString stringWithFormat:@"%@",dic[@"memberId"]];
     _birthday.text = birthday;
@@ -92,26 +108,34 @@
 //@property (weak, nonatomic) IBOutlet UITextField *cardID;//身份证
 //@property (weak, nonatomic) IBOutlet UITextField *birthday;//生日
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 //
 - (void)saveMessage {
     NSString *memberId = _userID.text;
     NSString *name = _nickName.text;
     
-    NSDictionary *dic = @{@"memberId":memberId,
+    NSDate *date = [NSDate date];
+    NSDateFormatter *df = [[NSDateFormatter alloc]init];//格式化
+    [df setDateFormat:@"yyyy-MM-dd"];
+    NSString *dateStr = [df stringFromDate:date];
+    
+    NSLog(@"dateStr = %@",dateStr);
+    NSLog(@"sexy = %ld",sexy);
+    NSLog(@"memberId = %@",memberId);
+    NSLog(@"name111 = %@",name);
+    NSLog(@"identitificationcard = %@",identificationcard);
+    
+    _dict = @{@"memberId":memberId,
                           @"name":name,
                           @"memberSex":@(sexy),
                           @"identitificationcard":identificationcard,
-                          @"birthday":@"2014-01-05"
+                          @"birthday":dateStr
                           };
-    [RequestAPI postURL:@"/mySelfController/updateMyselfInfos" withParameters:dic success:^(id responseObject){
+    [RequestAPI postURL:@"/mySelfController/updateMyselfInfos" withParameters:_dict success:^(id responseObject){
         if ([responseObject[@"resultFlag"] integerValue] == 8001) {
             [Utilities popUpAlertViewWithMsg:@"保存成功" andTitle:nil onView:self];
+            
+            [[StorageMgr singletonStorageMgr]removeObjectForKey:@"dict"];
+            [[StorageMgr singletonStorageMgr]addKey:@"dict" andValue:_dict];
         }else {
             [Utilities errorShow:responseObject[@"resultFlag"] onView:self];
             [self getMessage];
@@ -244,23 +268,17 @@
     NSLog(@"2");
 }
 
-- (IBAction)birthdayAction:(UITextField *)sender forEvent:(UIEvent *)event {
-    NSDate *select = [_datePicker date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    NSString *dateAndTime =  [dateFormatter stringFromDate:select];
-    _birthday.text = dateAndTime;
-}
-
 #pragma mark- Textfield
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 
 {
+//    CGRectMake(0, (self.view.frame.size.height - self.view.frame.size.height / 3), self.view.frame.size.width, self.view.frame.size.height / 3)];
+    _datePicker.hidden = NO;
     
     NSLog(@"textFieldDidBeginEditing");
     
-    CGRect frame = textField.frame;
+    CGRect frame = _datePicker.frame;
     
     CGFloat heights = self.view.frame.size.height;
     
@@ -268,7 +286,7 @@
     
     // 在这一部 就是了一个 当前textfile的的最大Y值 和 键盘的最全高度的差值，用来计算整个view的偏移量
     
-    int offset = frame.origin.y + 42- ( heights - 216.0-35.0);//键盘高度216
+    int offset = frame.origin.y + 42- ( heights - (self.view.frame.size.height / 3) - 35.0);//键盘高度216
     
     NSTimeInterval animationDuration = 0.30f;
     
@@ -292,5 +310,35 @@
     
     [UIView commitAnimations];
     
+}
+
+- (BOOL) textFieldShouldReturn:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void) touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    NSLog(@"touchesBegan");
+    
+//    [self.view endEditing:YES];
+    
+    _datePicker.hidden = YES;
+    
+    NSTimeInterval animationDuration = 0.30f;
+    
+    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
+    
+    [UIView setAnimationDuration:animationDuration];
+    
+    CGRect rect = CGRectMake(0.0f, 0.0f, self.view.frame.size.width, self.view.frame.size.height);
+    
+    self.view.frame = rect;
+    
+    [UIView commitAnimations];
+}
+
+//当文本输入框中输入的内容变化是调用该方法，返回值为NO不允许调用
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    return YES;
 }
 @end

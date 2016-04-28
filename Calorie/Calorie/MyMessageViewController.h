@@ -24,5 +24,5 @@
 
 - (IBAction)returnAction:(UIBarButtonItem *)sender;//返回
 
-- (IBAction)birthdayAction:(UITextField *)sender forEvent:(UIEvent *)event;//生日事件
+
 @end
